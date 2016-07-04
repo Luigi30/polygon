@@ -1,0 +1,4 @@
+framebuffer.cpp(238): Warning! W726: col(1) no reference to formal parameter 'origin'
+framebuffer.cpp(191): Note! N392: col(94) definition: 'Point origin' in 'void Framebuffer::draw_filled_triangle( Triangle, Vector3f *, Point, int )'
+framebuffer.cpp(403): Warning! W726: col(1) no reference to formal parameter 'sizeX'
+framebuffer.cpp(347): Note! N392: col(45) definition: 'int sizeX' in 'void Framebuffer::putGlyph( unsigned char *, int, int, int, int, int )'
