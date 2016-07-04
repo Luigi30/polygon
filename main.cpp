@@ -1,4 +1,5 @@
 #include "main.hpp"
+#include <cmath>
 
 std::vector<Shape> shapesList;
 
@@ -53,17 +54,21 @@ int main(){
 
     printf("Loading model\n");
 
-    center = center + Vector3f(0,0,0);
+    Projection = Matrix::identity(4);
+    //Projection = perspective_projection(-1, 1, 0, 320, 1, 11);
 
     WavefrontObject obj;
     obj.load_file("cube.3d");
+    obj.translation = Vector3f(0,0,0);
     g_screen.addSceneObject("cube1", obj);
 
+/*
     WavefrontObject cube2;
     cube2.load_file("cube.3d");
-    cube2.translation = Vector3f(1,0,0);
+    cube2.translation = Vector3f(1,0,1);
     cube2.scale = Vector3f(.5,.5,.5);
     g_screen.addSceneObject("cube2", cube2);
+*/
     
     printf("OK\n");
 
@@ -95,42 +100,20 @@ int main(){
         }
         else if(key == 'a'){
             eye = eye + Vector3f(-1,0,0);
+            center = center + Vector3f(-1,0,0);
         }
         else if(key == 'd'){
             eye = eye + Vector3f(1,0,0);
+            center = center + Vector3f(1,0,0);
         }
         else if(key == 'w'){
-            eye = eye + Vector3f(0,1,0);
+            eye = eye + Vector3f(0,0,-1);
+            center = center + Vector3f(0,0,-1);
 
         }
         else if(key == 's'){
-            eye = eye + Vector3f(0,-1,0);
-        }
-
-        else if(key == 'A'){
-            center = center - Vector3f(0,.1,0);
-        }
-        else if(key == 'D'){
-            center = center + Vector3f(0,.1,0);
-        }
-        else if(key == 'W'){
-            center = center - Vector3f(0,0,.1);
-        }
-        else if(key == 'S'){
-            center = center + Vector3f(0,0,.1);
-        }
-        
-        else if(key == 'j'){
-            obj.translation = obj.translation + Vector3f(-1,0,0);
-        }
-        else if(key == 'l'){
-            obj.translation = obj.translation + Vector3f(1,0,0);
-        }
-        else if(key == 'i'){
-            obj.translation = obj.translation + Vector3f(0,1,0);
-        }
-        else if(key == 'k'){
-            obj.translation = obj.translation + Vector3f(0,-1,0);
+            eye = eye + Vector3f(0,0,1);
+            center = center + Vector3f(0,0,1);
         }
 
         recalculate_transformation();

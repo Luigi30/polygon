@@ -31,8 +31,16 @@ class Vector3f {
             return x*second.x + y*second.y + z*second.z;
         }
 
+        Vector3f operator*(const float scalar){
+            return Vector3f(x*scalar, y*scalar, z*scalar);
+        }
+
         float length() {
             return std::sqrt(x*x + y*y + z*z);
+        }
+
+        static float dot_product(Vector3f a, Vector3f b){
+            return (a.x*b.x) + (a.y*b.y) + (a.z*b.z);
         }
 
         operator Point2D() {

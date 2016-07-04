@@ -4,10 +4,33 @@
 #include <vector>
 
 #define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
+#define SCREEN_HEIGHT 200
 #define VIEWPORT_WIDTH_3D 200
 #define VIEWPORT_HEIGHT_3D 200
 #define ZBUFFER_DEPTH 255
+
+#define BETWEEN(token, A, B) (token >= A && token <= B)
+
+Matrix perspective_projection(){
+    Matrix m = Matrix::identity(4);
+
+    float aspectratio = 320.0 / 200.0;
+    float verticalFOV = 30.0;
+    float zNear = 1.0;
+    float zFar = 1000.0;
+    float zRange = zNear - zFar;
+    float tanHalfFOV = (std::tan(((verticalFOV/2) * M_PI) / 180.0));
+
+    m[0][0] = 1.0f / (tanHalfFOV * aspectratio);
+    m[1][1] = 1.0f / tanHalfFOV;
+    m[2][2] = (-zNear - zFar) / zRange;
+    m[2][3] = 2.0 * zFar * zNear / zRange;
+    m[3][2] = 1.0;
+    m[3][3] = 0.0;
+    
+    return m.transpose();
+    //return m;
+}
 
 Framebuffer::Framebuffer(){
     pixels = (Pixel*)malloc(64000+1);
@@ -74,13 +97,17 @@ void Framebuffer::draw_line(Point start, Point end, int color){
     {
         if(steep)
         {
-            setPixel(y, x, color);
-            verticesOnScanline[x].push_back(y);
+            if(BETWEEN(x, 0, SCREEN_HEIGHT) && BETWEEN(y, 0, SCREEN_WIDTH)){
+                setPixel(y, x, color);
+                verticesOnScanline[x].push_back(y);
+            }
         }
         else
         {
-            setPixel(x, y, color);
-            verticesOnScanline[y].push_back(x);
+            if(BETWEEN(x, 0, SCREEN_WIDTH) && BETWEEN(y, 0, SCREEN_HEIGHT)){
+                setPixel(x, y, color);
+                verticesOnScanline[y].push_back(x);
+            }
         }
  
         error -= dy;
@@ -111,43 +138,58 @@ Vector3f calculateSurfaceNormal(Vector3f *triangle){
 }
 
 void Framebuffer::draw_face(WavefrontObject model, Matrix Viewport, Matrix Projection, Matrix ModelView, int face_number){
+    /* Render a face from a specified model. */
 
-    //camera distance from origin in units
-    float c = 5.0;
-    
+    /* The transformation matrix is Viewport * Projection * ModelView. */
+    Matrix transformation = Viewport * Projection * ModelView;
+
+    /* Where's the light coming from? */
     Vector3f light_direction(0.0, 0.0, -1.0);
+
+    /* Get the face and its coordinates. */
     Face face = model.getFaces()[face_number];
 
+    Vector3f screenCoords[3];
     Vector3f worldCoords[3];
+
     worldCoords[0] = Vector3f(model.getLocalVertices()[face.v1].x, model.getLocalVertices()[face.v1].y, model.getLocalVertices()[face.v1].z);
     worldCoords[1] = Vector3f(model.getLocalVertices()[face.v2].x, model.getLocalVertices()[face.v2].y, model.getLocalVertices()[face.v2].z);
     worldCoords[2] = Vector3f(model.getLocalVertices()[face.v3].x, model.getLocalVertices()[face.v3].y, model.getLocalVertices()[face.v3].z);
-
-    Matrix transformation = Viewport * Projection * ModelView;
-
-    Vector3f screenCoords[3];
-    //Apply view transformations
-    //Viewport * Projection * ModelView * coordinates
+    
     for(int i=0;i<3;i++){
+        /* Transform the model's local coordinates by the transformation matrix to produce world coordinates. */
         Matrix newCoords = transformation * Matrix::position_vector(worldCoords[i]);
-        //Get screen coordinates from the perspective transformation
+        
+        /* Perform the perspective calculation and produce screen coordinates from world coordinates. */
         screenCoords[i] = Vector3f(newCoords[0][0] / newCoords[3][0], newCoords[1][0] / newCoords[3][0], newCoords[2][0] / newCoords[3][0]);
 }
 
-    //Current issue is that we need to calculate the new normal
-    //based on the eye location
     //http://www.songho.ca/opengl/gl_normaltransform.html
+
+    /* Now calculate the surface normal of the face. */
     Vector3f normal = calculateSurfaceNormal(worldCoords);
     Vector3f normalizedNormal = normal.normalize();
 
-    Matrix newNormal = transformation.transpose().inverse() * Matrix::direction_vector(normal);
-    Vector3f transposedNormal = Vector3f(newNormal[0][0], newNormal[1][0], newNormal[2][0]);
-    
-    float intensity = transposedNormal * light_direction;
+    /* Transform the surface normal
+       by the transpose inverse of the transformation matrix
+       to produce the transformed surface normal. */
+
+    //something's wrong with how we're doing this
+    Matrix newNormal = transformation.inverse().transpose() * Matrix::direction_vector(normal);
+    Vector3f transformedNormal = Vector3f(newNormal[0][0], newNormal[1][0], newNormal[2][0]);
+    Vector3f transformedNormalizedNormal = transformedNormal.normalize();
+
+    /* Use the transformed surface normal to calculate light intensity for flat shading. */
+    float intensity = transformedNormal * light_direction;
+
+    /* We only have 16 shades of gray... */
     float lightLevel = (intensity * 127) / 16;
+    /* ...so clamp the light level to 16. */
     lightLevel = lightLevel > 0x0F ? 0x0F : lightLevel;
 
+    /* Is the face lit (facing us)? */
     if(lightLevel > 0) {
+        /* It's lit, draw it. */
         draw_filled_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]),
                                 worldCoords,
                                 Point(0,0),
@@ -156,6 +198,7 @@ void Framebuffer::draw_face(WavefrontObject model, Matrix Viewport, Matrix Proje
         //printf("old normal: %f %f %f\n", normal.x, normal.y, normal.z);
         //newNormal.print();
     } else {
+        /* We can't see it, so don't draw it. */
         //printf("Face %d is too dark\n", face_number);
     }
 }
@@ -168,7 +211,9 @@ void Framebuffer::draw_triangle(Triangle triangle, Point origin, int color){
     }
 }
 
-Vector3f barycentric_point(Point A, Point B, Point C, Point P){    
+Vector3f barycentric_point(Point A, Point B, Point C, Point P){
+    /* Find the barycentric vector of triangle (A,B,C) and point P. */
+    
     Vector3f s[2];
 
     s[1].x = C.y - A.y;
@@ -189,10 +234,13 @@ Vector3f barycentric_point(Point A, Point B, Point C, Point P){
 }
 
 void Framebuffer::draw_filled_triangle(Triangle triangle, Vector3f worldCoordinates[], Point origin, int color){
+
+    /* Reset the edge list. */
     for(int i=0;i<200;i++){
         verticesOnScanline[i].clear();
     }
 
+    /* Calculate the screen coordinatesd of the triangle. */
     Point screenPoints[3];
     for(int i=0;i<3;i++){
         screenPoints[i] = Point((int)triangle.getPoints()[i].x + .5, (int)triangle.getPoints()[i].y + .5);
@@ -200,10 +248,10 @@ void Framebuffer::draw_filled_triangle(Triangle triangle, Vector3f worldCoordina
 
     //printf("draw_filled_triangle: triangle is (%d,%d),(%d,%d),(%d,%d)\n", screenPoints[0].x, screenPoints[0].y, screenPoints[1].x, screenPoints[1].y, screenPoints[2].x, screenPoints[2].y);
 
+    /* Find the bounding box of the triangle. */
     int boundingBoxX[2] = {321, -1};
     int boundingBoxY[2] = {201, -1};
-
-    //find the bounding box of the triangle
+    
     for(int i=0; i<3; i++){
         if(screenPoints[i].x < boundingBoxX[0]) boundingBoxX[0] = screenPoints[i].x;
         if(screenPoints[i].x > boundingBoxX[1]) boundingBoxX[1] = screenPoints[i].x;
@@ -212,28 +260,40 @@ void Framebuffer::draw_filled_triangle(Triangle triangle, Vector3f worldCoordina
         if(screenPoints[i].y > boundingBoxY[1]) boundingBoxY[1] = screenPoints[i].y;
     }
 
-    if(boundingBoxX[0] >= 0 && boundingBoxX[1] < 320 && boundingBoxY[0] >= 0 && boundingBoxY[1] < 200){
-        for(int scanline=boundingBoxY[0]; scanline<=boundingBoxY[1]; scanline++){
-            //printf("Scanline %d\n", scanline);
-            for(int x=std::max(0, boundingBoxX[0]);x<=std::min(320, boundingBoxX[1]);x++){               
-                Vector3f barycentric = barycentric_point(screenPoints[0], screenPoints[1], screenPoints[2], Point(x, scanline));
-                if(barycentric.x < 0 || barycentric.y < 0 || barycentric.z < 0) continue;
-                
-                float z = 0;
-                z += (worldCoordinates[0].z * barycentric.x);
-                z += (worldCoordinates[1].z * barycentric.y);
-                z += (worldCoordinates[2].z * barycentric.z);
-                if(z > zbuffer[x + (scanline * VGA_WIDTH)]) {
-                    zbuffer[x + (scanline * VGA_WIDTH)] = z;
-                    setPixel(x, scanline, color);
-                }
+    for(int scanline = std::max(boundingBoxY[0], 0); scanline <= std::min(SCREEN_HEIGHT-1, boundingBoxY[1]); scanline++){
+        for(int x=std::max(0, boundingBoxX[0]);x<=std::min(SCREEN_WIDTH-1, boundingBoxX[1]);x++){
+
+            /* Is the point inside the triangle? */      
+            Vector3f barycentric = barycentric_point(screenPoints[0], screenPoints[1], screenPoints[2], Point(x, scanline));
+            if(barycentric.x < 0 || barycentric.y < 0 || barycentric.z < 0) continue;
+
+            /* Yes, so get the point's Z. */
+            float z = 0;
+            z += (worldCoordinates[0].z * barycentric.x);
+            z += (worldCoordinates[1].z * barycentric.y);
+            z += (worldCoordinates[2].z * barycentric.z);
+
+            /* Check the Z-buffer. Should we draw this point? */
+            if(z > zbuffer[x + (scanline * VGA_WIDTH)]) {
+
+                /* Did we fuck up at some point? */
+                assert(scanline >= 0);
+                assert(x >= 0);
+                assert(scanline < SCREEN_HEIGHT);
+                assert(x < SCREEN_WIDTH);
+
+                /* Yes, draw the point. */
+                zbuffer[x + (scanline * VGA_WIDTH)] = z;
+                setPixel(x, scanline, color);
             }
         }
-        for(int i=0;i<3;i++){
-            Point start = triangle.getPoint(i);
-            Point end = triangle.getPoint((i+1) % 3);
-            draw_line(start, end, COLOR_GREEN);
-        }
+    }
+
+    /* Draw the triangle's wireframe. */
+    for(int i=0;i<3;i++){
+        Point start = triangle.getPoint(i);
+        Point end = triangle.getPoint((i+1) % 3);
+        draw_line(start, end, COLOR_GREEN);
     }
 }
 

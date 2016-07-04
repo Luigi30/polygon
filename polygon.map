@@ -1,7 +1,7 @@
 Open Watcom Linker Version 2.0 beta Apr  2 2015 10:32:17 (32-bit)
 Copyright (c) 2002-2015 The Open Watcom Contributors. All Rights Reserved.
 Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
-Created on:       16/07/03 22:41:33
+Created on:       16/07/04 17:47:24
 Warning! W1027: file main.obj(C:\Users\Luigi\Documents\watcom\polygon\main.cpp): redefinition of void near debugOutput( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > ) ignored
 Warning! W1027: file main.obj(C:\Users\Luigi\Documents\watcom\polygon\main.cpp): redefinition of void near WavefrontObject::process_line( char near * ) ignored
 Warning! W1027: file main.obj(C:\Users\Luigi\Documents\watcom\polygon\main.cpp): redefinition of bool near WavefrontObject::load_file( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > ) ignored
@@ -29,6 +29,7 @@ Warning! W1027: file screen.obj(C:\Users\Luigi\Documents\watcom\polygon\screen.c
 Warning! W1027: file screen.obj(C:\Users\Luigi\Documents\watcom\polygon\screen.cpp): redefinition of bool near WavefrontObject::load_file( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > ) ignored
 Warning! W1027: file screen.obj(C:\Users\Luigi\Documents\watcom\polygon\screen.cpp): redefinition of Point near offset( Point, Point ) ignored
 Warning! W1027: file screen.obj(C:\Users\Luigi\Documents\watcom\polygon\screen.cpp): redefinition of Vector3f near vector_offset( Vector3f, Point ) ignored
+Warning! W1027: file screen.obj(C:\Users\Luigi\Documents\watcom\polygon\screen.cpp): redefinition of Matrix near perspective_projection() ignored
 Warning! W1027: file screen.obj(C:\Users\Luigi\Documents\watcom\polygon\screen.cpp): redefinition of int near VGA_Y_OFFSETS[] ignored
 Warning! W1027: file screen.obj(C:\Users\Luigi\Documents\watcom\polygon\screen.cpp): redefinition of char near * near VGA_PTR ignored
 Warning! W1027: file screen.obj(C:\Users\Luigi\Documents\watcom\polygon\screen.cpp): redefinition of Font near fontsList[] ignored
@@ -78,7 +79,7 @@ creating a DOS/32 Advanced DOS Extender (LX-style) executable
 Group                           Address              Size
 =====                           =======              ====
 
-DGROUP                          0002:00000000        00023990
+DGROUP                          0002:00000000        00023db0
 
 
 
@@ -90,26 +91,26 @@ Segment                Class          Group          Address         Size
 =======                =====          =====          =======         ====
 
 BEGTEXT                CODE           AUTO           0001:00000000   00000010
-_TEXT                  CODE           AUTO           0001:00000010   00033510
+_TEXT                  CODE           AUTO           0001:00000010   00035750
 _NULL                  BEGDATA        DGROUP         0002:00000000   00000004
 _AFTERNULL             BEGDATA        DGROUP         0002:00000004   00000000
-CONST                  DATA           DGROUP         0002:00000004   00000e4c
-CONST2                 DATA           DGROUP         0002:00000e50   00003d8c
-_DATA                  DATA           DGROUP         0002:00004be0   0000c76c
-XIB                    DATA           DGROUP         0002:0001134c   00000000
-XI                     DATA           DGROUP         0002:0001134c   00000078
-XIE                    DATA           DGROUP         0002:000113c4   00000000
-YIB                    DATA           DGROUP         0002:000113c4   00000000
-YI                     DATA           DGROUP         0002:000113c4   00000024
-YIE                    DATA           DGROUP         0002:000113e8   00000000
-TIB                    DATA           DGROUP         0002:000113e8   00000000
-TI                     DATA           DGROUP         0002:000113e8   00000000
-TIE                    DATA           DGROUP         0002:000113e8   00000000
-DATA                   DATA           DGROUP         0002:000113e8   00000000
-DATA32                 DATA           DGROUP         0002:000113e8   00000018
-_BSS                   BSS            DGROUP         0002:00011400   00002554
-c_common               BSS            DGROUP         0002:00013954   00000031
-STACK                  STACK          DGROUP         0002:00013990   00010000
+CONST                  DATA           DGROUP         0002:00000004   0000102c
+CONST2                 DATA           DGROUP         0002:00001030   00003fcc
+_DATA                  DATA           DGROUP         0002:00005000   0000c76c
+XIB                    DATA           DGROUP         0002:0001176c   00000000
+XI                     DATA           DGROUP         0002:0001176c   00000078
+XIE                    DATA           DGROUP         0002:000117e4   00000000
+YIB                    DATA           DGROUP         0002:000117e4   00000000
+YI                     DATA           DGROUP         0002:000117e4   00000024
+YIE                    DATA           DGROUP         0002:00011808   00000000
+TIB                    DATA           DGROUP         0002:00011808   00000000
+TI                     DATA           DGROUP         0002:00011808   00000000
+TIE                    DATA           DGROUP         0002:00011808   00000000
+DATA                   DATA           DGROUP         0002:00011808   00000000
+DATA32                 DATA           DGROUP         0002:00011808   00000018
+_BSS                   BSS            DGROUP         0002:00011820   00002554
+c_common               BSS            DGROUP         0002:00013d74   00000031
+STACK                  STACK          DGROUP         0002:00013db0   00010000
 
 
                         +----------------+
@@ -123,1338 +124,1339 @@ Address        Symbol
 =======        ======
 
 Module: framebuffer.obj(C:\Users\Luigi\Documents\watcom\polygon\framebuffer.cpp)
-0001:0000782c  near std::exception::exception()
-0001:00007895  near std::exception::exception( std::exception const near & )
-0001:00007909  near std::exception::~exception()
-0001:000079dd  char const near * near std::exception::what() const
-0001:00007a3e  char const near * near std::_ow::str_exception::what() const
-0001:00007acb+ near Vector3f::Vector3f()
-0001:00007b1a  near Font::Font()
-0001:00007b69  near Matrix::Matrix()
+0001:0000884e  near std::exception::exception()
+0001:000088b7  near std::exception::exception( std::exception const near & )
+0001:0000892b  near std::exception::~exception()
+0001:000089ff  char const near * near std::exception::what() const
+0001:00008a60  char const near * near std::_ow::str_exception::what() const
+0001:00008aed+ near Vector3f::Vector3f()
+0001:00008b3c  near Font::Font()
+0001:00008b8b  near Matrix::Matrix()
 0001:00000178  void near debugOutput( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > )
 0001:00000209  void near WavefrontObject::process_line( char near * )
 0001:000003fd  bool near WavefrontObject::load_file( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > )
 0001:00000a42* Point near offset( Point, Point )
 0001:00000aef+ Vector3f near vector_offset( Vector3f, Point )
-0001:00000ba7  near Framebuffer::Framebuffer()
-0001:00000c6c  void near Framebuffer::reset_zbuffer()
-0001:00000cc4  char unsigned near * near Framebuffer::getPixels()
-0001:00000cf9+ void near swap( int near &, int near & )
-0001:00000d3d  void near Framebuffer::draw_line( Point, Point, int )
-0001:00000f62* Point near rotate( Point, int )
-0001:0000107c+ Vector3f near calculateSurfaceNormal( Vector3f near * )
-0001:0000131b  void near Framebuffer::draw_face( WavefrontObject, Matrix, Matrix, Matrix, int )
-0001:00005e41* void near Framebuffer::draw_triangle( Triangle, Point, int )
-0001:00006137+ Vector3f near barycentric_point( Point, Point, Point, Point )
-0001:000063e9+ void near Framebuffer::draw_filled_triangle( Triangle, Vector3f near *, Point, int )
-0001:00006b1b* void near Framebuffer::draw_rectangle( Point, int, int, int, int )
-0001:00006d1a  void near Framebuffer::draw_rectangle_filled( Point, int, int, int )
-0001:00006e01+ void near Framebuffer::setPixel( int, int, int )
-0001:00006e4d* void near Framebuffer::setPixel( Point, int )
-0001:00006ec1  void near Framebuffer::overlay( Framebuffer, int )
-0001:00006f3f  void near Framebuffer::clear_area( Point, Point )
-0001:00007046* void near Framebuffer::draw_area( char unsigned const near *, Point, Point )
-0001:0000716e* double near getSlope( Point, Point )
-0001:00007219* double near getYIntercept( Point, double )
-0001:00007c43  near Matrix::Matrix( Matrix const near & )
-0001:00007ca2  near Matrix::~Matrix()
-0001:00007ce2  near Font::~Font()
-0001:00007d15+ near Vector3f::~Vector3f()
-0001:00007d48  near Point::~Point()
-0001:00007d7b  near std::length_error::~length_error()
-0001:00007eaa  near std::logic_error::~logic_error()
-0001:00007fd9  near std::_ow::str_exception::~str_exception()
-0001:00008140  near std::allocator<char near >::~allocator()
-0001:00008173  near std::allocator<float near >::~allocator()
-0001:000081a6  near std::allocator<std::vector<float near,std::allocator<float near > near > near >::~allocator()
-0001:000081d9  near std::allocator<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near >::allocator()
-0001:0000820b  near std::allocator<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near >::~allocator()
-0001:0000823e+ near std::allocator<int near >::allocator()
-0001:00008270+ near std::allocator<int near >::~allocator()
-0001:000082a3  near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::basic_string( std::allocator<char near > const near & )
-0001:00008367  near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::basic_string( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > const near & )
-0001:00008465  near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::~basic_string()
-0001:00008529  near std::vector<float near,std::allocator<float near > near >::vector( std::allocator<float near > const near & )
-0001:000085ed  near std::vector<float near,std::allocator<float near > near >::~vector()
-0001:000086ee  void near std::vector<float near,std::allocator<float near > near >::push_back( float const near & )
-0001:00008794  near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::vector( std::allocator<std::vector<float near,std::allocator<float near > near > near > const near & )
-0001:00008858  near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::vector( std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near > const near & )
-0001:000089ad  near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::~vector()
-0001:00008ab8  void near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::push_back( std::vector<float near,std::allocator<float near > near > const near & )
-0001:00008b53  near std::vector<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near,std::allocator<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near > near >::vector( std::allocator<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near > const near & )
-0001:00008c17  near std::vector<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near,std::allocator<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near > near >::~vector()
-0001:00008d22+ near std::vector<int near,std::allocator<int near > near >::vector( std::allocator<int near > const near & )
-0001:00008de6+ near std::vector<int near,std::allocator<int near > near >::~vector()
-0001:00008ee7+ void near std::vector<int near,std::allocator<int near > near >::push_back( int const near & )
-0001:00008f8d+ void near std::vector<int near,std::allocator<int near > near >::clear()
-0001:00008ffd  std::vector<float near,std::allocator<float near > near > near * near std::uninitialized_copy<std::vector<float near,std::allocator<float near > near > near * near,std::vector<float near,std::allocator<float near > near > near * near >( std::vector<float near,std::allocator<float near > near > near *, std::vector<float near,std::allocator<float near > near > near *, std::vector<float near,std::allocator<float near > near > near * )
-0001:00009127  char near * near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::alloc( int unsigned, int unsigned near & )
-0001:000091a5  float near * near std::vector<float near,std::allocator<float near > near >::alloc( int unsigned, int unsigned near & )
-0001:00009226  near std::vector<float near,std::allocator<float near > near >::vector( std::vector<float near,std::allocator<float near > near > const near & )
-0001:0000937b  void near std::vector<float near,std::allocator<float near > near >::reserve( int unsigned )
-0001:000096ed  std::vector<float near,std::allocator<float near > near > near * near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::alloc( int unsigned, int unsigned near & )
-0001:0000976e  void near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::reserve( int unsigned )
-0001:00009aed  std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near * near std::vector<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near,std::allocator<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near > near >::alloc( int unsigned, int unsigned near & )
-0001:00009b6e+ int near * near std::vector<int near,std::allocator<int near > near >::alloc( int unsigned, int unsigned near & )
-0001:00009bef+ void near std::vector<int near,std::allocator<int near > near >::reserve( int unsigned )
-0001:00009f61  near std::length_error::length_error( std::length_error const near & )
-0001:0000a0db  near std::logic_error::logic_error( std::logic_error const near & )
-0001:0000a1f9  near std::_ow::str_exception::str_exception( std::_ow::str_exception const near & )
-0001:0000a2c0  float near * near std::uninitialized_copy<float near * near,float near * near >( float near *, float near *, float near * )
-0001:0000a3eb+ int near * near std::uninitialized_copy<int near * near,int near * near >( int near *, int near *, int near * )
-0001:0000a516  near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::basic_string( char const near *, std::allocator<char near > const near & )
-0002:00001800  int unsigned const near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::npos
-0002:00004bf0  double near PI
-0002:00004bf8  char unsigned near console_font_8x8[]
-0002:000053f8  char unsigned near console_font_4x6[]
-0002:000059f8  char unsigned near console_font_6x8[]
-0002:000061f8  char unsigned near console_font_5x8[]
-0002:00001840  bool const near std::numeric_limits<int unsigned near >::is_specialized
-0002:00001850  int const near std::numeric_limits<int unsigned near >::digits
-0002:00001860  int const near std::numeric_limits<int unsigned near >::digits10
-0002:00001870  bool const near std::numeric_limits<int unsigned near >::is_integer
-0002:00001880  bool const near std::numeric_limits<int unsigned near >::is_exact
-0002:00013954  bool const near std::numeric_limits<int unsigned near >::is_signed
-0002:00013958  int const near std::numeric_limits<int unsigned near >::min_exponent
-0002:0001395c  int const near std::numeric_limits<int unsigned near >::min_exponent10
-0002:00013960  int const near std::numeric_limits<int unsigned near >::max_exponent
-0002:00013964  int const near std::numeric_limits<int unsigned near >::max_exponent10
-0002:00013968  bool const near std::numeric_limits<int unsigned near >::has_infinity
-0002:0001396c  bool const near std::numeric_limits<int unsigned near >::has_quiet_NaN
-0002:00001890  int const near std::numeric_limits<int unsigned near >::radix
-0002:00013970  bool const near std::numeric_limits<int unsigned near >::has_signaling_NaN
-0002:00013974  bool const near std::numeric_limits<int unsigned near >::has_denorm_loss
-0002:000018a0  std::float_denorm_style const near std::numeric_limits<int unsigned near >::has_denorm
-0002:000018b0  bool const near std::numeric_limits<int unsigned near >::is_bounded
-0002:00013978  bool const near std::numeric_limits<int unsigned near >::is_iec559
-0002:0001397c  bool const near std::numeric_limits<int unsigned near >::traps
-0002:00013980  bool const near std::numeric_limits<int unsigned near >::tinyness_before
-0002:000018c0  bool const near std::numeric_limits<int unsigned near >::is_modulo
-0002:00013984  std::float_round_style const near std::numeric_limits<int unsigned near >::round_style
-0001:0000728b* Point near rotate_degrees( Point, int )
-0001:00007466+ void near Framebuffer::putGlyph( char unsigned near *, int, int, int, int, int )
-0001:0000766e  void near Framebuffer::putString( char const near *, int, Point, int, Font )
-0001:0000778f* void near Framebuffer::putString( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >, Point, int, Font )
-0002:00011400  int near VGA_Y_OFFSETS[]
-0002:00011720  char near * near VGA_PTR
-0002:00011724  Font near fontsList[]
-0002:000117e4+ std::vector<int near,std::allocator<int near > near > near verticesOnScanline[]
+0001:00000ba7  Matrix near perspective_projection()
+0001:000018a5  near Framebuffer::Framebuffer()
+0001:0000196a  void near Framebuffer::reset_zbuffer()
+0001:000019c2  char unsigned near * near Framebuffer::getPixels()
+0001:000019f7+ void near swap( int near &, int near & )
+0001:00001a3b  void near Framebuffer::draw_line( Point, Point, int )
+0001:00001cb5* Point near rotate( Point, int )
+0001:00001dcf+ Vector3f near calculateSurfaceNormal( Vector3f near * )
+0001:0000206e  void near Framebuffer::draw_face( WavefrontObject, Matrix, Matrix, Matrix, int )
+0001:00006cc2* void near Framebuffer::draw_triangle( Triangle, Point, int )
+0001:00006fb8+ Vector3f near barycentric_point( Point, Point, Point, Point )
+0001:0000726a+ void near Framebuffer::draw_filled_triangle( Triangle, Vector3f near *, Point, int )
+0001:00007b3d* void near Framebuffer::draw_rectangle( Point, int, int, int, int )
+0001:00007d3c  void near Framebuffer::draw_rectangle_filled( Point, int, int, int )
+0001:00007e23+ void near Framebuffer::setPixel( int, int, int )
+0001:00007e6f* void near Framebuffer::setPixel( Point, int )
+0001:00007ee3  void near Framebuffer::overlay( Framebuffer, int )
+0001:00007f61  void near Framebuffer::clear_area( Point, Point )
+0001:00008068* void near Framebuffer::draw_area( char unsigned const near *, Point, Point )
+0001:00008190* double near getSlope( Point, Point )
+0001:0000823b* double near getYIntercept( Point, double )
+0001:00008c65  near Matrix::Matrix( Matrix const near & )
+0001:00008cc4  near Matrix::~Matrix()
+0001:00008d04  near Font::~Font()
+0001:00008d37+ near Vector3f::~Vector3f()
+0001:00008d6a  near Point::~Point()
+0001:00008d9d  near std::length_error::~length_error()
+0001:00008ecc  near std::logic_error::~logic_error()
+0001:00008ffb  near std::_ow::str_exception::~str_exception()
+0001:00009162  near std::allocator<char near >::~allocator()
+0001:00009195  near std::allocator<float near >::~allocator()
+0001:000091c8  near std::allocator<std::vector<float near,std::allocator<float near > near > near >::~allocator()
+0001:000091fb  near std::allocator<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near >::allocator()
+0001:0000922d  near std::allocator<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near >::~allocator()
+0001:00009260+ near std::allocator<int near >::allocator()
+0001:00009292+ near std::allocator<int near >::~allocator()
+0001:000092c5  near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::basic_string( std::allocator<char near > const near & )
+0001:00009389  near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::basic_string( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > const near & )
+0001:00009487  near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::~basic_string()
+0001:0000954b  near std::vector<float near,std::allocator<float near > near >::vector( std::allocator<float near > const near & )
+0001:0000960f  near std::vector<float near,std::allocator<float near > near >::~vector()
+0001:00009710  void near std::vector<float near,std::allocator<float near > near >::push_back( float const near & )
+0001:000097b6  near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::vector( std::allocator<std::vector<float near,std::allocator<float near > near > near > const near & )
+0001:0000987a  near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::vector( std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near > const near & )
+0001:000099cf  near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::~vector()
+0001:00009ada  void near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::push_back( std::vector<float near,std::allocator<float near > near > const near & )
+0001:00009b75  near std::vector<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near,std::allocator<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near > near >::vector( std::allocator<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near > const near & )
+0001:00009c39  near std::vector<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near,std::allocator<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near > near >::~vector()
+0001:00009d44+ near std::vector<int near,std::allocator<int near > near >::vector( std::allocator<int near > const near & )
+0001:00009e08+ near std::vector<int near,std::allocator<int near > near >::~vector()
+0001:00009f09+ void near std::vector<int near,std::allocator<int near > near >::push_back( int const near & )
+0001:00009faf+ void near std::vector<int near,std::allocator<int near > near >::clear()
+0001:0000a01f  std::vector<float near,std::allocator<float near > near > near * near std::uninitialized_copy<std::vector<float near,std::allocator<float near > near > near * near,std::vector<float near,std::allocator<float near > near > near * near >( std::vector<float near,std::allocator<float near > near > near *, std::vector<float near,std::allocator<float near > near > near *, std::vector<float near,std::allocator<float near > near > near * )
+0001:0000a149  char near * near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::alloc( int unsigned, int unsigned near & )
+0001:0000a1c7  float near * near std::vector<float near,std::allocator<float near > near >::alloc( int unsigned, int unsigned near & )
+0001:0000a248  near std::vector<float near,std::allocator<float near > near >::vector( std::vector<float near,std::allocator<float near > near > const near & )
+0001:0000a39d  void near std::vector<float near,std::allocator<float near > near >::reserve( int unsigned )
+0001:0000a70f  std::vector<float near,std::allocator<float near > near > near * near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::alloc( int unsigned, int unsigned near & )
+0001:0000a790  void near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::reserve( int unsigned )
+0001:0000ab0f  std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near * near std::vector<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near,std::allocator<std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near > near >::alloc( int unsigned, int unsigned near & )
+0001:0000ab90+ int near * near std::vector<int near,std::allocator<int near > near >::alloc( int unsigned, int unsigned near & )
+0001:0000ac11+ void near std::vector<int near,std::allocator<int near > near >::reserve( int unsigned )
+0001:0000af83  near std::length_error::length_error( std::length_error const near & )
+0001:0000b0fd  near std::logic_error::logic_error( std::logic_error const near & )
+0001:0000b21b  near std::_ow::str_exception::str_exception( std::_ow::str_exception const near & )
+0001:0000b2e2  float near * near std::uninitialized_copy<float near * near,float near * near >( float near *, float near *, float near * )
+0001:0000b40d+ int near * near std::uninitialized_copy<int near * near,int near * near >( int near *, int near *, int near * )
+0001:0000b538  near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::basic_string( char const near *, std::allocator<char near > const near & )
+0002:00001a80  int unsigned const near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::npos
+0002:00005010  double near PI
+0002:00005018  char unsigned near console_font_8x8[]
+0002:00005818  char unsigned near console_font_4x6[]
+0002:00005e18  char unsigned near console_font_6x8[]
+0002:00006618  char unsigned near console_font_5x8[]
+0002:00001ac0  bool const near std::numeric_limits<int unsigned near >::is_specialized
+0002:00001ad0  int const near std::numeric_limits<int unsigned near >::digits
+0002:00001ae0  int const near std::numeric_limits<int unsigned near >::digits10
+0002:00001af0  bool const near std::numeric_limits<int unsigned near >::is_integer
+0002:00001b00  bool const near std::numeric_limits<int unsigned near >::is_exact
+0002:00013d74  bool const near std::numeric_limits<int unsigned near >::is_signed
+0002:00013d78  int const near std::numeric_limits<int unsigned near >::min_exponent
+0002:00013d7c  int const near std::numeric_limits<int unsigned near >::min_exponent10
+0002:00013d80  int const near std::numeric_limits<int unsigned near >::max_exponent
+0002:00013d84  int const near std::numeric_limits<int unsigned near >::max_exponent10
+0002:00013d88  bool const near std::numeric_limits<int unsigned near >::has_infinity
+0002:00013d8c  bool const near std::numeric_limits<int unsigned near >::has_quiet_NaN
+0002:00001b10  int const near std::numeric_limits<int unsigned near >::radix
+0002:00013d90  bool const near std::numeric_limits<int unsigned near >::has_signaling_NaN
+0002:00013d94  bool const near std::numeric_limits<int unsigned near >::has_denorm_loss
+0002:00001b20  std::float_denorm_style const near std::numeric_limits<int unsigned near >::has_denorm
+0002:00001b30  bool const near std::numeric_limits<int unsigned near >::is_bounded
+0002:00013d98  bool const near std::numeric_limits<int unsigned near >::is_iec559
+0002:00013d9c  bool const near std::numeric_limits<int unsigned near >::traps
+0002:00013da0  bool const near std::numeric_limits<int unsigned near >::tinyness_before
+0002:00001b40  bool const near std::numeric_limits<int unsigned near >::is_modulo
+0002:00013da4  std::float_round_style const near std::numeric_limits<int unsigned near >::round_style
+0001:000082ad* Point near rotate_degrees( Point, int )
+0001:00008488+ void near Framebuffer::putGlyph( char unsigned near *, int, int, int, int, int )
+0001:00008690  void near Framebuffer::putString( char const near *, int, Point, int, Font )
+0001:000087b1* void near Framebuffer::putString( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >, Point, int, Font )
+0002:00011820  int near VGA_Y_OFFSETS[]
+0002:00011b40  char near * near VGA_PTR
+0002:00011b44  Font near fontsList[]
+0002:00011c04+ std::vector<int near,std::allocator<int near > near > near verticesOnScanline[]
 Module: main.obj(C:\Users\Luigi\Documents\watcom\polygon\main.cpp)
-0001:0000bf44+ void near abort( char near * )
-0001:0000bf89* void near load_shapes()
-0001:0000c069+ void near load_lookup_tables()
-0001:0000c0be* Point near transform_2d( Matrix, Point )
-0001:0000e97c  near Screen::Screen()
-0001:0000ebf1  near Screen::~Screen()
-0001:0000ecb3  near std::allocator<float near >::allocator()
-0001:0000ece5  near std::allocator<std::vector<float near,std::allocator<float near > near > near >::allocator()
-0001:0000ed17  near std::allocator<Button near >::allocator()
-0001:0000ed49  near std::allocator<Button near >::~allocator()
-0001:0000ed7c  near std::allocator<SceneObject near >::~allocator()
-0001:0000edaf  near std::allocator<Widget near * near >::~allocator()
-0001:0000ede2+ near std::allocator<Shape near >::allocator()
-0001:0000ee14+ near std::allocator<Shape near >::~allocator()
-0001:0000ee47  std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near & near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::operator =( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > const near & )
-0001:0000eefe  std::vector<float near,std::allocator<float near > near > near & near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::operator []( int unsigned )
-0001:0000ef3c  near std::vector<Button near,std::allocator<Button near > near >::vector( std::allocator<Button near > const near & )
-0001:0000f000  near std::vector<Button near,std::allocator<Button near > near >::~vector()
-0001:0000f12c  near std::vector<SceneObject near,std::allocator<SceneObject near > near >::vector( std::allocator<SceneObject near > const near & )
-0001:0000f1f0  near std::vector<SceneObject near,std::allocator<SceneObject near > near >::~vector()
-0001:0000f314  near std::vector<Widget near * near,std::allocator<Widget near * near > near >::vector( std::allocator<Widget near * near > const near & )
-0001:0000f3d8  near std::vector<Widget near * near,std::allocator<Widget near * near > near >::~vector()
-0001:0000f4d9+ near std::vector<Shape near,std::allocator<Shape near > near >::vector( std::allocator<Shape near > const near & )
-0001:0000f59d+ near std::vector<Shape near,std::allocator<Shape near > near >::~vector()
-0001:0000f6b7+ void near std::vector<Shape near,std::allocator<Shape near > near >::push_back( Shape const near & )
-0001:0000f799  near Point::Point( Point const near & )
-0001:0000f7e2  void near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::replace_buffer( char const near *, int unsigned )
-0001:0000f88c  Button near * near std::vector<Button near,std::allocator<Button near > near >::alloc( int unsigned, int unsigned near & )
-0001:0000f90d  SceneObject near * near std::vector<SceneObject near,std::allocator<SceneObject near > near >::alloc( int unsigned, int unsigned near & )
-0001:0000f98c  Widget near * near * near std::vector<Widget near * near,std::allocator<Widget near * near > near >::alloc( int unsigned, int unsigned near & )
-0001:0000fa0d+ Shape near * near std::vector<Shape near,std::allocator<Shape near > near >::alloc( int unsigned, int unsigned near & )
-0001:0000fa8f+ void near std::vector<Shape near,std::allocator<Shape near > near >::reserve( int unsigned )
-0001:0000fe30+ Shape near * near std::uninitialized_copy<Shape near * near,Shape near * near >( Shape near *, Shape near *, Shape near * )
-0002:00012848  Vector3f near eye
-0002:00012854  Vector3f near center
-0002:00012860  Vector3f near up
-0002:0001286c  Matrix near Viewport
-0002:00012884  Matrix near Projection
-0001:0000d155  main_
-0002:0001289c  Matrix near View
-0002:000128b4  Matrix near Transformation
-0002:000128cc  Screen near g_screen
-0002:00012938+ std::vector<Shape near,std::allocator<Shape near > near > near shapesList
+0001:0000cf63+ void near abort( char near * )
+0001:0000cfa8* void near load_shapes()
+0001:0000d088+ void near load_lookup_tables()
+0001:0000d0dd* Point near transform_2d( Matrix, Point )
+0001:0000f447  near Screen::Screen()
+0001:0000f6bc  near Screen::~Screen()
+0001:0000f77e  near std::allocator<float near >::allocator()
+0001:0000f7b0  near std::allocator<std::vector<float near,std::allocator<float near > near > near >::allocator()
+0001:0000f7e2  near std::allocator<Button near >::allocator()
+0001:0000f814  near std::allocator<Button near >::~allocator()
+0001:0000f847  near std::allocator<SceneObject near >::~allocator()
+0001:0000f87a  near std::allocator<Widget near * near >::~allocator()
+0001:0000f8ad+ near std::allocator<Shape near >::allocator()
+0001:0000f8df+ near std::allocator<Shape near >::~allocator()
+0001:0000f912  std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near & near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::operator =( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > const near & )
+0001:0000f9c9  std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near > near & near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::operator =( std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >
+0001:0000fc69  std::vector<float near,std::allocator<float near > near > near & near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::operator []( int unsigned )
+0001:0000fca7  near std::vector<Button near,std::allocator<Button near > near >::vector( std::allocator<Button near > const near & )
+0001:0000fd6b  near std::vector<Button near,std::allocator<Button near > near >::~vector()
+0001:0000fe97  near std::vector<SceneObject near,std::allocator<SceneObject near > near >::vector( std::allocator<SceneObject near > const near & )
+0001:0000ff5b  near std::vector<SceneObject near,std::allocator<SceneObject near > near >::~vector()
+0001:0001007f  near std::vector<Widget near * near,std::allocator<Widget near * near > near >::vector( std::allocator<Widget near * near > const near & )
+0001:00010143  near std::vector<Widget near * near,std::allocator<Widget near * near > near >::~vector()
+0001:00010244+ near std::vector<Shape near,std::allocator<Shape near > near >::vector( std::allocator<Shape near > const near & )
+0001:00010308+ near std::vector<Shape near,std::allocator<Shape near > near >::~vector()
+0001:00010422+ void near std::vector<Shape near,std::allocator<Shape near > near >::push_back( Shape const near & )
+0001:00010504  near Point::Point( Point const near & )
+0001:0001054d  near std::allocator<std::vector<float near,std::allocator<float near > near > near >::allocator( std::allocator<std::vector<float near,std::allocator<float near > near > near > const near & )
+0001:00010580  void near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::replace_buffer( char const near *, int unsigned )
+0001:0001062a  Button near * near std::vector<Button near,std::allocator<Button near > near >::alloc( int unsigned, int unsigned near & )
+0001:000106ab  SceneObject near * near std::vector<SceneObject near,std::allocator<SceneObject near > near >::alloc( int unsigned, int unsigned near & )
+0001:0001072a  Widget near * near * near std::vector<Widget near * near,std::allocator<Widget near * near > near >::alloc( int unsigned, int unsigned near & )
+0001:000107ab+ Shape near * near std::vector<Shape near,std::allocator<Shape near > near >::alloc( int unsigned, int unsigned near & )
+0001:0001082d+ void near std::vector<Shape near,std::allocator<Shape near > near >::reserve( int unsigned )
+0001:00010bce+ Shape near * near std::uninitialized_copy<Shape near * near,Shape near * near >( Shape near *, Shape near *, Shape near * )
+0002:00012c68  Vector3f near eye
+0002:00012c74  Vector3f near center
+0002:00012c80  Vector3f near up
+0002:00012c8c  Matrix near Viewport
+0002:00012ca4  Matrix near Projection
+0001:0000e174  main_
+0002:00012cbc  Matrix near View
+0002:00012cd4  Matrix near Transformation
+0002:00012cec  Screen near g_screen
+0002:00012d58+ std::vector<Shape near,std::allocator<Shape near > near > near shapesList
 Module: rasterize.obj(C:\Users\Luigi\Documents\watcom\polygon\rasterize.cpp)
-0001:000110b1  Matrix near look_at( Vector3f, Vector3f, Vector3f )
-0001:00013c3a+ std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near > near & near std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >::operator =( std::vector<std::vector<float near,std::allocator<float near > near > near,std::allocator<std::vector<float near,std::allocator<float near > near > near > near >
-0001:00013eda+ near std::allocator<std::vector<float near,std::allocator<float near > near > near >::allocator( std::allocator<std::vector<float near,std::allocator<float near > near > near > const near & )
-0001:0001255b  Matrix near setup_viewport( int, int, int, int )
-0001:00012e7d  void near recalculate_transformation()
+0001:00011e4c  Matrix near look_at( Vector3f, Vector3f, Vector3f )
+0001:00013702  Matrix near setup_viewport( int, int, int, int )
+0001:00014024  void near recalculate_transformation()
 Module: screen.obj(C:\Users\Luigi\Documents\watcom\polygon\screen.cpp)
-0001:00019304+ near Matrix::Matrix( int, int )
-0001:0001560e  void near Screen::redraw()
-0001:000159c7* void near Screen::init_framebuffers()
-0001:00015a4f* void near Screen::addButton( Button )
-0001:00015a84* void near Screen::drawButton( Button )
-0001:00015e72+ Widget near * near Screen::getClickedWidget( Point )
-0001:00015fe4* std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near Screen::getClickedWidgetName( Point )
-0001:000160ce* void near Screen::removeWidget( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > )
-0001:00016376* Widget near * near Screen::getWidgetByName( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > )
-0001:000164fd+ void near Screen::draw_polygon_object( SceneObject )
-0001:00016541+ void near Screen::draw_polygon_object( WavefrontObject )
-0001:00018d5e  void near Screen::draw_polygon_debug_data()
-0001:00018e79* void near Screen::draw_object_debug_data( WavefrontObject )
-0001:00019002  void near Screen::addSceneObject( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >, WavefrontObject )
-0001:00019508+ near SceneObject::SceneObject()
-0001:000196ae+ near SceneObject::SceneObject( SceneObject const near & )
-0001:0001986c+ near SceneObject::~SceneObject()
-0001:000198ac  near Vector3f::Vector3f( Vector3f const near & )
-0001:00019901+ bool near std::operator =<char near,std::char_traits<char near > near,std::allocator<char near > near >=( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > const near &, std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > const near & )
-0001:00019991  near std::allocator<char near >::allocator()
-0001:000199c3+ float near & near std::vector<float near,std::allocator<float near > near >::operator []( int unsigned )
-0001:00019a01+ void near std::vector<Button near,std::allocator<Button near > near >::push_back( Button const near & )
-0001:00019b13+ void near std::vector<SceneObject near,std::allocator<SceneObject near > near >::push_back( SceneObject const near & )
-0001:00019d46+ SceneObject near * near std::vector<SceneObject near,std::allocator<SceneObject near > near >::erase( SceneObject near * )
-0001:00019eb2+ Widget near * near * near std::vector<Widget near * near,std::allocator<Widget near * near > near >::erase( Widget near * near * )
-0001:00019f35+ void near std::vector<Button near,std::allocator<Button near > near >::reserve( int unsigned )
-0001:0001a2ea+ void near std::vector<SceneObject near,std::allocator<SceneObject near > near >::reserve( int unsigned )
-0001:0001a69b+ Button near * near std::uninitialized_copy<Button near * near,Button near * near >( Button near *, Button near *, Button near * )
-0001:0001a896+ SceneObject near * near std::uninitialized_copy<SceneObject near * near,SceneObject near * near >( SceneObject near *, SceneObject near *, SceneObject near * )
-0001:00019222* void near Screen::removeSceneObject( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > )
+0001:0001b53b+ near Matrix::Matrix( int, int )
+0001:000171dd  void near Screen::redraw()
+0001:00017596* void near Screen::init_framebuffers()
+0001:0001761e* void near Screen::addButton( Button )
+0001:00017653* void near Screen::drawButton( Button )
+0001:00017a41+ Widget near * near Screen::getClickedWidget( Point )
+0001:00017bb3* std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near Screen::getClickedWidgetName( Point )
+0001:00017c9d* void near Screen::removeWidget( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > )
+0001:00017f45* Widget near * near Screen::getWidgetByName( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > )
+0001:000180cc+ void near Screen::draw_polygon_object( SceneObject )
+0001:00018110+ void near Screen::draw_polygon_object( WavefrontObject )
+0001:0001af95  void near Screen::draw_polygon_debug_data()
+0001:0001b0b0* void near Screen::draw_object_debug_data( WavefrontObject )
+0001:0001b73f+ near SceneObject::SceneObject()
+0001:0001b8e5+ near SceneObject::SceneObject( SceneObject const near & )
+0001:0001baa3+ near SceneObject::~SceneObject()
+0001:0001bae3  near Vector3f::Vector3f( Vector3f const near & )
+0001:0001bb38+ bool near std::operator =<char near,std::char_traits<char near > near,std::allocator<char near > near >=( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > const near &, std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > const near & )
+0001:0001bbc8  near std::allocator<char near >::allocator()
+0001:0001bbfa+ float near & near std::vector<float near,std::allocator<float near > near >::operator []( int unsigned )
+0001:0001bc38+ void near std::vector<Button near,std::allocator<Button near > near >::push_back( Button const near & )
+0001:0001bd4a+ void near std::vector<SceneObject near,std::allocator<SceneObject near > near >::push_back( SceneObject const near & )
+0001:0001bf7d+ SceneObject near * near std::vector<SceneObject near,std::allocator<SceneObject near > near >::erase( SceneObject near * )
+0001:0001c0e9+ Widget near * near * near std::vector<Widget near * near,std::allocator<Widget near * near > near >::erase( Widget near * near * )
+0001:0001c16c+ void near std::vector<Button near,std::allocator<Button near > near >::reserve( int unsigned )
+0001:0001c521+ void near std::vector<SceneObject near,std::allocator<SceneObject near > near >::reserve( int unsigned )
+0001:0001c8d2+ Button near * near std::uninitialized_copy<Button near * near,Button near * near >( Button near *, Button near *, Button near * )
+0001:0001cacd+ SceneObject near * near std::uninitialized_copy<SceneObject near * near,SceneObject near * near >( SceneObject near *, SceneObject near *, SceneObject near * )
+0001:0001b239  void near Screen::addSceneObject( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >, WavefrontObject )
+0001:0001b459* void near Screen::removeSceneObject( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > )
 Module: serial.obj(C:\Users\Luigi\Documents\watcom\polygon\serial.cpp)
-0001:0001ab6c* near Serial::Serial( int, SERIAL_SPEED )
-0001:0001ac32+ bool near Serial::isTransmitEmpty()
-0001:0001ac81+ void near Serial::sendChar( char unsigned )
-0001:0001ace7* void near Serial::sendString( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > )
-0002:00012ea0+ Serial near serialPort
+0001:0001cda3* near Serial::Serial( int, SERIAL_SPEED )
+0001:0001ce69+ bool near Serial::isTransmitEmpty()
+0001:0001ceb8+ void near Serial::sendChar( char unsigned )
+0001:0001cf1e* void near Serial::sendString( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > )
+0002:000132c0+ Serial near serialPort
 Module: point.obj(C:\Users\Luigi\Documents\watcom\polygon\shapes\point.cpp)
-0001:0001ad76  near Point::Point()
-0001:0001adbb  near Point::Point( int, int )
-0001:0001ae00  near Point::Point( char near * )
+0001:0001cfad  near Point::Point()
+0001:0001cff2  near Point::Point( int, int )
+0001:0001d037  near Point::Point( char near * )
 Module: point3d.obj(C:\Users\Luigi\Documents\watcom\polygon\shapes\point3d.cpp)
-0001:0001aeb3* near Point3D::Point3D()
-0001:0001af02* near Point3D::Point3D( int, int, int )
+0001:0001d0ea* near Point3D::Point3D()
+0001:0001d139* near Point3D::Point3D( int, int, int )
 Module: shapes.obj(C:\Users\Luigi\Documents\watcom\polygon\shapes\shapes.cpp)
-0001:0001af51  near Shape::Shape( char near *, char near * )
+0001:0001d188  near Shape::Shape( char near *, char near * )
 Module: button.obj(C:\Users\Luigi\Documents\watcom\polygon\widgets\button.cpp)
-0001:0001d4a5+ void near Widget::remove( Framebuffer near *, Framebuffer near * )
-0001:0001bbdb* near W_Button::W_Button()
-0001:0001bd58* near W_Button::W_Button( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >, Point, ButtonShape, Point )
-0001:0001bf93* near W_Button::W_Button( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >, Point, ButtonShape, Point, std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > )
-0001:0001c1cc* near W_Button::W_Button( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >, Point, ButtonShape, Point, std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >, bool )
-0001:0001d4d0+ std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near & near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::operator =( char const near * )
-0001:0001d57a+ std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near & near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::append( char const near *, int unsigned )
-0001:0001c423+ void near W_Button::redraw( Framebuffer near *, Framebuffer near * )
-0001:0001d32e+ int near W_Button::pointIsInside( Point )
-0001:0001d47c+ void near W_Button::onClick()
+0001:0001f6dc+ void near Widget::remove( Framebuffer near *, Framebuffer near * )
+0001:0001de12* near W_Button::W_Button()
+0001:0001df8f* near W_Button::W_Button( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >, Point, ButtonShape, Point )
+0001:0001e1ca* near W_Button::W_Button( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >, Point, ButtonShape, Point, std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > )
+0001:0001e403* near W_Button::W_Button( std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >, Point, ButtonShape, Point, std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >, bool )
+0001:0001f707+ std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near & near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::operator =( char const near * )
+0001:0001f7b1+ std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near & near std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near >::append( char const near *, int unsigned )
+0001:0001e65a+ void near W_Button::redraw( Framebuffer near *, Framebuffer near * )
+0001:0001f565+ int near W_Button::pointIsInside( Point )
+0001:0001f6b3+ void near W_Button::onClick()
 Module: widget.obj(C:\Users\Luigi\Documents\watcom\polygon\widgets\widget.cpp)
-0001:0001db0a  std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near Widget::getName()
+0001:0001fd41  std::basic_string<char near,std::char_traits<char near > near,std::allocator<char near > near > near Widget::getName()
 Module: C:\WATCOM\lib386\dos\clib3r.lib(stk386.asm)
-0001:0001db63* __STK
-0001:0001db50  __CHK
-0001:0001db60  __GRO
-0001:0001db81  __STKOVERFLOW_
+0001:0001fd97* __STK
+0001:0001fd84  __CHK
+0001:0001fd94  __GRO
+0001:0001fdb5  __STKOVERFLOW_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stabact.cpp)
-0001:0001db90  __wcpp_4_ctor_array__
+0001:0001fdd0  __wcpp_4_ctor_array__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stablcl.cpp)
-0001:0001dc20  __wcpp_4_lcl_register__
+0001:0001fe60  __wcpp_4_lcl_register__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(undefed.cpp)
-0001:0001dc30  __wcpp_4_undefed_cdtor__
+0001:0001fe70  __wcpp_4_undefed_cdtor__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(cppdata.cpp)
-0002:00013688  __wint_thread_data
-0002:000136ac  __compiled_under_generic
+0002:00013aa8  __wint_thread_data
+0002:00013acc  __compiled_under_generic
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(fsregist.cpp)
-0001:0001dc50+ __wcpp_4_dispatch_dummy__
-0001:0001dc74  __wcpp_4_fs_lookup__
-0001:0001dd18  __wcpp_4_fs_handler_rtn__
-0001:0001ddec  __wcpp_4_unwind_global__
-0001:0001de30  __wcpp_4_raise_exception__
+0001:0001fe90+ __wcpp_4_dispatch_dummy__
+0001:0001feb4  __wcpp_4_fs_lookup__
+0001:0001ff58  __wcpp_4_fs_handler_rtn__
+0001:0002002c  __wcpp_4_unwind_global__
+0001:00020070  __wcpp_4_raise_exception__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(dtorarst.cpp)
-0001:0001de60  __wcpp_4_dtor_array_store__
+0001:000200a0  __wcpp_4_dtor_array_store__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(opdelarr.cpp)
-0001:0001de90  void near operator delete []( void near * )
+0001:000200d0  void near operator delete []( void near * )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(opdel.cpp)
-0001:0001dea0  void near operator delete( void near * )
+0001:000200e0  void near operator delete( void near * )
 Module: C:\WATCOM\lib386\dos\clib3r.lib(outp.c)
-0001:0001deb0  outp_
+0001:000200f0  outp_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(delay.c)
-0001:0001dec0  delay_
+0001:00020100  delay_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(sscanf.c)
-0001:0001dff0+ vsscanf_
-0001:0001e020  sscanf_
+0001:00020230+ vsscanf_
+0001:00020260  sscanf_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(strchr.c)
-0001:0001e050  strchr_
+0001:00020290  strchr_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(nmalloc.c)
-0001:0001e070  _nmalloc_
-0001:0001e070  malloc_
-0002:0000e65c  ___nheapbeg
-0002:0000e660  ___MiniHeapRover
-0002:0000e664  ___LargestSizeB4MiniHeapRover
+0001:000202b0  _nmalloc_
+0001:000202b0  malloc_
+0002:0000ea7c  ___nheapbeg
+0002:0000ea80  ___MiniHeapRover
+0002:0000ea84  ___LargestSizeB4MiniHeapRover
 Module: C:\WATCOM\lib386\dos\clib3r.lib(printf.c)
-0001:0001e170  printf_
+0001:000203b0  printf_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(exit.c)
-0001:0001e192+ __null_int23_exit_
-0001:0001e193  exit_
-0001:0001e1bf* _exit_
-0002:0000e668+ ___int23_exit
-0002:0000e66c  ___FPE_handler_exit
+0001:000203d2+ __null_int23_exit_
+0001:000203d3  exit_
+0001:000203ff* _exit_
+0002:0000ea88+ ___int23_exit
+0002:0000ea8c  ___FPE_handler_exit
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fopen.c)
-0001:0001e1e0+ __open_flags_
-0001:0001e3e0+ _fsopen_
-0001:0001e430  fopen_
-0001:0001e4b0* freopen_
+0001:00020420+ __open_flags_
+0001:00020620+ _fsopen_
+0001:00020670  fopen_
+0001:000206f0* freopen_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(flfoprot.cpp)
-0002:00004420  int const near std::filebuf::openprot
+0002:00004840  int const near std::filebuf::openprot
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(ifsconnm.cpp)
-0001:0001e510  near std::ifstream::ifstream( char const near *, int, int )
+0001:00020750  near std::ifstream::ifstream( char const near *, int, int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(istgch.cpp)
-0001:0001e630  std::istream near & near std::istream::get( char near & )
+0001:00020870  std::istream near & near std::istream::get( char near & )
 Module: C:\WATCOM\lib386\dos\clib3r.lib(memset.c)
-0001:0001e6b0  memset_
+0001:000208f0  memset_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fclose.c)
-0001:0001e6d0  __doclose_
-0001:0001e750  __shutdown_stream_
-0001:0001e770  fclose_
-0002:000136b0+ ___RmTmpFileFn
+0001:00020910  __doclose_
+0001:00020990  __shutdown_stream_
+0001:000209b0  fclose_
+0002:00013ad0+ ___RmTmpFileFn
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stabdtor.cpp)
-0001:0001ea48  __wcpp_4_destruct_internal__
-0001:0001ea64  __wcpp_4_destruct_all__
-0001:0001ea68  __wcpp_4_destruct__
+0001:00020c88  __wcpp_4_destruct_internal__
+0001:00020ca4  __wcpp_4_destruct_all__
+0001:00020ca8  __wcpp_4_destruct__
 Module: C:\WATCOM\lib386\math387r.lib(trig87.asm)
-0001:0001ead5* sin_
-0001:0001eac9* cos_
-0001:0001eaf6* tan_
-0001:0001ea88* IF@COS
-0001:0001ea88  IF@DCOS
-0001:0001ea92* IF@SIN
-0001:0001ea92  IF@DSIN
-0001:0001eae1* IF@TAN
-0001:0001eae1* IF@DTAN
+0001:00020d15* sin_
+0001:00020d09* cos_
+0001:00020d36* tan_
+0001:00020cc8* IF@COS
+0001:00020cc8  IF@DCOS
+0001:00020cd2* IF@SIN
+0001:00020cd2  IF@DSIN
+0001:00020d21* IF@TAN
+0001:00020d21  IF@DTAN
 Module: C:\WATCOM\lib386\math387r.lib(fchop87.asm)
-0001:0001eb04  __CHP
+0001:00020d44  __CHP
 Module: C:\WATCOM\lib386\dos\clib3r.lib(assert99.c)
-0001:0001eb20  _assert99_
-0001:0001ed00* __assert99_
+0001:00020d60  _assert99_
+0001:00020f40* __assert99_
 Module: C:\WATCOM\lib386\math387r.lib(sqrt87.asm)
-0001:0001ed28* sqrt_
-0001:0001ed58* IF@SQRT
-0001:0001ed58  IF@DSQRT
-0001:0001ed5a* __@DSQRT
+0001:00020f68* sqrt_
+0001:00020f98* IF@SQRT
+0001:00020f98  IF@DSQRT
+0001:00020f9a* __@DSQRT
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stabadt.cpp)
-0001:0001ed90+ void near * near dtor_the_array( _RTARCTOR near * )
-0001:0001edd4  near _RTARCTOR::~_RTARCTOR()
-0001:0001edec  __wcpp_4_dtor_array__
+0001:00020fd0+ void near * near dtor_the_array( _RTARCTOR near * )
+0001:00021014  near _RTARCTOR::~_RTARCTOR()
+0001:0002102c  __wcpp_4_dtor_array__
 Module: C:\WATCOM\lib386\dos\clib3r.lib(memcpy.c)
-0001:0001ee60  memcpy_
+0001:000210a0  memcpy_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(opnewp.cpp)
-0001:0001ee90  void near * near operator new( int unsigned, void near * )
+0001:000210d0  void near * near operator new( int unsigned, void near * )
 Module: C:\WATCOM\lib386\dos\clib3r.lib(stjmp386.asm)
-0001:0001ee94  _setjmp_
-0001:0001eec3  longjmp_
+0001:000210d4  _setjmp_
+0001:00021103  longjmp_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stabthrw.cpp)
-0001:0001f6f0+ near std::exception::exception( char const near * )
-0001:0001f730+ near std::bad_exception::bad_exception()
-0001:0001f780+ near std::bad_exception::bad_exception( std::bad_exception const near & )
-0001:0001f7d0+ near std::bad_exception::~bad_exception()
-0001:0001f5bc  __wcpp_4_rethrow__
-0001:0001f600* __wcpp_4_catch_done__
-0001:0001f660  __wcpp_4_throw__
-0001:0001f6a4* __wcpp_4_throw_zero__
+0001:00021930+ near std::exception::exception( char const near * )
+0001:00021970+ near std::bad_exception::bad_exception()
+0001:000219c0+ near std::bad_exception::bad_exception( std::bad_exception const near & )
+0001:00021a10+ near std::bad_exception::~bad_exception()
+0001:000217fc  __wcpp_4_rethrow__
+0001:00021840* __wcpp_4_catch_done__
+0001:000218a0  __wcpp_4_throw__
+0001:000218e4* __wcpp_4_throw_zero__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(opnew.cpp)
-0001:0001f8a0  void near * near operator new( int unsigned )
+0001:00021ae0  void near * near operator new( int unsigned )
 Module: C:\WATCOM\lib386\dos\clib3r.lib(strlen.c)
-0001:0001f8f0  strlen_
+0001:00021b30  strlen_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(ifsdestr.cpp)
-0001:0001f910  near std::ifstream::~ifstream()
+0001:00021b50  near std::ifstream::~ifstream()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(undefmbd.cpp)
-0002:000136b8  ___wcpp_4_data_undefined_member_data_
+0002:00013ad8  ___wcpp_4_data_undefined_member_data_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fltused.c)
-0002:0000e720  _fltused_
+0002:0000eb40  _fltused_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(iofefg.cpp)
-0002:00011382  __ppfltused_
+0002:000117a2  __ppfltused_
 Module: C:\WATCOM\lib386\dos\emu387.lib(386inite.asm)
-0001:0001fa44  __init_387_emulator
-0001:0001fa49* __fini_387_emulator
+0001:00021c84  __init_387_emulator
+0001:00021c89* __fini_387_emulator
 Module: C:\WATCOM\lib386\dos\clib3r.lib(_8087386.asm)
-0002:0000e724  __8087
-0002:0000e725  __real87
+0002:0000eb44  __8087
+0002:0000eb45  __real87
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(moddtorr.cpp)
-0002:000113ca  ___wcpp_4_data_module_dtor_ref_
+0002:000117ea  ___wcpp_4_data_module_dtor_ref_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fgets.c)
-0001:0001fa50  fgets_
+0001:00021c90  fgets_
 Module: C:\WATCOM\lib386\dos\graph.lib(setvideor)
-0001:0001fc7c  _setvideomode_
-0001:0001fe9a  _PaletteInit_
+0001:00021ebc  _setvideomode_
+0001:000220da  _PaletteInit_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(getch.c)
-0001:0001ffa0  getch_
+0001:000221e0  getch_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stabacp.cpp)
-0001:0001ffc0  __wcpp_4_copy_array__
+0001:00022200  __wcpp_4_copy_array__
 Module: C:\WATCOM\lib386\dos\clib3r.lib(cstart)
 0001:00000003* ___begtext
 0002:00000000* __nullarea
-0002:0000e7e0  __D16Infoseg
-0002:0000e7e2  __x386_zero_base_selector
-0001:00020054  _cstart_
-0001:0002029a  __exit_
-0001:0002029c  __do_exit_with_msg__
-0001:000202e4  __GETDS
-0001:000202e4  ___GETDSStart_
-0001:000202ef  ___GETDSEnd_
+0002:0000ec00  __D16Infoseg
+0002:0000ec02  __x386_zero_base_selector
+0001:00022294  _cstart_
+0001:000224da  __exit_
+0001:000224dc  __do_exit_with_msg__
+0001:00022524  __GETDS
+0001:00022524  ___GETDSStart_
+0001:0002252f  ___GETDSEnd_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(fsroot.cpp)
-0002:00011394  ___wcpp_4_data_init_fs_root_
+0002:000117b4  ___wcpp_4_data_init_fs_root_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(sprintf.c)
-0001:00020300  sprintf_
+0001:00022540  sprintf_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(memcmp.c)
-0001:00020330  memcmp_
+0001:00022570  memcmp_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(inp.c)
-0001:00020350  inp_
+0001:00022590  inp_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(strcpy.c)
-0001:00020360  strcpy_
+0001:000225a0  strcpy_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(memchr.c)
-0001:00020390  memchr_
+0001:000225d0  memchr_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(atol.c)
-0001:000203b0  atol_
+0001:000225f0  atol_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(strtok.c)
-0001:00020400  strtok_
+0001:00022640  strtok_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(xmsg.c)
-0001:000204b0  __exit_with_msg_
-0001:000204c0  __fatal_runtime_error_
+0001:000226f0  __exit_with_msg_
+0001:00022700  __fatal_runtime_error_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(crwdata)
-0002:0000e822  __osmajor
-0002:0000e823  __osminor
-0002:0000e7f8  __psp
-0002:0000e819  __Extender
-0002:0000e81a  __ExtenderSubtype
-0002:0000e81b  __X32VM
-0002:0000e7fc* __x386_stacklow
-0002:0000e7f0  __LpCmdLine
-0002:0000e7f4  __LpPgmName
-0002:0000e7e8  __dynend
-0002:0000e7ec  __curbrk
-0002:0000e7fc  __STACKLOW
-0002:0000e800  __STACKTOP
-0002:0000e804  __ASTACKSIZ
-0002:0000e808  __ASTACKPTR
-0002:0000e80c  __cbyte
-0002:0000e810* __cbyte2
-0002:0000e814  __child
-0002:0000e81c  __Envptr
-0002:0000e818  __no87
-0002:0000e824  ___FPE_handler
+0002:0000ec42  __osmajor
+0002:0000ec43  __osminor
+0002:0000ec18  __psp
+0002:0000ec39  __Extender
+0002:0000ec3a  __ExtenderSubtype
+0002:0000ec3b  __X32VM
+0002:0000ec1c* __x386_stacklow
+0002:0000ec10  __LpCmdLine
+0002:0000ec14  __LpPgmName
+0002:0000ec08  __dynend
+0002:0000ec0c  __curbrk
+0002:0000ec1c  __STACKLOW
+0002:0000ec20  __STACKTOP
+0002:0000ec24  __ASTACKSIZ
+0002:0000ec28  __ASTACKPTR
+0002:0000ec2c  __cbyte
+0002:0000ec30* __cbyte2
+0002:0000ec34  __child
+0002:0000ec3c  __Envptr
+0002:0000ec38  __no87
+0002:0000ec44  ___FPE_handler
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stabmod.cpp)
-0001:000204f0  __wcpp_4_module_dtor__
-0001:0002051c  __wcpp_4_mod_register__
+0001:00022730  __wcpp_4_module_dtor__
+0001:0002275c  __wcpp_4_mod_register__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(fatalerr.cpp)
-0001:00020530  __wcpp_4_fatal_runtime_error__
+0001:00022770  __wcpp_4_fatal_runtime_error__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stabdisp.cpp)
-0001:0002075c  __wcpp_4_dispatchable__
+0001:0002299c  __wcpp_4_dispatchable__
 Module: C:\WATCOM\lib386\dos\clib3r.lib(nfree.c)
-0001:000207b0  _nfree_
-0001:000207b0  free_
-0002:000136bc  ___MiniHeapFreeRover
+0001:000229f0  _nfree_
+0001:000229f0  free_
+0002:00013adc  ___MiniHeapFreeRover
 Module: C:\WATCOM\lib386\dos\clib3r.lib(scnf.c)
-0001:000215d0  __scnf_
+0001:00023810  __scnf_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(nmemneed.c)
-0001:00021840  __nmemneed_
+0001:00023a80  __nmemneed_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mem.c)
-0001:00021850  __MemAllocator
-0001:00021900  __MemFree
+0001:00023a90  __MemAllocator
+0001:00023b40  __MemFree
 Module: C:\WATCOM\lib386\dos\clib3r.lib(grownear.c)
-0001:00021ac0+ __FreeDPMIBlocks_
-0001:00021b30  __ReAllocDPMIBlock_
-0001:00021cc0+ __LastFree_
-0001:00021f30  __ExpandDGROUP_
+0001:00023d00+ __FreeDPMIBlocks_
+0001:00023d70  __ReAllocDPMIBlock_
+0001:00023f00+ __LastFree_
+0001:00024170  __ExpandDGROUP_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(iob.c)
-0002:0000e828  ___iob
-0002:000136c0  ___OpenStreams
-0002:000136c4  ___ClosedStreams
+0002:0000ec48  ___iob
+0002:00013ae0  ___OpenStreams
+0002:00013ae4  ___ClosedStreams
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fprtf.c)
-0001:000220a0  __fprtf_
+0001:000242e0  __fprtf_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(initrtns.c)
-0001:00022150  __InitRtns
-0001:000221a0  __FiniRtns
+0001:00024390  __InitRtns
+0001:000243e0  __FiniRtns
 Module: C:\WATCOM\lib386\dos\clib3r.lib(comtflag.c)
-0001:00022200* __set_commode_
-0002:0000ea30  __commode
+0001:00024440* __set_commode_
+0002:0000ee50  __commode
 Module: C:\WATCOM\lib386\dos\clib3r.lib(textmode.c)
-0002:0000ea34  __fmode
+0002:0000ee54  __fmode
 Module: C:\WATCOM\lib386\dos\clib3r.lib(seterrno.c)
-0001:00022210  __set_errno_
-0001:0002221c  __set_EDOM_
-0001:00022228  __set_ERANGE_
-0001:00022234* __set_EINVAL_
-0001:00022245  __set_doserrno_
+0001:00024450  __set_errno_
+0001:0002445c  __set_EDOM_
+0001:00024468  __set_ERANGE_
+0001:00024474* __set_EINVAL_
+0001:00024485  __set_doserrno_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(tolower.c)
-0001:00022260  tolower_
+0001:000244a0  tolower_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(open.c)
-0001:000224b0  open_
-0001:000224d0  sopen_
+0001:000246f0  open_
+0001:00024710  sopen_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fseek.c)
-0001:00022550  fseek_
+0001:00024790  fseek_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(chktty.c)
-0001:00022650  __chktty_
+0001:00024890  __chktty_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(freefp.c)
-0001:00022690  __freefp_
-0001:000226d0  __purgefp_
+0001:000248d0  __freefp_
+0001:00024910  __purgefp_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(allocfp.c)
-0001:00022700  __allocfp_
+0001:00024940  __allocfp_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(fsbconnm.cpp)
-0001:000227c0  near std::fstreambase::fstreambase( char const near *, int, int )
+0001:00024a00  near std::fstreambase::fstreambase( char const near *, int, int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(istconde.cpp)
-0001:000228d0  near std::istream::istream()
+0001:00024b10  near std::istream::istream()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(iosconde.cpp)
-0001:00022930  near std::ios::ios()
+0001:00024b70  near std::ios::ios()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(istdestr.cpp)
-0001:00022940  near std::istream::~istream()
+0001:00024b80  near std::istream::~istream()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(fsbdestr.cpp)
-0001:00022a10  near std::fstreambase::~fstreambase()
+0001:00024c50  near std::fstreambase::~fstreambase()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(iosdestr.cpp)
-0001:00022af0  near std::ios::~ios()
+0001:00024d30  near std::ios::~ios()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(pure_err.cpp)
-0001:00022b80  __wcpp_4_pure_error__
+0001:00024dc0  __wcpp_4_pure_error__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(istdipfx.cpp)
-0001:00022bb0  int near std::istream::do_ipfx( int )
+0001:00024df0  int near std::istream::do_ipfx( int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(istdoget.cpp)
-0001:00022c40  std::istream near & near std::istream::do_get( char near & )
+0001:00024e80  std::istream near & near std::istream::do_get( char near & )
 Module: C:\WATCOM\lib386\dos\clib3r.lib(__stos.asm)
-0001:00022cb0  __STOSB
-0001:00022ce7* __STOSD
+0001:00024ef0  __STOSB
+0001:00024f27* __STOSD
 Module: C:\WATCOM\lib386\dos\clib3r.lib(__lseek.c)
-0001:00022d60  __lseek_
+0001:00024fa0  __lseek_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(_clse.c)
-0001:00022db0  __close_
+0001:00024ff0  __close_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(flush.c)
-0001:00022e00  __flush_
+0001:00025040  __flush_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stabtrav.cpp)
-0001:00022ef0  __wcpp_4_stab_entry__
-0001:00022f08* __wcpp_4_stab_trav_comp__
-0001:00022ff4  __wcpp_4_stab_trav_init__
-0001:00023018  __wcpp_4_stab_trav_next__
-0001:00023070  __wcpp_4_stab_trav_move__
+0001:00025130  __wcpp_4_stab_entry__
+0001:00025148* __wcpp_4_stab_trav_comp__
+0001:00025234  __wcpp_4_stab_trav_init__
+0001:00025258  __wcpp_4_stab_trav_next__
+0001:000252b0  __wcpp_4_stab_trav_move__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(callterm.cpp)
-0001:00023080  __wcpp_4_corrupted_stack__
-0001:00023094  __wcpp_4_call_terminate__
+0001:000252c0  __wcpp_4_corrupted_stack__
+0001:000252d4  __wcpp_4_call_terminate__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(allocexc.cpp)
-0001:000230e4  __wcpp_4_alloc_exc__
-0001:00023334  __wcpp_4_free_exc__
-0001:0002336c  __wcpp_4_find_active__
-0001:00023388  __wcpp_4_dtor_free_exc__
+0001:00025324  __wcpp_4_alloc_exc__
+0001:00025574  __wcpp_4_free_exc__
+0001:000255ac  __wcpp_4_find_active__
+0001:000255c8  __wcpp_4_dtor_free_exc__
 Module: C:\WATCOM\lib386\dos\clib3r.lib(chipvar)
-0002:0000ea38  ___chipbug
-0002:0000ea38  __chipbug
+0002:0000ee58  ___chipbug
+0002:0000ee58  __chipbug
 Module: C:\WATCOM\lib386\dos\clib3r.lib(chipt32.asm)
-0001:00023448  __fptan_chk
+0001:00025688  __fptan_chk
 Module: C:\WATCOM\lib386\dos\clib3r.lib(_snprint.c)
-0001:00023530+ _vsnprintf_
-0001:00023590  _snprintf_
+0001:00025770+ _vsnprintf_
+0001:000257d0  _snprintf_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(enterdb.c)
-0001:000235c0  __EnterWVIDEO_
-0002:0000ea3c  ___WD_Present
+0001:00025800  __EnterWVIDEO_
+0002:0000ee5c  ___WD_Present
 Module: C:\WATCOM\lib386\dos\clib3r.lib(stack386.c)
-0001:000235f0  stackavail_
+0001:00025830  stackavail_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(rterrmsg.c)
-0001:00023600  __rterr_msg_
+0001:00025840  __rterr_msg_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(abort.c)
-0001:0002362a  abort_
-0001:0002363c+ __terminate_
-0002:0000ea40+ ___abort
+0001:0002586a  abort_
+0001:0002587c+ __terminate_
+0002:0000ee60+ ___abort
 Module: C:\WATCOM\lib386\math387r.lib(math87e.c)
-0001:0002364e  __math87_err_
+0001:0002588e  __math87_err_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(ljmphdl.c)
-0002:0000ea44  ___longjmp_handler
+0002:0000ee64  ___longjmp_handler
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(exc_pr.cpp)
-0001:000236d0  near _EXC_PR::_EXC_PR( _RTCTL near *, RW_DTREG near *, EXCSTATE )
-0001:000236f8  near _EXC_PR::~_EXC_PR()
-0001:00023708  near _EXC_PR_FREE::_EXC_PR_FREE( _RTCTL near *, RW_DTREG near *, EXCSTATE, ACTIVE_EXC near * )
-0001:0002371c  near _EXC_PR_FREE::~_EXC_PR_FREE()
-0001:00023754  near _EXC_PR_DTOR::_EXC_PR_DTOR( _RTCTL near *, RW_DTREG near *, EXCSTATE, ACTIVE_EXC near * )
-0001:00023764  near _EXC_PR_FNEXC::_EXC_PR_FNEXC( _RTCTL near *, RW_DTREG near *, RW_DTREG near *, ACTIVE_EXC near * )
-0001:00023784  near _EXC_PR_FNEXC::~_EXC_PR_FNEXC()
-0001:0002378c  near _EXC_PR_DTOR::~_EXC_PR_DTOR()
+0001:00025910  near _EXC_PR::_EXC_PR( _RTCTL near *, RW_DTREG near *, EXCSTATE )
+0001:00025938  near _EXC_PR::~_EXC_PR()
+0001:00025948  near _EXC_PR_FREE::_EXC_PR_FREE( _RTCTL near *, RW_DTREG near *, EXCSTATE, ACTIVE_EXC near * )
+0001:0002595c  near _EXC_PR_FREE::~_EXC_PR_FREE()
+0001:00025994  near _EXC_PR_DTOR::_EXC_PR_DTOR( _RTCTL near *, RW_DTREG near *, EXCSTATE, ACTIVE_EXC near * )
+0001:000259a4  near _EXC_PR_FNEXC::_EXC_PR_FNEXC( _RTCTL near *, RW_DTREG near *, RW_DTREG near *, ACTIVE_EXC near * )
+0001:000259c4  near _EXC_PR_FNEXC::~_EXC_PR_FNEXC()
+0001:000259cc  near _EXC_PR_DTOR::~_EXC_PR_DTOR()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(vfun_err.cpp)
-0001:000237b0  __wcpp_4_undef_vfun__
+0001:000259f0  __wcpp_4_undef_vfun__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(unexpect.cpp)
-0001:000237e0  void near std::unexpected()
+0001:00025a20  void near std::unexpected()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(tsequiv.cpp)
-0001:00023880  __wcpp_4_ts_refed__
-0001:00023898+ __wcpp_4_ts_pnted__
-0001:000238cc  __wcpp_4_ts_equiv__
+0001:00025ac0  __wcpp_4_ts_refed__
+0001:00025ad8+ __wcpp_4_ts_pnted__
+0001:00025b0c  __wcpp_4_ts_equiv__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stabinit.cpp)
-0001:000239c0  __wcpp_4_exc_setup__
+0001:00025c00  __wcpp_4_exc_setup__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(ljmpinit.cpp)
-0002:000113a0  ___wcpp_4_data_init_longjmp_
+0002:000117c0  ___wcpp_4_data_init_longjmp_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(setefg.c)
-0001:00023a70  __setEFGfmt_
+0001:00025cb0  __setEFGfmt_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(iofnoefg.cpp)
-0002:0000ea48  void (near * near __EFG_cnvs2d)( char near *, double near * )
-0002:0000ea4c  int (near * near __EFG_cnvd2f)( double near *, float near * )
-0002:0000ea50  void (near * near __EFG_LDcvt)( __6ks9tmlong_double near *, cvt_info near *, char near * )
-0002:0000ea54  char near * (near * near __EFG_fcvt)( double, int, int near *, int near * )
-0002:0000ea58  void (near * near __EFG__FDLD)( double near *, __6ks9tmlong_double near * )
+0002:0000ee68  void (near * near __EFG_cnvs2d)( char near *, double near * )
+0002:0000ee6c  int (near * near __EFG_cnvd2f)( double near *, float near * )
+0002:0000ee70  void (near * near __EFG_LDcvt)( __6ks9tmlong_double near *, cvt_info near *, char near * )
+0002:0000ee74  char near * (near * near __EFG_fcvt)( double, int, int near *, int near * )
+0002:0000ee78  void (near * near __EFG__FDLD)( double near *, __6ks9tmlong_double near * )
 Module: C:\WATCOM\lib386\math387r.lib(cnvs2d.c)
-0001:00023aa2  __cnvs2d_
+0001:00025ce2  __cnvs2d_
 Module: C:\WATCOM\lib386\math387r.lib(cnvd2f.c)
-0001:00023ab0  __cnvd2f_
+0001:00025cf0  __cnvd2f_
 Module: C:\WATCOM\lib386\math387r.lib(ldcvt.c)
-0001:00023c02  _LDScale10x_
-0001:000241a9  __LDcvt_
+0001:00025e42  _LDScale10x_
+0001:000263e9  __LDcvt_
 Module: C:\WATCOM\lib386\math387r.lib(_i_fcvt_.asm)
-0001:000245f8  _fcvt_
+0001:00026838  _fcvt_
 Module: C:\WATCOM\lib386\math387r.lib(cnvd2ld.c)
-0001:000245fd  __cnvd2ld_
+0001:0002683d  __cnvd2ld_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(dosinite.asm)
-0001:00024602  __sys_init_387_emulator
-0001:00024738  __sys_fini_387_emulator
+0001:00026842  __sys_init_387_emulator
+0001:00026978  __sys_fini_387_emulator
 Module: C:\WATCOM\lib386\dos\clib3r.lib(chk8087.c)
-0001:00024810* _fpreset_
-0001:00024830+ __init_8087_
-0001:00024870+ __default_sigfpe_handler_
-0001:000248d0  __chk8087_
+0001:00026a50* _fpreset_
+0001:00026a70+ __init_8087_
+0001:00026ab0+ __default_sigfpe_handler_
+0001:00026b10  __chk8087_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fgetc.c)
-0001:00024940+ __fill_buffer_
-0001:00024a40  fgetc_
+0001:00026b80+ __fill_buffer_
+0001:00026c80  fgetc_
 Module: C:\WATCOM\lib386\dos\graph.lib(grcgar)
-0002:0000eb70  __GrCGA_4
-0002:0000ebc0  __GrCGA_6
-0002:0000ec10  __TextDevice
+0002:0000ef90  __GrCGA_4
+0002:0000efe0  __GrCGA_6
+0002:0000f030  __TextDevice
 Module: C:\WATCOM\lib386\dos\graph.lib(grhgcr)
-0002:0000ec6c  __GrHGC_11
+0002:0000f08c  __GrHGC_11
 Module: C:\WATCOM\lib386\dos\graph.lib(gregar)
-0001:00024f42  _EGASet_
-0001:00024f67+ _EGASetEO_
-0001:00024f8c  _EGAReset_
-0001:00025027  _EGASetup80_
-0002:0000ecc4  __GrEGA_13
-0002:0000ed14  __GrEGA_14
-0002:0000ed64  __GrEGA_15
-0002:0000edb4  __GrEGA_16
-0002:0000ee04+ __GrEGA_EO
+0001:00027182  _EGASet_
+0001:000271a7+ _EGASetEO_
+0001:000271cc  _EGAReset_
+0001:00027267  _EGASetup80_
+0002:0000f0e4  __GrEGA_13
+0002:0000f134  __GrEGA_14
+0002:0000f184  __GrEGA_15
+0002:0000f1d4  __GrEGA_16
+0002:0000f224+ __GrEGA_EO
 Module: C:\WATCOM\lib386\dos\graph.lib(grvgar)
-0002:0000ee54  __GrVGA_17
-0002:0000eea4  __GrVGA_18
-0002:0000eef4  __GrVGA_19
+0002:0000f274  __GrVGA_17
+0002:0000f2c4  __GrVGA_18
+0002:0000f314  __GrVGA_19
 Module: C:\WATCOM\lib386\dos\graph.lib(grsvgar)
-0002:0000f008  __GrSVGA_100
-0002:0000f058  __GrSVGA_102
-0002:0000f0a8  __GrSVGA_103
-0002:0000f0f8  __GrSVGA_104
-0002:0000f148  __GrSVGA_105
+0002:0000f428  __GrSVGA_100
+0002:0000f478  __GrSVGA_102
+0002:0000f4c8  __GrSVGA_103
+0002:0000f518  __GrSVGA_104
+0002:0000f568  __GrSVGA_105
 Module: C:\WATCOM\lib386\dos\graph.lib(globals)
-0002:000136c8  __ConfigBuffer
-0002:00013704  __SetVGAPage
-0002:00013708  __Screen
-0002:00013714  __TextPos
-0002:00013718  __DBCSPairs
-0002:00013722  __VGAStride
-0002:00013724  __SVGAType
-0002:00013726  __StackSeg
-0002:00013728  __DefMode
-0002:0001372a  __CursorShape
-0002:0001372c  __Tx_Col_Min
-0002:0001372e  __DefTextRows
-0002:0000f198  __StartUp
-0002:0000f199  __GrMode
-0002:0000f19a  __ErrorStatus
-0002:0000f19c  __CurrPos
-0002:0000f1a0  __LogOrg
-0002:0000f1a4  __Clipping
-0002:0000f1a5  __CharAttr
-0002:0000f1a6  __Wrap
-0002:0000f1a8  __CursState
-0002:0000f1aa  __GrCursor
-0002:0000f1ac  __CurrActivePage
-0002:0000f1ae  __CurrVisualPage
-0002:0000f1b0  __CurrBkColor
-0002:0000f1b4  __CurrColor
-0002:0000f1b6* __Palette
-0002:0000f1b8  __FillMask
-0002:0000f1c0  __DefMask
-0002:0000f1c8  __HaveMask
-0002:0000f1c9  __Transparent
-0002:0000f1cb  __PaRf_x
-0002:0000f1cd  __PaRf_y
-0002:0000f1cf  __LineStyle
-0002:0000f1d1  __StyleWrap
-0002:0000f1d3  __PlotAct
-0002:0000f1d5  __TextSettings
-0002:0000f1e5* __CurrFont
-0002:0000f1e9* __ArcInfo
-0002:0000f209  __CurrPos_w
-0002:0000f219  __Window
-0002:0000f22b  __BiosSeg
-0002:0000f22d  __MonoSeg
-0002:0000f22f  __CgaSeg
-0002:0000f231  __EgaSeg
-0002:0000f233  __RomSeg
-0002:0000f235  __BiosOff
-0002:0000f239  __MonoOff
-0002:0000f23d  __CgaOff
-0002:0000f241  __EgaOff
-0002:0000f245  __RomOff
-0002:0000f249* __CurrState
-0002:00013730  __Tx_Row_Max
-0002:00013732  __Tx_Col_Max
-0002:00013734  __Tx_Row_Min
-0002:00013736  __IsDBCS
-0002:00013737  __VGAPage
-0002:00013738  __VGAGran
+0002:00013ae8  __ConfigBuffer
+0002:00013b24  __SetVGAPage
+0002:00013b28  __Screen
+0002:00013b34  __TextPos
+0002:00013b38  __DBCSPairs
+0002:00013b42  __VGAStride
+0002:00013b44  __SVGAType
+0002:00013b46  __StackSeg
+0002:00013b48  __DefMode
+0002:00013b4a  __CursorShape
+0002:00013b4c  __Tx_Col_Min
+0002:00013b4e  __DefTextRows
+0002:0000f5b8  __StartUp
+0002:0000f5b9  __GrMode
+0002:0000f5ba  __ErrorStatus
+0002:0000f5bc  __CurrPos
+0002:0000f5c0  __LogOrg
+0002:0000f5c4  __Clipping
+0002:0000f5c5  __CharAttr
+0002:0000f5c6  __Wrap
+0002:0000f5c8  __CursState
+0002:0000f5ca  __GrCursor
+0002:0000f5cc  __CurrActivePage
+0002:0000f5ce  __CurrVisualPage
+0002:0000f5d0  __CurrBkColor
+0002:0000f5d4  __CurrColor
+0002:0000f5d6* __Palette
+0002:0000f5d8  __FillMask
+0002:0000f5e0  __DefMask
+0002:0000f5e8  __HaveMask
+0002:0000f5e9  __Transparent
+0002:0000f5eb  __PaRf_x
+0002:0000f5ed  __PaRf_y
+0002:0000f5ef  __LineStyle
+0002:0000f5f1  __StyleWrap
+0002:0000f5f3  __PlotAct
+0002:0000f5f5  __TextSettings
+0002:0000f605* __CurrFont
+0002:0000f609* __ArcInfo
+0002:0000f629  __CurrPos_w
+0002:0000f639  __Window
+0002:0000f64b  __BiosSeg
+0002:0000f64d  __MonoSeg
+0002:0000f64f  __CgaSeg
+0002:0000f651  __EgaSeg
+0002:0000f653  __RomSeg
+0002:0000f655  __BiosOff
+0002:0000f659  __MonoOff
+0002:0000f65d  __CgaOff
+0002:0000f661  __EgaOff
+0002:0000f665  __RomOff
+0002:0000f669* __CurrState
+0002:00013b50  __Tx_Row_Max
+0002:00013b52  __Tx_Col_Max
+0002:00013b54  __Tx_Row_Min
+0002:00013b56  __IsDBCS
+0002:00013b57  __VGAPage
+0002:00013b58  __VGAGran
 Module: C:\WATCOM\lib386\dos\graph.lib(setchsizr)
-0001:000258e3  _setcharsize_
+0001:00027b23  _setcharsize_
 Module: C:\WATCOM\lib386\dos\graph.lib(settxtorr)
-0001:00025902  _settextorient_
+0001:00027b42  _settextorient_
 Module: C:\WATCOM\lib386\dos\graph.lib(settxpthr)
-0001:00025924  _settextpath_
+0001:00027b64  _settextpath_
 Module: C:\WATCOM\lib386\dos\graph.lib(setchspcr)
-0001:0002592b  _setcharspacing_
+0001:00027b6b  _setcharspacing_
 Module: C:\WATCOM\lib386\dos\graph.lib(settxtalr)
-0001:00025932  _settextalign_
+0001:00027b72  _settextalign_
 Module: C:\WATCOM\lib386\dos\graph.lib(clipr)
-0001:00025940  _setclip_
+0001:00027b80  _setclip_
 Module: C:\WATCOM\lib386\dos\graph.lib(getconfr)
-0001:000259b1* _getvideoconfig_
-0001:000259d3  _CalcNumPages_
-0001:00025a43  _GetState_
-0001:00025b5d  _InitState_
-0001:00025be0  _GrInit_
+0001:00027bf1* _getvideoconfig_
+0001:00027c13  _CalcNumPages_
+0001:00027c83  _GetState_
+0001:00027d9d  _InitState_
+0001:00027e20  _GrInit_
 Module: C:\WATCOM\lib386\dos\graph.lib(devutilsr)
-0001:00025c5b  _GraphMode_
-0001:00025c7e* _GrProlog_
-0001:00025ca1* _GrEpilog_
-0001:00025cb0  _InitDevice_
-0001:00025cbc  _FiniDevice_
-0001:00025cc5  _StartDevice_
-0001:00025cce  _ResetDevice_
+0001:00027e9b  _GraphMode_
+0001:00027ebe* _GrProlog_
+0001:00027ee1* _GrEpilog_
+0001:00027ef0  _InitDevice_
+0001:00027efc  _FiniDevice_
+0001:00027f05  _StartDevice_
+0001:00027f0e  _ResetDevice_
 Module: C:\WATCOM\lib386\dos\graph.lib(setrowsr)
-0001:00025f02  _SetRows_
-0001:0002621f* _settextrows_
-0001:00026231* _setvideomoderows_
+0001:00028142  _SetRows_
+0001:0002845f* _settextrows_
+0001:00028471* _setvideomoderows_
 Module: C:\WATCOM\lib386\dos\graph.lib(sysmtyper)
-0001:0002624e  _SysMonType_
+0001:0002848e  _SysMonType_
 Module: C:\WATCOM\lib386\dos\graph.lib(remappalr)
-0001:000264d6  _remappalette_
-0001:00026524  _RemapNum_
-0001:0002655b* _remapallpalette_
+0001:00028716  _remappalette_
+0001:00028764  _RemapNum_
+0001:0002879b* _remapallpalette_
 Module: C:\WATCOM\lib386\dos\graph.lib(cnvcolorr)
-0001:000266c6  _CnvColour_
-0002:0000f2ac  __VGA_Colours
+0001:00028906  _CnvColour_
+0002:0000f6cc  __VGA_Colours
 Module: C:\WATCOM\lib386\dos\clib3r.lib(cmain386.c)
-0001:000266f0  __CMain
+0001:00028930  __CMain
 Module: C:\WATCOM\lib386\dos\clib3r.lib(dosseg)
 0000:00001234  __DOSseg__
 Module: C:\WATCOM\lib386\dos\clib3r.lib(uselfn.c)
-0002:0000f2ec  ___uselfn
+0002:0000f70c  ___uselfn
 Module: C:\WATCOM\lib386\dos\clib3r.lib(vsprintf.c)
-0001:00026750  vsprintf_
+0001:00028990  vsprintf_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(istable.c)
-0002:0000495c  __IsTable
+0002:00004d7c  __IsTable
 Module: C:\WATCOM\lib386\dos\clib3r.lib(setbits.c)
-0001:00026770  __setbits_
+0001:000289b0  __setbits_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(bits.c)
-0002:00004a60  __Bits
+0002:00004e80  __Bits
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(prwdata.cpp)
-0002:0001373c  __wint_pure_error_flag
-0002:0001373e  __wint_undef_vfun_flag
-0002:00013740  __wint_module_init
+0002:00013b5c  __wint_pure_error_flag
+0002:00013b5e  __wint_undef_vfun_flag
+0002:00013b60  __wint_module_init
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbisdbcs.c)
-0002:0000f2f0  ___IsDBCS
+0002:0000f710  ___IsDBCS
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbislead.c)
-0001:000267b0* _ismbblead_
-0002:00013744  ___MBCSIsTable
+0001:000289f0* _ismbblead_
+0002:00013b64  ___MBCSIsTable
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbtowc.c)
-0001:000267d0  mbtowc_
+0001:00028a10  mbtowc_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(noefgfmt.c)
-0002:0000f2f4  ___EFG_printf
-0002:0000f2f8  ___EFG_scanf
+0002:0000f714  ___EFG_printf
+0002:0000f718  ___EFG_scanf
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fdfs386.asm)
-0001:000268a4  __FDFS
+0001:00028ae4  __FDFS
 Module: C:\WATCOM\lib386\dos\clib3r.lib(i8m386.asm)
-0001:000268f0* __I8M
-0001:000268f0  __U8M
+0001:00028b30* __I8M
+0001:00028b30  __U8M
 Module: C:\WATCOM\lib386\dos\clib3r.lib(heapen.c)
-0001:00026910* _heapenable_
-0002:0000f2fc  ___heap_enabled
+0001:00028b50* _heapenable_
+0002:0000f71c  ___heap_enabled
 Module: C:\WATCOM\lib386\dos\clib3r.lib(minreal.c)
-0002:00013848  ___minreal
+0002:00013c68  ___minreal
 Module: C:\WATCOM\lib386\dos\clib3r.lib(amblksiz.c)
-0002:0000f300  __amblksiz
+0002:0000f720  __amblksiz
 Module: C:\WATCOM\lib386\dos\clib3r.lib(sbrk386.c)
-0001:00026920* sbrk_
-0001:00026a00  __brk_
+0001:00028b60* sbrk_
+0001:00028c40  __brk_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(initfile.c)
-0001:00026b20  __InitFiles_
+0001:00028d60  __InitFiles_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(ioexit.c)
-0001:00026c20* fcloseall_
-0001:00026c30  __full_io_exit_
+0001:00028e60* fcloseall_
+0001:00028e70  __full_io_exit_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fputc.c)
-0001:00026c40  fputc_
+0001:00028e80  fputc_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(ioalloc.c)
-0001:00026d00  __ioalloc_
+0001:00028f40  __ioalloc_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(prtf.c)
-0001:00026da0  __prtf_
+0001:00028fe0  __prtf_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(sgdef086)
-0002:0001134c  __Start_XI
-0002:000113c4  __End_XI
-0002:000113c4  __Start_YI
-0002:000113e8  __End_YI
+0002:0001176c  __Start_XI
+0002:000117e4  __End_XI
+0002:000117e4  __Start_YI
+0002:00011808  __End_YI
 Module: C:\WATCOM\lib386\dos\clib3r.lib(errno.c)
-0001:00027c10  __get_errno_ptr_
-0001:00027c20  __get_doserrno_ptr_
-0002:0001384c+ _errno
-0002:00013850+ __doserrno
+0001:00029e50  __get_errno_ptr_
+0001:00029e60  __get_doserrno_ptr_
+0002:00013c6c+ _errno
+0002:00013c70+ __doserrno
 Module: C:\WATCOM\lib386\dos\clib3r.lib(opendos.c)
-0001:00027c30  _dos_open_
+0001:00029e70  _dos_open_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(iomode.c)
-0001:00027c50  __GetIOMode_
-0001:00027c70  __SetIOMode_nogrow_
-0002:0000f304  ___NFiles
-0002:0000f308  ___init_mode
-0002:0000f358  ___io_mode
+0001:00029e90  __GetIOMode_
+0001:00029eb0  __SetIOMode_nogrow_
+0002:0000f724  ___NFiles
+0002:0000f728  ___init_mode
+0002:0000f778  ___io_mode
 Module: C:\WATCOM\lib386\dos\clib3r.lib(isatt.c)
-0001:00027c90  isatty_
+0001:00029ed0  isatty_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(dosret.c)
-0001:00027cb0  __dosretax
-0001:00027cc0* __dosret0
-0001:00027cd0  __set_errno_dos_
-0001:00027d50* __set_errno_dos_reterr_
+0001:00029ef0  __dosretax
+0001:00029f00* __dosret0
+0001:00029f10  __set_errno_dos_
+0001:00029f90* __set_errno_dos_reterr_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(umaskval.c)
-0002:0000f370  ___umaskval
+0002:0000f790  ___umaskval
 Module: C:\WATCOM\lib386\dos\clib3r.lib(creatdos.c)
-0001:00027d60  _dos_creat_
-0001:00027d80* _dos_creatnew_
+0001:00029fa0  _dos_creat_
+0001:00029fc0* _dos_creatnew_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(stiomode.c)
-0001:00027da0+ __grow_iomode_
-0001:00027e60+ __shrink_iomode_
-0001:00027e90  __SetIOMode_
+0001:00029fe0+ __grow_iomode_
+0001:0002a0a0+ __shrink_iomode_
+0001:0002a0d0  __SetIOMode_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(lseek.c)
-0001:00027f00  lseek_
+0001:0002a140  lseek_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(tell.c)
-0001:00027f30  tell_
+0001:0002a170  tell_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(flfconde.cpp)
-0001:00027f50  near std::filebuf::filebuf()
+0001:0002a190  near std::filebuf::filebuf()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(iosinit.cpp)
-0001:00027f70  void near std::ios::init( std::streambuf near * )
+0001:0002a1b0  void near std::ios::init( std::streambuf near * )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(flfopen.cpp)
-0001:00027fc0  std::filebuf near * near std::filebuf::open( char const near *, int, int )
+0001:0002a200  std::filebuf near * near std::filebuf::open( char const near *, int, int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(iossetst.cpp)
-0001:00028090+ near std::ios::failure::failure( std::ios::failure const near & )
-0001:000280a0+ near std::ios::failure::~failure()
-0001:000280b0+ near __WATCOM_exception::__WATCOM_exception( __WATCOM_exception const near & )
-0001:000280c0+ near __WATCOM_exception::~__WATCOM_exception()
-0001:00028060  void near std::ios::setstate( int )
+0001:0002a2d0+ near std::ios::failure::failure( std::ios::failure const near & )
+0001:0002a2e0+ near std::ios::failure::~failure()
+0001:0002a2f0+ near __WATCOM_exception::__WATCOM_exception( __WATCOM_exception const near & )
+0001:0002a300+ near __WATCOM_exception::~__WATCOM_exception()
+0001:0002a2a0  void near std::ios::setstate( int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(flfdestr.cpp)
-0001:000280d0  near std::filebuf::~filebuf()
+0001:0002a310  near std::filebuf::~filebuf()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(ioufrxal.cpp)
-0001:000281c0  void near __WATCOM_ios::free_xalloc_storage( std::ios near * )
+0001:0002a400  void near __WATCOM_ios::free_xalloc_storage( std::ios near * )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(manws.cpp)
-0001:000281e0  std::istream near & near std::ws( std::istream near & )
+0001:0002a420  std::istream near & near std::ws( std::istream near & )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(ostflush.cpp)
-0001:00028210  std::ostream near & near std::ostream::flush()
+0001:0002a450  std::ostream near & near std::ostream::flush()
 Module: C:\WATCOM\lib386\dos\clib3r.lib(qwrit.c)
-0001:00028250  __qwrite_
+0001:0002a490  __qwrite_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fsync.c)
-0001:000282d0  fsync_
+0001:0002a510  fsync_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(bittest.cpp)
-0001:000282e0  __wcpp_4_bit_test__
-0001:00028300  __wcpp_4_bit_off__
+0001:0002a520  __wcpp_4_bit_test__
+0001:0002a540  __wcpp_4_bit_off__
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(termnate.cpp)
-0001:00028320  void near std::terminate()
+0001:0002a560  void near std::terminate()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(areaexc.cpp)
-0002:0000f3f0  ___EXC_AREA
+0002:0000f810  ___EXC_AREA
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(tssize.cpp)
-0001:00028374  __wcpp_4_ts_size__
+0001:0002a5b4  __wcpp_4_ts_size__
 Module: C:\WATCOM\lib386\dos\clib3r.lib(chipbug.c)
-0001:000283b0  __verify_pentium_fdiv_bug_
+0001:0002a5f0  __verify_pentium_fdiv_bug_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fputs.c)
-0001:00028410  fputs_
+0001:0002a650  fputs_
 Module: C:\WATCOM\lib386\math387r.lib(math2err.c)
-0001:00028491  __math1err_
-0001:0002849b+ __math2err_
+0001:0002a6d1  __math1err_
+0001:0002a6db+ __math2err_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(cmp386.asm)
-0001:000285c0  strcmp_
+0001:0002a800  strcmp_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(ljmpdtor.cpp)
-0001:00028768  __wcpp_4_lj_handler__
+0001:0002a9a8  __wcpp_4_lj_handler__
 Module: C:\WATCOM\lib386\math387r.lib(efgfmt.c)
-0001:0002876e  _EFG_Format_
+0001:0002a9ae  _EFG_Format_
 Module: C:\WATCOM\lib386\math387r.lib(strtod.c)
-0001:00028dec+ __Strtold_
-0001:00028f53  strtod_
+0001:0002b02c+ __Strtold_
+0001:0002b193  strtod_
 Module: C:\WATCOM\lib386\math387r.lib(ldclass.c)
-0001:00029097  __LDClass_
-0001:000290e7* _FLClass_
+0001:0002b2d7  __LDClass_
+0001:0002b327* _FLClass_
 Module: C:\WATCOM\lib386\math387r.lib(efcvt.c)
-0001:00029127* ecvt_
-0001:0002915e  fcvt_
+0001:0002b367* ecvt_
+0001:0002b39e  fcvt_
 Module: C:\WATCOM\lib386\dos\emu387.lib(emu387)
-0001:00029554  __int7_pl3
-0001:00029578* __int7_X32VM
-0001:000295c4  __int7
+0001:0002b794  __int7_pl3
+0001:0002b7b8* __int7_X32VM
+0001:0002b804  __int7
 Module: C:\WATCOM\lib386\dos\clib3r.lib(hook387.c)
-0001:0002c720  __hook387
-0001:0002c7e0  __unhook387
+0001:0002e960  __hook387
+0001:0002ea20  __unhook387
 Module: C:\WATCOM\lib386\dos\clib3r.lib(8087cw.c)
-0002:00010474  __8087cw
+0002:00010894  __8087cw
 Module: C:\WATCOM\lib386\dos\clib3r.lib(save8087.c)
-0002:00010478  ___Save8087
-0002:0001047c  ___Rest8087
+0002:00010898  ___Save8087
+0002:0001089c  ___Rest8087
 Module: C:\WATCOM\lib386\dos\clib3r.lib(ini87386.asm)
-0001:0002c834  __x87id
+0001:0002ea74  __x87id
 Module: C:\WATCOM\lib386\dos\clib3r.lib(grabfp87.c)
-0001:0002c870  __GrabFP87_
+0001:0002eab0  __GrabFP87_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(flushall.c)
-0001:0002c8e0  __flushall_
-0001:0002c920* flushall_
+0001:0002eb20  __flushall_
+0001:0002eb60* flushall_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(gtche.c)
-0001:0002c930  getche_
+0001:0002eb70  getche_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(qread.c)
-0001:0002c950  __qread_
+0001:0002eb90  __qread_
 Module: C:\WATCOM\lib386\dos\graph.lib(cgautils.asm)
-0001:0002c981  _CoRep_
-0001:0002c973  _CoXor_
-0001:0002c978  _CoAnd_
-0001:0002c98d  _CoOr_
-0001:0002c9b6  _MoveUp_
-0001:0002c9d6  _MoveDown_
-0001:0002c9ad  _Move1Left_
-0001:0002c9a4  _Move2Left_
-0001:0002c99b  _Move1Right_
-0001:0002c992  _Move2Right_
-0001:0002c9f5  _Get1Dot_
-0001:0002ca04  _Get2Dot_
-0001:0002ca6b  _Pix1Zap_
-0001:0002cb13  _Pix2Zap_
-0001:0002ca7b  _Pix1Fill_
-0001:0002cb2b  _Pix2Fill_
-0001:0002ca15  _Pix1Copy_
-0001:0002ca13  _Pix2Copy_
-0001:0002ca2e  _Pix1Read_
-0001:0002ca2c  _Pix2Read_
-0001:0002cc06  _CGAScanLeft_
-0001:0002cc32  _CGAScan1Right_
-0001:0002cc88  _CGAScan2Right_
+0001:0002ebc1  _CoRep_
+0001:0002ebb3  _CoXor_
+0001:0002ebb8  _CoAnd_
+0001:0002ebcd  _CoOr_
+0001:0002ebf6  _MoveUp_
+0001:0002ec16  _MoveDown_
+0001:0002ebed  _Move1Left_
+0001:0002ebe4  _Move2Left_
+0001:0002ebdb  _Move1Right_
+0001:0002ebd2  _Move2Right_
+0001:0002ec35  _Get1Dot_
+0001:0002ec44  _Get2Dot_
+0001:0002ecab  _Pix1Zap_
+0001:0002ed53  _Pix2Zap_
+0001:0002ecbb  _Pix1Fill_
+0001:0002ed6b  _Pix2Fill_
+0001:0002ec55  _Pix1Copy_
+0001:0002ec53  _Pix2Copy_
+0001:0002ec6e  _Pix1Read_
+0001:0002ec6c  _Pix2Read_
+0001:0002ee46  _CGAScanLeft_
+0001:0002ee72  _CGAScan1Right_
+0001:0002eec8  _CGAScan2Right_
 Module: C:\WATCOM\lib386\dos\graph.lib(setmoder)
-0001:0002cce3+ _ValidMode_
-0001:0002cd2d  _SetMode_
-0002:000104c8+ __NoClear
+0001:0002ef23+ _ValidMode_
+0001:0002ef6d  _SetMode_
+0002:000108e8+ __NoClear
 Module: C:\WATCOM\lib386\dos\graph.lib(hgcutils.asm)
-0001:0002cdb1  _HercMoveUp_
-0001:0002cdc3  _HercMoveDown_
+0001:0002eff1  _HercMoveUp_
+0001:0002f003  _HercMoveDown_
 Module: C:\WATCOM\lib386\dos\graph.lib(egautils.asm)
-0001:0002cdd9  _EGAMoveUpHi_
-0001:0002cde3  _EGAMoveUpLo_
-0001:0002cdde  _EGAMoveDownHi_
-0001:0002cde8  _EGAMoveDownLo_
-0001:0002cded  _EGAMoveLeft_
-0001:0002cdf4  _EGAMoveRight_
-0001:0002cdfb  _EGARep_
-0001:0002ce2a  _EGAGetDot_
-0001:0002ce18  _EGAGetDotEO_
-0001:0002ce10  _EGAGetDotMono_
-0001:0002d08f  _EGAZap_
-0001:0002d088  _EGAZapEO_
-0001:0002d088  _EGAZapMono_
-0001:0002d102  _EGAFill_
-0001:0002d0f9  _EGAFillEO_
-0001:0002d0f9  _EGAFillMono_
-0001:0002ced7  _EGAPixCopy_
-0001:0002ce58  _EGAPixCopyEO_
-0001:0002cec0  _EGAPixCopyMono_
-0001:0002d030  _EGAReadRow_
-0001:0002cfdc  _EGAReadRowEO_
-0001:0002d018  _EGAReadRowMono_
-0001:0002d201  _EGAScanLeft_
-0001:0002d1b2  _EGAScanLeftEO_
-0001:0002d1fd  _EGAScanLeftMono_
-0001:0002d2b4  _EGAScanRight_
-0001:0002d23e  _EGAScanRightEO_
-0001:0002d2b0  _EGAScanRightMono_
+0001:0002f019  _EGAMoveUpHi_
+0001:0002f023  _EGAMoveUpLo_
+0001:0002f01e  _EGAMoveDownHi_
+0001:0002f028  _EGAMoveDownLo_
+0001:0002f02d  _EGAMoveLeft_
+0001:0002f034  _EGAMoveRight_
+0001:0002f03b  _EGARep_
+0001:0002f06a  _EGAGetDot_
+0001:0002f058  _EGAGetDotEO_
+0001:0002f050  _EGAGetDotMono_
+0001:0002f2cf  _EGAZap_
+0001:0002f2c8  _EGAZapEO_
+0001:0002f2c8  _EGAZapMono_
+0001:0002f342  _EGAFill_
+0001:0002f339  _EGAFillEO_
+0001:0002f339  _EGAFillMono_
+0001:0002f117  _EGAPixCopy_
+0001:0002f098  _EGAPixCopyEO_
+0001:0002f100  _EGAPixCopyMono_
+0001:0002f270  _EGAReadRow_
+0001:0002f21c  _EGAReadRowEO_
+0001:0002f258  _EGAReadRowMono_
+0001:0002f441  _EGAScanLeft_
+0001:0002f3f2  _EGAScanLeftEO_
+0001:0002f43d  _EGAScanLeftMono_
+0001:0002f4f4  _EGAScanRight_
+0001:0002f47e  _EGAScanRightEO_
+0001:0002f4f0  _EGAScanRightMono_
 Module: C:\WATCOM\lib386\dos\graph.lib(vgautils.asm)
-0001:0002d32b  _MoveUp19_
-0001:0002d333  _MoveDown19_
-0001:0002d33b  _MoveLeft19_
-0001:0002d33e  _MoveRight19_
-0001:0002d326  _Rep19_
-0001:0002d321  _And19_
-0001:0002d356  _Zap19_
-0001:0002d340  _GetDot19_
-0001:0002d374  _Fill19_
-0001:0002d3b6  _PixCopy19_
-0001:0002d3e5  _PixRead19_
-0001:0002d3ef  _ScanLeft19_
-0001:0002d412  _ScanRight19_
+0001:0002f56b  _MoveUp19_
+0001:0002f573  _MoveDown19_
+0001:0002f57b  _MoveLeft19_
+0001:0002f57e  _MoveRight19_
+0001:0002f566  _Rep19_
+0001:0002f561  _And19_
+0001:0002f596  _Zap19_
+0001:0002f580  _GetDot19_
+0001:0002f5b4  _Fill19_
+0001:0002f5f6  _PixCopy19_
+0001:0002f625  _PixRead19_
+0001:0002f62f  _ScanLeft19_
+0001:0002f652  _ScanRight19_
 Module: C:\WATCOM\lib386\dos\graph.lib(svgautil.asm)
-0001:0002d647  _MoveUp100_
-0001:0002d64c  _MoveDown100_
-0001:0002d651  _MoveUp128_
-0001:0002d66a  _MoveDown128_
-0001:0002d683  _MoveLeft256_
-0001:0002d69b  _MoveRight256_
-0001:0002d6b3  _MoveUp640_
-0001:0002d6cf  _MoveDown640_
-0001:0002d6eb  _MoveUp800_
-0001:0002d707  _MoveDown800_
-0001:0002d723  _MoveUp1024_
-0001:0002d73f  _MoveDown1024_
-0001:0002d75a  _Zap256_
-0001:0002d78b  _Fill256_
-0001:0002d7c3  _PixCopy256_
-0001:0002d7fb  _PixRead256_
-0001:0002d831  _ScanLeft256_
-0001:0002d85f  _ScanRight256_
-0001:0002d428  _PageVESA_
-0001:0002d45d  _PageVideo7_
-0001:0002d4d8  _PageParadise_
-0001:0002d4fc  _PageATI_
-0001:0002d529  _PageTseng3_
-0001:0002d54c  _PageTseng4_
-0001:0002d56f  _PageOak_
-0001:0002d592  _PageTrident_
-0001:0002d5b8  _PageChips_
-0001:0002d5e6  _PageGenoa_
-0001:0002d613  _PageS3_
-0001:0002d4d8  _PageCirrus_
-0001:0002d54c  _PageViper_
+0001:0002f887  _MoveUp100_
+0001:0002f88c  _MoveDown100_
+0001:0002f891  _MoveUp128_
+0001:0002f8aa  _MoveDown128_
+0001:0002f8c3  _MoveLeft256_
+0001:0002f8db  _MoveRight256_
+0001:0002f8f3  _MoveUp640_
+0001:0002f90f  _MoveDown640_
+0001:0002f92b  _MoveUp800_
+0001:0002f947  _MoveDown800_
+0001:0002f963  _MoveUp1024_
+0001:0002f97f  _MoveDown1024_
+0001:0002f99a  _Zap256_
+0001:0002f9cb  _Fill256_
+0001:0002fa03  _PixCopy256_
+0001:0002fa3b  _PixRead256_
+0001:0002fa71  _ScanLeft256_
+0001:0002fa9f  _ScanRight256_
+0001:0002f668  _PageVESA_
+0001:0002f69d  _PageVideo7_
+0001:0002f718  _PageParadise_
+0001:0002f73c  _PageATI_
+0001:0002f769  _PageTseng3_
+0001:0002f78c  _PageTseng4_
+0001:0002f7af  _PageOak_
+0001:0002f7d2  _PageTrident_
+0001:0002f7f8  _PageChips_
+0001:0002f826  _PageGenoa_
+0001:0002f853  _PageS3_
+0001:0002f718  _PageCirrus_
+0001:0002f78c  _PageViper_
 Module: C:\WATCOM\lib386\dos\graph.lib(fast256r)
-0001:0002d88d  _FastMap_
-0001:0002d938  _RMAlloc_
-0001:0002d9cb  _RMFree_
-0001:0002d9f7  _RMInterrupt_
-0001:0002dab0  _RMInterrupt2_
+0001:0002facd  _FastMap_
+0001:0002fb78  _RMAlloc_
+0001:0002fc0b  _RMFree_
+0001:0002fc37  _RMInterrupt_
+0001:0002fcf0  _RMInterrupt2_
 Module: C:\WATCOM\lib386\dos\graph.lib(svgainfor)
-0001:0002dbc2  _SuperVGAType_
-0001:0002df4a* _SetSVGAType_
+0001:0002fe02  _SuperVGAType_
+0001:0003018a* _SetSVGAType_
 Module: C:\WATCOM\lib386\dos\graph.lib(std)
-0002:000104cc  __StdFont
+0002:000108ec  __StdFont
 Module: C:\WATCOM\lib386\dos\graph.lib(windfuncr)
-0001:0002df54* _WtoPhysX_
-0001:0002df94* _WtoPhysY_
-0001:0002dfe5* _WtoScaleX_
-0001:0002e01a* _WtoScaleY_
-0001:0002e044* _getwindowcoord_
-0001:0002e17d+ _getviewcoord_w_
-0001:0002e1c0* _getviewcoord_w_87_
-0001:0002e1de* _getviewcoord_wxy_
-0001:0002e1f9* _getcurrentposition_w_
-0001:0002e21c  _resetscalefactor_
+0001:00030194* _WtoPhysX_
+0001:000301d4* _WtoPhysY_
+0001:00030225* _WtoScaleX_
+0001:0003025a* _WtoScaleY_
+0001:00030284* _getwindowcoord_
+0001:000303bd+ _getviewcoord_w_
+0001:00030400* _getviewcoord_w_87_
+0001:0003041e* _getviewcoord_wxy_
+0001:00030439* _getcurrentposition_w_
+0001:0003045c  _resetscalefactor_
 Module: C:\WATCOM\lib386\dos\graph.lib(seginitr)
-0001:0002e2c4  _InitSegments_
+0001:00030504  _InitSegments_
 Module: C:\WATCOM\lib386\dos\graph.lib(cursorr)
-0001:0002e3d7  _CursorOn_
-0001:0002e405  _CursorOff_
+0001:00030617  _CursorOn_
+0001:00030645  _CursorOff_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(cinit.c)
-0001:0002e530  __CommonInit_
+0001:00030770  __CommonInit_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(___argc.c)
-0002:000138e8  ____Argc
-0002:000138ec  ____Argv
+0002:00013d08  ____Argc
+0002:00013d0c  ____Argv
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbinit.c)
-0001:0002e5ca  __mbinit_
-0001:0002e69b+ dos_get_dbcs_lead_table_
-0001:0002e79a+ dos_get_code_page_
-0002:00010ef4  ___MBCodePage
+0001:0003080a  __mbinit_
+0001:000308db+ dos_get_dbcs_lead_table_
+0001:000309da+ dos_get_code_page_
+0002:00011314  ___MBCodePage
 Module: C:\WATCOM\lib386\dos\clib3r.lib(wctomb.c)
-0001:0002e940  wctomb_
+0001:00030b80  wctomb_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(itoa.c)
-0001:0002e970+ utoa_
-0001:0002e9c0  itoa_
+0001:00030bb0+ utoa_
+0001:00030c00  itoa_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(strupr.c)
-0001:0002e9f0  strupr_
+0001:00030c30  strupr_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(lltoa.c)
-0001:0002ea10  ulltoa_
-0001:0002ea80* lltoa_
+0001:00030c50  ulltoa_
+0001:00030cc0* lltoa_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(ltoa.c)
-0001:0002eab0  ultoa_
-0001:0002eb00* ltoa_
+0001:00030cf0  ultoa_
+0001:00030d40* ltoa_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(error386.asm)
-0001:0002eb24  __doserror_
+0001:00030d64  __doserror_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(nrealloc.c)
-0001:0002eb40* _nrealloc_
-0001:0002eb40  realloc_
+0001:00030d80* _nrealloc_
+0001:00030d80  realloc_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(iomodtty.c)
-0001:0002ebe0  __ChkTTYIOMode_
-0001:0002ec20* __IOMode_
+0001:00030e20  __ChkTTYIOMode_
+0001:00030e60* __IOMode_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stfdsgtn.cpp)
-0001:0002ec40  int near std::streambuf::do_sgetn( char near *, int )
+0001:00030e80  int near std::streambuf::do_sgetn( char near *, int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stfdspun.cpp)
-0001:0002ecc0  int near std::streambuf::do_sputn( char const near *, int )
+0001:00030f00  int near std::streambuf::do_sputn( char const near *, int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(flfpbfai.cpp)
-0001:0002ed60  int near std::filebuf::pbackfail( int )
+0001:00030fa0  int near std::filebuf::pbackfail( int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(flfoverf.cpp)
-0001:0002ee20  int near std::filebuf::overflow( int )
+0001:00031060  int near std::filebuf::overflow( int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(flfundrf.cpp)
-0001:0002f040  int near std::filebuf::underflow()
+0001:00031280  int near std::filebuf::underflow()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(flfsetbf.cpp)
-0001:0002f150  std::streambuf near * near std::filebuf::setbuf( char near *, int )
+0001:00031390  std::streambuf near * near std::filebuf::setbuf( char near *, int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(flfseeko.cpp)
-0001:0002f1b0  long near std::filebuf::seekoff( long, int, int )
+0001:000313f0  long near std::filebuf::seekoff( long, int, int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stfseekp.cpp)
-0001:0002f200  long near std::streambuf::seekpos( long, int )
+0001:00031440  long near std::streambuf::seekpos( long, int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(flfsync.cpp)
-0001:0002f210  int near std::filebuf::sync()
+0001:00031450  int near std::filebuf::sync()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stfdoall.cpp)
-0001:0002f2b0  int near std::streambuf::doallocate()
+0001:000314f0  int near std::streambuf::doallocate()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stfconde.cpp)
-0001:0002f2f0  near std::streambuf::streambuf()
+0001:00031530  near std::streambuf::streambuf()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stfseeko.cpp)
-0001:0002f340  long near std::streambuf::seekoff( long, int, int )
+0001:00031580  long near std::streambuf::seekoff( long, int, int )
 Module: C:\WATCOM\lib386\dos\clib3r.lib(plusopen.c)
-0001:0002f350  __plusplus_open_
+0001:00031590  __plusplus_open_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(iosfail.cpp)
-0001:0002f420  near std::ios::failure::failure( int )
+0001:00031660  near std::ios::failure::failure( int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stfdestr.cpp)
-0001:0002f430  near std::streambuf::~streambuf()
+0001:00031670  near std::streambuf::~streambuf()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(flfclose.cpp)
-0001:0002f450  std::filebuf near * near std::filebuf::close()
+0001:00031690  std::filebuf near * near std::filebuf::close()
 Module: C:\WATCOM\lib386\dos\clib3r.lib(liballoc.c)
-0001:0002f490  _plib_malloc_
-0001:0002f4a0  _plib_free_
+0001:000316d0  _plib_malloc_
+0001:000316e0  _plib_free_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(istpeek.cpp)
-0001:0002f4b0  int near std::istream::peek()
+0001:000316f0  int near std::istream::peek()
 Module: C:\WATCOM\lib386\dos\clib3r.lib(isspace.c)
-0001:0002f510  isspace_
+0001:00031750  isspace_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(istget.cpp)
-0001:0002f520  int near std::istream::get()
+0001:00031760  int near std::istream::get()
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stfsync.cpp)
-0001:0002f5a0  int near std::streambuf::sync()
+0001:000317e0  int near std::streambuf::sync()
 Module: C:\WATCOM\lib386\dos\clib3r.lib(filedos.c)
-0001:0002f5e0* _dos_close_
-0001:0002f5f0  _dos_commit_
+0001:00031820* _dos_close_
+0001:00031830  _dos_commit_
 Module: C:\WATCOM\lib386\math387r.lib(_matherr.c)
-0001:0002f717* _set_matherr_
-0001:0002f71d+ __rterrmsg_
-0001:0002f765  __rtmathfuncname_
-0001:0002f76d* _matherr_
-0001:0002f79e+ __reporterrorsimple_
-0001:0002f81b  __reporterror_
-0002:00010f58+ ___matherr_handler
+0001:00031957* _set_matherr_
+0001:0003195d+ __rterrmsg_
+0001:000319a5  __rtmathfuncname_
+0001:000319ad* _matherr_
+0001:000319de+ __reporterrorsimple_
+0001:00031a5b  __reporterror_
+0002:00011378+ ___matherr_handler
 Module: C:\WATCOM\lib386\dos\clib3r.lib(hugeval.c)
-0002:00004bb8  __HugeValue
+0002:00004fd8  __HugeValue
 Module: C:\WATCOM\lib386\dos\clib3r.lib(rtcntrl.c)
-0001:0002f880* _SetLD64bit_
-0001:0002f890* _SetLD80bit_
-0001:0002f8a0  _LDisDouble_
+0001:00031ac0* _SetLD64bit_
+0001:00031ad0* _SetLD80bit_
+0001:00031ae0  _LDisDouble_
 Module: C:\WATCOM\lib386\math387r.lib(bufld386.asm)
-0001:0002f8b0  __ZBuf2LD
+0001:00031af0  __ZBuf2LD
 Module: C:\WATCOM\lib386\math387r.lib(inf_nan.c)
-0001:0002f953* ___f_infinity
-0001:0002f957* ___f_posqnan
-0001:0002f95b  ___d_infinity
-0001:0002f963  ___d_posqnan
-0001:0002f96b* ___ld_infinity
-0001:0002f973* ___ld_posqnan
+0001:00031b93* ___f_infinity
+0001:00031b97* ___f_posqnan
+0001:00031b9b  ___d_infinity
+0001:00031ba3  ___d_posqnan
+0001:00031bab* ___ld_infinity
+0001:00031bb3* ___ld_posqnan
 Module: C:\WATCOM\lib386\dos\clib3r.lib(cvtbuf.c)
-0001:0002f980  __CVTBuffer_
+0001:00031bc0  __CVTBuffer_
 Module: C:\WATCOM\lib386\math387r.lib(cvt.c)
-0001:0002f986  __cvt_
+0001:00031bc6  __cvt_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fpexcept.c)
-0001:0002fa10  __FPE_exception_
+0001:00031c50  __FPE_exception_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fpe387.asm)
-0002:00010f60  ___PMSeg
-0002:00010f62  ___PMAddr
-0002:00010f66  ___RMAddr
-0001:0002fa18  __Init_FPE_handler_
-0001:0002fa50  __Fini_FPE_handler_
+0002:00011380  ___PMSeg
+0002:00011382  ___PMAddr
+0002:00011386  ___RMAddr
+0001:00031c58  __Init_FPE_handler_
+0001:00031c90  __Fini_FPE_handler_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(dpmihost.c)
-0001:0002fa90  __DPMI_hosted_
+0001:00031cd0  __DPMI_hosted_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fpeinth.asm)
-0001:0002fb28  __FPEHandler_
-0001:0002fb28  ___FPEHandlerStart_
-0001:0002fb35  __FPE2Handler_
-0001:0002fc37  ___FPEHandlerEnd_
+0001:00031d68  __FPEHandler_
+0001:00031d68  ___FPEHandlerStart_
+0001:00031d75  __FPE2Handler_
+0001:00031e77  ___FPEHandlerEnd_
 Module: C:\WATCOM\lib386\dos\graph.lib(bit.asm)
-0001:0002fdf9  BitReplace
-0001:0002fe10  BitAnd
-0001:0002fe3e  BitXor
-0001:0002fe27  BitOr
-0001:0002fe55  BitCopy
+0001:00032039  BitReplace
+0001:00032050  BitAnd
+0001:0003207e  BitXor
+0001:00032067  BitOr
+0001:00032095  BitCopy
 Module: C:\WATCOM\lib386\dos\graph.lib(fdfs386.asm)
-0001:0002fef4  _GR__FDFS
+0001:00032134  _GR__FDFS
 Module: C:\WATCOM\lib386\dos\graph.lib(D:\dev\open-watcom-v2\bld\graphlib\386asm\fsmath.asm)
-0001:0002ff4a  _GR__FSA
-0001:0002ff40  _GR__FSS
-0001:0002fff7  _GR__FSM
-0001:0003006a  _GR__FSD
+0001:0003218a  _GR__FSA
+0001:00032180  _GR__FSS
+0001:00032237  _GR__FSM
+0001:000322aa  _GR__FSD
 Module: C:\WATCOM\lib386\dos\graph.lib(fsi4386.asm)
-0001:000300e8  _GR__FSI4
-0001:000300f2* _GR__FSU4
-0001:000300fc* _GR__FSI2
-0001:00030106* _GR__FSU2
-0001:00030110* _GR__FSI1
-0001:0003011a* _GR__FSU1
+0001:00032328  _GR__FSI4
+0001:00032332* _GR__FSU4
+0001:0003233c* _GR__FSI2
+0001:00032346* _GR__FSU2
+0001:00032350* _GR__FSI1
+0001:0003235a* _GR__FSU1
 Module: C:\WATCOM\lib386\dos\graph.lib(i4fs386.asm)
-0001:00030197  _GR__I4FS
-0001:0003016c* _GR__U4FS
+0001:000323d7  _GR__I4FS
+0001:000323ac* _GR__U4FS
 Module: C:\WATCOM\lib386\dos\graph.lib(fsfd386.asm)
-0001:000301a8  _GR__FSFD
+0001:000323e8  _GR__FSFD
 Module: C:\WATCOM\lib386\dos\graph.lib(plotactnr)
-0001:00030214+ _getplotaction_
-0001:00030243  _setplotaction_
+0001:00032454+ _getplotaction_
+0001:00032483  _setplotaction_
 Module: C:\WATCOM\lib386\dos\graph.lib(l1liner)
-0001:0003035e  _L1SLine_
-0001:000303a8* _L1Line_
+0001:0003259e  _L1SLine_
+0001:000325e8* _L1Line_
 Module: C:\WATCOM\lib386\dos\graph.lib(colorr)
-0001:0003045f* _getcolor_
-0001:00030466  _setcolor_
-0001:00030484+ _L2setcolor_
+0001:0003269f* _getcolor_
+0001:000326a6  _setcolor_
+0001:000326c4+ _L2setcolor_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(intdx386.c)
-0001:000304b0  intdosx_
+0001:000326f0  intdosx_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(inirmsel.c)
-0002:00013918  __ExtenderRealModeSelector
+0002:00013d38  __ExtenderRealModeSelector
 Module: C:\WATCOM\lib386\dos\clib3r.lib(alphabet.c)
-0002:00000de4  ___Alphabet
+0002:00000fc4  ___Alphabet
 Module: C:\WATCOM\lib386\dos\clib3r.lib(nmsize.c)
-0001:00030630  _nmsize_
-0001:00030630* _msize_
+0001:00032870  _nmsize_
+0001:00032870* _msize_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(nexpand.c)
-0001:00030640  _nexpand_
-0001:00030640* _expand_
-0001:000306b0+ __HeapManager_expand_
+0001:00032880  _nexpand_
+0001:00032880* _expand_
+0001:000328f0+ __HeapManager_expand_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stfpbfai.cpp)
-0001:00030890  int near std::streambuf::pbackfail( int )
+0001:00032ad0  int near std::streambuf::pbackfail( int )
 Module: C:\WATCOM\lib386\dos\clib3r.lib(write.c)
-0001:000309b0  write_
+0001:00032bf0  write_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(memmove.c)
-0001:00030bf0  memmove_
+0001:00032e30  memmove_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(read.c)
-0001:00030c50  read_
+0001:00032e90  read_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stfsetb.cpp)
-0001:00030d80  void near std::streambuf::setb( char near *, char near *, int )
+0001:00032fc0  void near std::streambuf::setb( char near *, char near *, int )
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(stfsbuf.cpp)
-0001:00030de0  std::streambuf near * near std::streambuf::setbuf( char near *, int )
+0001:00033020  std::streambuf near * near std::streambuf::setbuf( char near *, int )
 Module: C:\WATCOM\lib386\dos\clib3r.lib(stat.c)
-0001:00030e99  stat_
+0001:000330d9  stat_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(close.c)
-0001:00031100  close_
+0001:00033340  close_
 Module: C:\WATCOM\lib386\dos\plbx3r.lib(istipfx.cpp)
-0001:00031110  int near std::istream::ipfx( int )
+0001:00033350  int near std::istream::ipfx( int )
 Module: C:\WATCOM\lib386\math387r.lib(__mtherr.asm)
-0001:0003114c  __matherr
+0001:0003338c  __matherr
 Module: C:\WATCOM\lib386\dos\clib3r.lib(iobaddr.c)
-0001:00031160  __get_std_stream_
-0001:00031160* __get_std_file_
+0001:000333a0  __get_std_stream_
+0001:000333a0* __get_std_file_
 Module: C:\WATCOM\lib386\math387r.lib(mathint.c)
-0002:00011194* _signgam
-0002:00011198  ___math_errhandling_flag
+0002:000115b4* _signgam
+0002:000115b8  ___math_errhandling_flag
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fenv.c)
-0001:00031180* feclearexcept_
-0001:000311a0+ fegetexceptflag_
-0001:000311c0  feraiseexcept_
-0001:000311f0* feenableexcept_
-0001:00031210* fedisableexcept_
-0001:00031230* fesetexceptflag_
-0001:00031260* fetestexcept_
-0001:00031280* fegetround_
-0001:000312a0* fesetround_
-0001:000312f0* fegetenv_
-0001:00031300* feholdexcept_
-0001:00031320* fesetenv_
-0001:00031330* feupdateenv_
-0002:00004bc0* ___fenv_h_default_environment
+0001:000333c0* feclearexcept_
+0001:000333e0+ fegetexceptflag_
+0001:00033400  feraiseexcept_
+0001:00033430* feenableexcept_
+0001:00033450* fedisableexcept_
+0001:00033470* fesetexceptflag_
+0001:000334a0* fetestexcept_
+0001:000334c0* fegetround_
+0001:000334e0* fesetround_
+0001:00033530* fegetenv_
+0001:00033540* feholdexcept_
+0001:00033560* fesetenv_
+0001:00033570* feupdateenv_
+0002:00004fe0* ___fenv_h_default_environment
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fpephar.asm)
-0001:00031358  __Phar_hook_init_
-0001:0003141e  __Phar_hook_fini_
+0001:00033598  __Phar_hook_init_
+0001:0003365e  __Phar_hook_fini_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fpedos4g.asm)
-0001:0003144c  __DOS4G_hook_init_
-0001:0003147a  __DOS4G_hook_fini_
+0001:0003368c  __DOS4G_hook_init_
+0001:000336ba  __DOS4G_hook_fini_
 Module: C:\WATCOM\lib386\dos\graph.lib(dummyr)
-0001:00031493  _GRF4UnderFlow
-0001:00031496  _GRF4DivZero
-0001:000314a1  _GRF4OverFlow
-0002:0001391c* _GR_fltused_
-0002:0001391e* _GR_small_code_
+0001:000336d3  _GRF4UnderFlow
+0001:000336d6  _GRF4DivZero
+0001:000336e1  _GRF4OverFlow
+0002:00013d3c* _GR_fltused_
+0002:00013d3e* _GR_small_code_
 Module: C:\WATCOM\lib386\dos\graph.lib(l0drwlinr)
-0001:000314ac  _L0DrawLine_
+0001:000336ec  _L0DrawLine_
 Module: C:\WATCOM\lib386\dos\graph.lib(l1clipr)
-0001:00031665+ _L1OutCode_
-0001:0003170c  _L0LineClip_
-0001:000318a2* _L0BlockClip_
+0001:000338a5+ _L1OutCode_
+0001:0003394c  _L0LineClip_
+0001:00033ae2* _L0BlockClip_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbschr.c)
-0001:00031920  _mbschr_
+0001:00033b60  _mbschr_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbscmp.c)
-0001:00031980  _mbscmp_
+0001:00033bc0  _mbscmp_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbspbrk.c)
-0001:000319f0  _mbspbrk_
+0001:00033c30  _mbspbrk_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fullpath.c)
-0001:00031a40+ _sys_fullpath_
-0001:00031d60  _fullpath_
+0001:00033c80+ _sys_fullpath_
+0001:00033fa0  _fullpath_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(gtcwd.c)
-0001:00031de0  getcwd_
+0001:00034020  getcwd_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(chdir.c)
-0001:00031e80  chdir_
+0001:000340c0  chdir_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(finddos.c)
-0001:00031ea0  _dos_findfirst_
-0001:00031ef0* _dos_findnext_
-0001:00031f50  _dos_findclose_
+0001:000340e0  _dos_findfirst_
+0001:00034130* _dos_findnext_
+0001:00034190  _dos_findclose_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fstat.c)
-0001:00031f60  fstat_
+0001:000341a0  fstat_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(d2ttime.c)
-0001:00032080  _d2ttime_
+0001:000342c0  _d2ttime_
 Module: C:\WATCOM\lib386\math387r.lib(matherr.c)
-0001:000320fa  matherr_
+0001:0003433a  matherr_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(fpeint.c)
-0002:0001119c  ___FPE_int
-0002:0001119d  ___IRQ_num
-0002:0001119e  ___MST_pic
-0002:0001119f+ ___SLV_pic
+0002:000115bc  ___FPE_int
+0002:000115bd  ___IRQ_num
+0002:000115be  ___MST_pic
+0002:000115bf+ ___SLV_pic
 Module: C:\WATCOM\lib386\dos\graph.lib(gstklowr)
-0001:0003211d  _GetStackLow_
+0001:0003435d  _GetStackLow_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbconv.c)
-0001:00032130  _mbvtop_
+0001:00034370  _mbvtop_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbclen.c)
-0001:00032150  _mbclen_
+0001:00034390  _mbclen_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbterm.c)
-0001:00032180  _mbterm_
+0001:000343c0  _mbterm_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbccmp.c)
-0001:000321c0  _mbccmp_
+0001:00034400  _mbccmp_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbsinc.c)
-0001:00032200  _mbsinc_
+0001:00034440  _mbsinc_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbsnextc.c)
-0001:00032230  _mbsnextc_
+0001:00034470  _mbsnextc_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(_getdcwd.c)
-0001:00032270  __getdcwd_
+0001:000344b0  __getdcwd_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(strncpy.c)
-0001:00032280  strncpy_
+0001:000344c0  strncpy_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(filelen.c)
-0001:000322c0  filelength_
+0001:00034500  filelength_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mktime.c)
-0001:00032310  mktime_
+0001:00034550  mktime_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(locmktim.c)
-0001:000323a0  __local_mktime_
+0001:000345e0  __local_mktime_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(gmtime.c)
-0001:00032520  __brktime_
-0001:00032620+ _gmtime_
-0001:00032640* gmtime_
+0001:00034760  __brktime_
+0001:00034860+ _gmtime_
+0001:00034880* gmtime_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(tzset.c)
-0002:000111a0  ___start_dst
-0002:000111c4  ___end_dst
-0002:000112ec* _tzname
-0002:000112f4  _timezone
-0002:000112f8  _daylight
-0002:000112fc  ___dst_adjust
-0001:00032650* __DontCacheOSTZ_
-0001:00032660* __CacheOSTZ_
-0001:00032b60+ __parse_tz_
-0001:00032d90  tzset_
+0002:000115c0  ___start_dst
+0002:000115e4  ___end_dst
+0002:0001170c* _tzname
+0002:00011714  _timezone
+0002:00011718  _daylight
+0002:0001171c  ___dst_adjust
+0001:00034890* __DontCacheOSTZ_
+0001:000348a0* __CacheOSTZ_
+0001:00034da0+ __parse_tz_
+0001:00034fd0  tzset_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(timeutil.c)
-0001:00032f00  __isindst_
+0001:00035140  __isindst_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(leapyear.c)
-0001:00033230  __leapyear_
-0002:00000e1c  ___diyr
-0002:00000e36  ___dilyr
+0001:00035470  __leapyear_
+0002:00000ffc  ___diyr
+0002:00001016  ___dilyr
 Module: C:\WATCOM\lib386\dos\clib3r.lib(getenv.c)
-0001:00033270  getenv_
+0001:000354b0  getenv_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(environ.c)
-0002:00013944  ___env_mask
-0002:00013948  _environ
-0002:0001394c* __wenviron
+0002:00013d64  ___env_mask
+0002:00013d68  _environ
+0002:00013d6c* __wenviron
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbcupper.c)
-0001:00033310  _mbctoupper_
+0001:00035550  _mbctoupper_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(setenvp.c)
-0001:00033330  __setenvp_
-0001:00033410  __freeenvp_
+0001:00035570  __setenvp_
+0001:00035650  __freeenvp_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(toupper.c)
-0001:00033460  toupper_
+0001:000356a0  toupper_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(mbdtoupp.c)
-0001:00033470  _mbdtoupper_
+0001:000356b0  _mbdtoupper_
 Module: C:\WATCOM\lib386\dos\clib3r.lib(clearenv.c)
-0001:00033490  clearenv_
+0001:000356d0  clearenv_
 
 
                         +----------------------+
@@ -1482,6 +1484,6 @@ C:\WATCOM\lib386\dos\clib3r.lib
                         +-----------------------+
 
 Stack size:  00010000 (65536.)
-Memory size:  00056eb0 (356016.)
-Entry point address: 0001:00020054
+Memory size:  00059510 (365840.)
+Entry point address: 0001:00022294
 Link time: 00:00.31

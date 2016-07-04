@@ -1,5 +1,26 @@
 #include "screen.hpp"
 
+Matrix perspective_projection(){
+    Matrix m = Matrix::identity(4);
+
+    float aspectratio = 320.0 / 200.0;
+    float verticalFOV = 65.0;
+    float zNear = 1.0;
+    float zFar = 1000.0;
+    float zRange = zNear - zFar;
+    float tanHalfFOV = (std::tan(((verticalFOV/2) * M_PI) / 180.0));
+
+    m[0][0] = 1.0f / (tanHalfFOV * aspectratio);
+    m[1][1] = 1.0f / tanHalfFOV;
+    m[2][2] = (-zNear - zFar) / zRange;
+    m[2][3] = 2.0 * zFar * zNear / zRange;
+    m[3][2] = 1.0;
+    m[3][3] = 0.0;
+    
+    return m.transpose();
+    //return m;
+}
+
 void Screen::redraw(){
     //render buttons to layer_background and text to layer_text
     memset(layer_widgets.getPixels(), 0, VGA_SIZE);
@@ -116,7 +137,7 @@ void Screen::draw_polygon_object(SceneObject sceneObject){
 
 void Screen::draw_polygon_object(WavefrontObject object){    
     Matrix Model = object.getModelMatrix(); //local -> world transform matrix
-    Matrix modelView = View * Model;
+    Matrix modelView = perspective_projection() * View * Model;
     
     for(int i=0;i<object.getFaceCount();i++){
         layer_polygons.draw_face(object, Viewport, Projection, modelView, i);
