@@ -1,6 +1,9 @@
 #include "main.hpp"
 #include <cmath>
 
+#define M_PI 3.141592653589793238462643383279502884
+#define DEG_TO_RAD(X) ((X * M_PI) / 180.0)
+
 std::vector<Shape> shapesList;
 
 void abort(char *msg){
@@ -63,11 +66,30 @@ int main(){
     g_screen.addSceneObject("cube1", obj);
 
 /*
-    WavefrontObject cube2;
-    cube2.load_file("cube.3d");
-    cube2.translation = Vector3f(1,0,1);
-    cube2.scale = Vector3f(.5,.5,.5);
-    g_screen.addSceneObject("cube2", cube2);
+    WavefrontObject obj2;
+    obj2.load_file("cube.3d");
+    obj2.translation = Vector3f(0,0,5);
+    g_screen.addSceneObject("cube2", obj2);
+
+    WavefrontObject obj3;
+    obj3.load_file("cube.3d");
+    obj3.translation = Vector3f(1,0,5);
+    g_screen.addSceneObject("cube3", obj3);
+
+    WavefrontObject obj4;
+    obj4.load_file("cube.3d");
+    obj4.translation = Vector3f(-.5,1,5);
+    g_screen.addSceneObject("cube4", obj4);
+
+    WavefrontObject obj5;
+    obj5.load_file("cube.3d");
+    obj5.translation = Vector3f(.55,1,5);
+    g_screen.addSceneObject("cube5", obj5);
+    
+    WavefrontObject obj6;
+    obj6.load_file("cube.3d");
+    obj6.translation = Vector3f(0,2,5);
+    g_screen.addSceneObject("cube6", obj6);
 */
     
     printf("OK\n");
@@ -87,11 +109,53 @@ int main(){
     g_screen.draw_polygon_debug_data();
     //g_screen.draw_view_data(View);
     //g_screen.draw_polygon_object(obj);
-    //g_screen.draw_object_debug_data(obj);
+    g_screen.draw_object_debug_data(g_screen.getSceneObjectPtr("cube1")->model);
     g_screen.redraw();
 
+    int rotationX = 0;
+    int rotationY = 0;
+    int rotationZ = 0;
+
+    bool abort = false;
+
+    while(!abort){
+        delay(50);
+
+        g_screen.getSceneObjectPtr("cube1")->model.rotation = g_screen.getSceneObjectPtr("cube1")->model.rotation + Vector3f(0,5,0);
+        g_screen.getSceneObjectPtr("cube1")->model.rotation = g_screen.getSceneObjectPtr("cube1")->model.rotation + Vector3f(4,0,0);
+
+        //clamp rotation
+        g_screen.getSceneObjectPtr("cube1")->model.rotation.x = std::fmod(g_screen.getSceneObjectPtr("cube1")->model.rotation.x, 360.0f);
+        g_screen.getSceneObjectPtr("cube1")->model.rotation.y = std::fmod(g_screen.getSceneObjectPtr("cube1")->model.rotation.y, 360.0f);
+
+        g_screen.draw_polygon_debug_data();
+        g_screen.draw_object_debug_data(g_screen.getSceneObjectPtr("cube1")->model);
+        g_screen.redraw();
+
+        if(kbhit()){
+            char key = getch();
+
+            if(key == 0x1B){ //ESC
+                abort = true;
+            }
+            else if(key == 'a'){
+                eye = eye + Vector3f(-1, 0, 0);
+            }
+            else if(key == 'd'){
+                eye = eye + Vector3f(1, 0, 0);
+            }
+            else if(key == 'w'){
+                eye = eye + Vector3f(0, 0, 1);
+            }
+            else if(key == 's'){
+                eye = eye + Vector3f(0, 0, -1);
+            }
+        }
+    }
+
+/*
     bool menu = true;
-    
+   
     while(menu == true){
         char key = getch();
         
@@ -109,11 +173,16 @@ int main(){
         else if(key == 'w'){
             eye = eye + Vector3f(0,0,-1);
             center = center + Vector3f(0,0,-1);
-
         }
         else if(key == 's'){
             eye = eye + Vector3f(0,0,1);
             center = center + Vector3f(0,0,1);
+        }
+        else if(key == 'q'){
+            rotationY = (rotationY - 5) % 360;
+        }
+        else if(key == 'e'){
+            rotationY = (rotationY + 5) % 360;
         }
 
         recalculate_transformation();
@@ -124,6 +193,7 @@ int main(){
         g_screen.draw_polygon_debug_data();
         g_screen.redraw();
     }
+*/
 
     _setvideomode(_DEFAULTMODE);
 

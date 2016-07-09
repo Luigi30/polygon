@@ -4,7 +4,7 @@
 #include "includes\matrix.hpp"
 #include "includes\wavefront.hpp"
 
-Vector3f eye(0,0,5);    //the camera coordinates
+Vector3f eye(0,0,-5);    //the camera coordinates
 Vector3f center(0,0,0); //the camera is pointed at this point
                         //need to find rotation in order to rotate the camera
 Vector3f up(0.0, 1.0, 0.0); //up

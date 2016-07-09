@@ -11,26 +11,8 @@
 
 #define BETWEEN(token, A, B) (token >= A && token <= B)
 
-Matrix perspective_projection(){
-    Matrix m = Matrix::identity(4);
-
-    float aspectratio = 320.0 / 200.0;
-    float verticalFOV = 30.0;
-    float zNear = 1.0;
-    float zFar = 1000.0;
-    float zRange = zNear - zFar;
-    float tanHalfFOV = (std::tan(((verticalFOV/2) * M_PI) / 180.0));
-
-    m[0][0] = 1.0f / (tanHalfFOV * aspectratio);
-    m[1][1] = 1.0f / tanHalfFOV;
-    m[2][2] = (-zNear - zFar) / zRange;
-    m[2][3] = 2.0 * zFar * zNear / zRange;
-    m[3][2] = 1.0;
-    m[3][3] = 0.0;
-    
-    return m.transpose();
-    //return m;
-}
+#define M_PI 3.141592653589793238462643383279502884
+#define DEG_TO_RAD(X) ((X * M_PI) / 180.0)
 
 Framebuffer::Framebuffer(){
     pixels = (Pixel*)malloc(64000+1);
@@ -137,70 +119,82 @@ Vector3f calculateSurfaceNormal(Vector3f *triangle){
     return Vector3f::cross_product(U, V);
 }
 
-void Framebuffer::draw_face(WavefrontObject model, Matrix Viewport, Matrix Projection, Matrix ModelView, int face_number){
-    /* Render a face from a specified model. */
+Vector3f rotateAroundXAxis(Vector3f inputPoint, float rotationDegrees){
+    float sin = std::sin(DEG_TO_RAD(rotationDegrees));
+    float cos = std::cos(DEG_TO_RAD(rotationDegrees));
 
-    /* The transformation matrix is Viewport * Projection * ModelView. */
-    Matrix transformation = Viewport * Projection * ModelView;
+    return Vector3f((inputPoint.x),
+                    (inputPoint.y * cos) - (inputPoint.z * sin),
+                    (inputPoint.y * sin) + (inputPoint.z * cos));
+}
 
-    /* Where's the light coming from? */
-    Vector3f light_direction(0.0, 0.0, -1.0);
+Vector3f rotateAroundYAxis(Vector3f inputPoint, float rotationDegrees){
+    float sin = std::sin(DEG_TO_RAD(rotationDegrees));
+    float cos = std::cos(DEG_TO_RAD(rotationDegrees));
 
-    /* Get the face and its coordinates. */
+    return Vector3f(inputPoint.x * cos + inputPoint.z * sin,
+                    inputPoint.y,
+                    -inputPoint.x * sin + inputPoint.z * cos);
+}
+
+void Framebuffer::draw_face(WavefrontObject model, Vector3f eye, int face_number){
     Face face = model.getFaces()[face_number];
+    float zNear = 1.0;
+    float zFar = 50.0;
 
-    Vector3f screenCoords[3];
     Vector3f worldCoords[3];
-
     worldCoords[0] = Vector3f(model.getLocalVertices()[face.v1].x, model.getLocalVertices()[face.v1].y, model.getLocalVertices()[face.v1].z);
     worldCoords[1] = Vector3f(model.getLocalVertices()[face.v2].x, model.getLocalVertices()[face.v2].y, model.getLocalVertices()[face.v2].z);
     worldCoords[2] = Vector3f(model.getLocalVertices()[face.v3].x, model.getLocalVertices()[face.v3].y, model.getLocalVertices()[face.v3].z);
-    
+
+    Vector3f screenCoords[3];
+
+    //Scale -> Rotate -> Translate    
     for(int i=0;i<3;i++){
-        /* Transform the model's local coordinates by the transformation matrix to produce world coordinates. */
-        Matrix newCoords = transformation * Matrix::position_vector(worldCoords[i]);
-        
-        /* Perform the perspective calculation and produce screen coordinates from world coordinates. */
-        screenCoords[i] = Vector3f(newCoords[0][0] / newCoords[3][0], newCoords[1][0] / newCoords[3][0], newCoords[2][0] / newCoords[3][0]);
-}
+        screenCoords[i] = Vector3f(worldCoords[i].x, worldCoords[i].y, worldCoords[i].z);
 
-    //http://www.songho.ca/opengl/gl_normaltransform.html
+        //Scale
+        screenCoords[i] = Vector3f(screenCoords[i].x * model.scale.x,
+                                   screenCoords[i].y * model.scale.y,
+                                   screenCoords[i].z * model.scale.z);
 
-    /* Now calculate the surface normal of the face. */
-    Vector3f normal = calculateSurfaceNormal(worldCoords);
-    Vector3f normalizedNormal = normal.normalize();
+        //Rotate
+        screenCoords[i] = rotateAroundXAxis(screenCoords[i], model.rotation.x);
+        screenCoords[i] = rotateAroundYAxis(screenCoords[i], model.rotation.y);
 
-    /* Transform the surface normal
-       by the transpose inverse of the transformation matrix
-       to produce the transformed surface normal. */
+        //Translate
+        //apply world translation
+        screenCoords[i] = Vector3f(screenCoords[i].x - eye.x,
+                                   screenCoords[i].y - eye.y,
+                                   screenCoords[i].z - eye.z);
 
-    //something's wrong with how we're doing this
-    Matrix newNormal = transformation.inverse().transpose() * Matrix::direction_vector(normal);
-    Vector3f transformedNormal = Vector3f(newNormal[0][0], newNormal[1][0], newNormal[2][0]);
-    Vector3f transformedNormalizedNormal = transformedNormal.normalize();
+        //then apply local translation
+        screenCoords[i] = Vector3f(screenCoords[i].x + model.translation.x,
+                                   screenCoords[i].y + model.translation.y,
+                                   screenCoords[i].z + model.translation.z);
 
-    /* Use the transformed surface normal to calculate light intensity for flat shading. */
-    float intensity = transformedNormal * light_direction;
+        //Scale Z to (0,1)
+        float scaledZ = (screenCoords[i].z - zNear) / (zFar - zNear);
 
-    /* We only have 16 shades of gray... */
-    float lightLevel = (intensity * 127) / 16;
-    /* ...so clamp the light level to 16. */
-    lightLevel = lightLevel > 0x0F ? 0x0F : lightLevel;
+        //are we drawing a triangle outside of our clipping planes?
+        if(scaledZ >= 1.0 || scaledZ <= 0.0){
+            return;
+        }
 
-    /* Is the face lit (facing us)? */
-    if(lightLevel > 0) {
-        /* It's lit, draw it. */
-        draw_filled_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]),
-                                worldCoords,
-                                Point(0,0),
-                                0x10 + lightLevel);
-        //transformation.print();
-        //printf("old normal: %f %f %f\n", normal.x, normal.y, normal.z);
-        //newNormal.print();
-    } else {
-        /* We can't see it, so don't draw it. */
-        //printf("Face %d is too dark\n", face_number);
+        //Perspective divide
+        screenCoords[i].x /= screenCoords[i].z;
+        screenCoords[i].y /= screenCoords[i].z;
+
+        //Perform scaling
+        screenCoords[i].x = screenCoords[i].x * 100 + SCREEN_WIDTH/2;
+        screenCoords[i].y = screenCoords[i].y * 100 + SCREEN_HEIGHT/2;
     }
+
+    draw_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), Point(0,0), COLOR_GREEN);
+
+    //Vector3f normal = calculateSurfaceNormal(worldCoords);
+    //Vector3f normalizedNormal = normal.normalize();
+    //draw_filled_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), worldCoords, Point(0,0), COLOR_GREEN);
 }
 
 void Framebuffer::draw_triangle(Triangle triangle, Point origin, int color){

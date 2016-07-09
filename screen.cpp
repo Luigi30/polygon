@@ -4,16 +4,16 @@ Matrix perspective_projection(){
     Matrix m = Matrix::identity(4);
 
     float aspectratio = 320.0 / 200.0;
-    float verticalFOV = 65.0;
+    float verticalFOV = 30.0;
     float zNear = 1.0;
-    float zFar = 1000.0;
+    float zFar = 50.0;
     float zRange = zNear - zFar;
     float tanHalfFOV = (std::tan(((verticalFOV/2) * M_PI) / 180.0));
 
     m[0][0] = 1.0f / (tanHalfFOV * aspectratio);
     m[1][1] = 1.0f / tanHalfFOV;
-    m[2][2] = (-zNear - zFar) / zRange;
-    m[2][3] = 2.0 * zFar * zNear / zRange;
+    m[2][2] = -(zNear - zFar) / zRange;
+    m[2][3] = (2.0 * zFar * zNear) / zRange;
     m[3][2] = 1.0;
     m[3][3] = 0.0;
     
@@ -138,9 +138,14 @@ void Screen::draw_polygon_object(SceneObject sceneObject){
 void Screen::draw_polygon_object(WavefrontObject object){    
     Matrix Model = object.getModelMatrix(); //local -> world transform matrix
     Matrix modelView = perspective_projection() * View * Model;
-    
+        
     for(int i=0;i<object.getFaceCount();i++){
-        layer_polygons.draw_face(object, Viewport, Projection, modelView, i);
+        Face face = object.getFaces()[i];
+        
+        if((object.getLocalVertices()[face.v1].z >= -1.0 && object.getLocalVertices()[face.v1].z <= 1.0) &&
+           (object.getLocalVertices()[face.v2].z >= -1.0 && object.getLocalVertices()[face.v2].z <= 1.0) &&
+           (object.getLocalVertices()[face.v3].z >= -1.0 && object.getLocalVertices()[face.v3].z <= 1.0))
+            layer_polygons.draw_face(object, eye, i);
     }
 }
 
@@ -183,4 +188,15 @@ void Screen::removeSceneObject(std::string _name){
             return;
         }
     }
+}
+
+SceneObject* Screen::getSceneObjectPtr(std::string _name){
+    for(int i=0;i<sceneObjects.size();i++){
+        if(sceneObjects[i].name == _name){
+            return &sceneObjects[i];
+        }
+    }
+    
+    //no object found
+    return NULL;
 }

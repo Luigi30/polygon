@@ -1,6 +1,0 @@
-framebuffer.cpp(204): Warning! W726: col(1) no reference to formal parameter 'Projection'
-framebuffer.cpp(140): Note! N392: col(76) definition: 'Matrix Projection' in 'void Framebuffer::draw_face( WavefrontObject, Matrix, Matrix, Matrix, int )'
-framebuffer.cpp(298): Warning! W726: col(1) no reference to formal parameter 'origin'
-framebuffer.cpp(236): Note! N392: col(94) definition: 'Point origin' in 'void Framebuffer::draw_filled_triangle( Triangle, Vector3f *, Point, int )'
-framebuffer.cpp(463): Warning! W726: col(1) no reference to formal parameter 'sizeX'
-framebuffer.cpp(407): Note! N392: col(45) definition: 'int sizeX' in 'void Framebuffer::putGlyph( unsigned char *, int, int, int, int, int )'

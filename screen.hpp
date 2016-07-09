@@ -53,6 +53,7 @@ class Screen {
 
     void addSceneObject(std::string _name, WavefrontObject _model);
     void removeSceneObject(std::string _name);
+    SceneObject *getSceneObjectPtr(std::string _name);
 
     void addButton(Button);
     void drawButton(Button);

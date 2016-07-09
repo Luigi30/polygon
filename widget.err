@@ -1,9 +1,0 @@
-widgets\widget.hpp(27): Warning! W726: col(69) no reference to formal parameter 'background'
-widgets\widget.hpp(27): Note! N393: col(69) included from widgets\widget.cpp(1)
-widgets\widget.hpp(27): Note! N392: col(38) definition: 'Framebuffer * background' in 'void Widget::redraw( Framebuffer *, Framebuffer * )'
-widgets\widget.hpp(27): Warning! W726: col(69) no reference to formal parameter 'text'
-widgets\widget.hpp(27): Note! N392: col(63) definition: 'Framebuffer * text' in 'void Widget::redraw( Framebuffer *, Framebuffer * )'
-widgets\widget.hpp(28): Warning! W726: col(69) no reference to formal parameter 'background'
-widgets\widget.hpp(28): Note! N392: col(38) definition: 'Framebuffer * background' in 'void Widget::remove( Framebuffer *, Framebuffer * )'
-widgets\widget.hpp(28): Warning! W726: col(69) no reference to formal parameter 'text'
-widgets\widget.hpp(28): Note! N392: col(63) definition: 'Framebuffer * text' in 'void Widget::remove( Framebuffer *, Framebuffer * )'
