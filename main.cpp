@@ -121,8 +121,8 @@ int main(){
     while(!abort){
         delay(50);
 
-        g_screen.getSceneObjectPtr("cube1")->model.rotation = g_screen.getSceneObjectPtr("cube1")->model.rotation + Vector3f(0,5,0);
-        g_screen.getSceneObjectPtr("cube1")->model.rotation = g_screen.getSceneObjectPtr("cube1")->model.rotation + Vector3f(4,0,0);
+        //g_screen.getSceneObjectPtr("cube1")->model.rotation = g_screen.getSceneObjectPtr("cube1")->model.rotation + Vector3f(0,5,0);
+        //g_screen.getSceneObjectPtr("cube1")->model.rotation = g_screen.getSceneObjectPtr("cube1")->model.rotation + Vector3f(4,0,0);
 
         //clamp rotation
         g_screen.getSceneObjectPtr("cube1")->model.rotation.x = std::fmod(g_screen.getSceneObjectPtr("cube1")->model.rotation.x, 360.0f);
@@ -135,21 +135,40 @@ int main(){
         if(kbhit()){
             char key = getch();
 
+            Vector3f direction = Vector3f(0,0,0);
+
             if(key == 0x1B){ //ESC
                 abort = true;
             }
             else if(key == 'a'){
-                eye = eye + Vector3f(-1, 0, 0);
+                direction = Vector3f(-1,0,0);
             }
             else if(key == 'd'){
-                eye = eye + Vector3f(1, 0, 0);
+                direction = Vector3f(1,0,0);
             }
             else if(key == 'w'){
-                eye = eye + Vector3f(0, 0, 1);
+                direction = Vector3f(0,0,1);
             }
             else if(key == 's'){
-                eye = eye + Vector3f(0, 0, -1);
+                direction = Vector3f(0,0,-1);
             }
+            else if(key == 'e'){
+                cameraRotation.y = std::fmod(cameraRotation.y - 5, 360.0f);
+            }
+            else if(key == 'q'){
+                cameraRotation.y = std::fmod(cameraRotation.y + 5, 360.0f);
+            }
+            else if(key == 'r'){
+                cameraRotation.x = std::fmod(cameraRotation.x - 5, 360.0f);
+            }
+            else if(key == 'v'){
+                cameraRotation.x = std::fmod(cameraRotation.x + 5, 360.0f);
+            }
+
+            direction = rotateAroundXAxis(direction, -cameraRotation.x);
+            direction = rotateAroundYAxis(direction, -cameraRotation.y);
+            direction = rotateAroundZAxis(direction, -cameraRotation.z);
+            eye = eye + direction;
         }
     }
 

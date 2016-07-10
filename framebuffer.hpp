@@ -28,7 +28,7 @@ class Framebuffer {
     void draw_triangle(Triangle, Point, int);
     void draw_filled_triangle(Triangle, Vector3f[], Point, int);
 
-    void draw_face(WavefrontObject model, Vector3f eye, int face);
+    void draw_face(WavefrontObject model, Vector3f eye, Vector3f center, int face);
     
     void draw_rectangle(Point, int, int, int, int);
     void draw_rectangle_filled(Point, int, int, int);

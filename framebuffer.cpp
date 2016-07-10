@@ -11,9 +11,6 @@
 
 #define BETWEEN(token, A, B) (token >= A && token <= B)
 
-#define M_PI 3.141592653589793238462643383279502884
-#define DEG_TO_RAD(X) ((X * M_PI) / 180.0)
-
 Framebuffer::Framebuffer(){
     pixels = (Pixel*)malloc(64000+1);
     if(pixels == NULL){
@@ -119,28 +116,13 @@ Vector3f calculateSurfaceNormal(Vector3f *triangle){
     return Vector3f::cross_product(U, V);
 }
 
-Vector3f rotateAroundXAxis(Vector3f inputPoint, float rotationDegrees){
-    float sin = std::sin(DEG_TO_RAD(rotationDegrees));
-    float cos = std::cos(DEG_TO_RAD(rotationDegrees));
-
-    return Vector3f((inputPoint.x),
-                    (inputPoint.y * cos) - (inputPoint.z * sin),
-                    (inputPoint.y * sin) + (inputPoint.z * cos));
-}
-
-Vector3f rotateAroundYAxis(Vector3f inputPoint, float rotationDegrees){
-    float sin = std::sin(DEG_TO_RAD(rotationDegrees));
-    float cos = std::cos(DEG_TO_RAD(rotationDegrees));
-
-    return Vector3f(inputPoint.x * cos + inputPoint.z * sin,
-                    inputPoint.y,
-                    -inputPoint.x * sin + inputPoint.z * cos);
-}
-
-void Framebuffer::draw_face(WavefrontObject model, Vector3f eye, int face_number){
+void Framebuffer::draw_face(WavefrontObject model, Vector3f eye, Vector3f cameraRotation, int face_number){
     Face face = model.getFaces()[face_number];
     float zNear = 1.0;
     float zFar = 50.0;
+
+    //Eye is the camera transform. the "camera" should point at Center.
+    //so we need to rotate the scene so Center is in the center of the screen
 
     Vector3f worldCoords[3];
     worldCoords[0] = Vector3f(model.getLocalVertices()[face.v1].x, model.getLocalVertices()[face.v1].y, model.getLocalVertices()[face.v1].z);
@@ -173,6 +155,10 @@ void Framebuffer::draw_face(WavefrontObject model, Vector3f eye, int face_number
                                    screenCoords[i].y + model.translation.y,
                                    screenCoords[i].z + model.translation.z);
 
+        //apply camera rotation
+        screenCoords[i] = rotateAroundXAxis(screenCoords[i], cameraRotation.x);
+        screenCoords[i] = rotateAroundYAxis(screenCoords[i], cameraRotation.y);
+
         //Scale Z to (0,1)
         float scaledZ = (screenCoords[i].z - zNear) / (zFar - zNear);
 
@@ -186,8 +172,9 @@ void Framebuffer::draw_face(WavefrontObject model, Vector3f eye, int face_number
         screenCoords[i].y /= screenCoords[i].z;
 
         //Perform scaling
-        screenCoords[i].x = screenCoords[i].x * 100 + SCREEN_WIDTH/2;
-        screenCoords[i].y = screenCoords[i].y * 100 + SCREEN_HEIGHT/2;
+        float scaleFactor = 100.0f;
+        screenCoords[i].x = screenCoords[i].x * scaleFactor + SCREEN_WIDTH/2;
+        screenCoords[i].y = screenCoords[i].y * scaleFactor + SCREEN_HEIGHT/2;
     }
 
     draw_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), Point(0,0), COLOR_GREEN);

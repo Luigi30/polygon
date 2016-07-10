@@ -136,6 +136,7 @@ void Screen::draw_polygon_object(SceneObject sceneObject){
 }
 
 void Screen::draw_polygon_object(WavefrontObject object){    
+/*
     Matrix Model = object.getModelMatrix(); //local -> world transform matrix
     Matrix modelView = perspective_projection() * View * Model;
         
@@ -145,7 +146,12 @@ void Screen::draw_polygon_object(WavefrontObject object){
         if((object.getLocalVertices()[face.v1].z >= -1.0 && object.getLocalVertices()[face.v1].z <= 1.0) &&
            (object.getLocalVertices()[face.v2].z >= -1.0 && object.getLocalVertices()[face.v2].z <= 1.0) &&
            (object.getLocalVertices()[face.v3].z >= -1.0 && object.getLocalVertices()[face.v3].z <= 1.0))
-            layer_polygons.draw_face(object, eye, i);
+            layer_polygons.draw_face(object, eye, center, i);
+    }
+*/
+
+    for(int i=0;i<object.getFaceCount();i++){
+        layer_polygons.draw_face(object, eye, cameraRotation, i);
     }
 }
 
@@ -155,7 +161,7 @@ void Screen::draw_polygon_debug_data(){
     layer_text.putString(eyeLocation, strlen(eyeLocation), Point(0,0), COLOR_GREEN, FONT_4x6);
 
     char centerLocation[80];
-    sprintf(centerLocation, "CENTER: (%f, %f, %f)", center.x, center.y, center.z);
+    sprintf(centerLocation, "CAMROT: (%f, %f, %f)", cameraRotation.x, cameraRotation.y, cameraRotation.z);
     layer_text.putString(centerLocation, strlen(centerLocation), Point(0,8), COLOR_GREEN, FONT_4x6);
 }
 

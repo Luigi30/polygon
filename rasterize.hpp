@@ -9,6 +9,8 @@ Vector3f center(0,0,0); //the camera is pointed at this point
                         //need to find rotation in order to rotate the camera
 Vector3f up(0.0, 1.0, 0.0); //up
 
+Vector3f cameraRotation(0, 0, 0);
+
 Matrix look_at(Vector3f vec_eye, Vector3f vec_center, Vector3f vec_up);
 Matrix setup_viewport(int top, int bottom, int left, int right);
 //Matrix perspective_projection(int top, int bottom, int left, int right, int near, int far);
