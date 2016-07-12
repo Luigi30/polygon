@@ -11,6 +11,9 @@
 
 #define BETWEEN(token, A, B) (token >= A && token <= B)
 
+#define M_PI 3.141592653589793238462643383279502884
+#define DEG_TO_RAD(X) ((X * M_PI) / 180.0)
+
 Framebuffer::Framebuffer(){
     pixels = (Pixel*)malloc(64000+1);
     if(pixels == NULL){
@@ -116,9 +119,39 @@ Vector3f calculateSurfaceNormal(Vector3f *triangle){
     return Vector3f::cross_product(U, V);
 }
 
+Vector3f applyTransformations(Vector3f v, Vector3f eye, Vector3f cameraRotation, Vector3f translation, Vector3f rotation, Vector3f scale){
+    Vector3f result = Vector3f(v.x, v.y, v.z);
+
+    //Scale
+    result = Vector3f(result.x * scale.x,
+                      result.y * scale.y,
+                      result.z * scale.z);
+
+    //Rotate
+    result = rotateAroundXAxis(result, rotation.x);
+    result = rotateAroundYAxis(result, rotation.y);
+
+    //Translate
+    //apply world translation
+    result = Vector3f(result.x - eye.x,
+                      result.y - eye.y,
+                      result.z - eye.z);
+
+    //then apply local translation
+    result = Vector3f(result.x + translation.x,
+                      result.y + translation.y,
+                      result.z + translation.z);
+
+    //then camera rotation
+    result = rotateAroundXAxis(result, cameraRotation.x);
+    result = rotateAroundYAxis(result, cameraRotation.y);
+
+    return result;
+}
+
 void Framebuffer::draw_face(WavefrontObject model, Vector3f eye, Vector3f cameraRotation, int face_number){
     Face face = model.getFaces()[face_number];
-    float zNear = 1.0;
+    float zNear = 0.1;
     float zFar = 50.0;
 
     //Eye is the camera transform. the "camera" should point at Center.
@@ -129,59 +162,46 @@ void Framebuffer::draw_face(WavefrontObject model, Vector3f eye, Vector3f camera
     worldCoords[1] = Vector3f(model.getLocalVertices()[face.v2].x, model.getLocalVertices()[face.v2].y, model.getLocalVertices()[face.v2].z);
     worldCoords[2] = Vector3f(model.getLocalVertices()[face.v3].x, model.getLocalVertices()[face.v3].y, model.getLocalVertices()[face.v3].z);
 
+    Vector3f transformedWorldCoords[3];
     Vector3f screenCoords[3];
 
     //Scale -> Rotate -> Translate    
     for(int i=0;i<3;i++){
-        screenCoords[i] = Vector3f(worldCoords[i].x, worldCoords[i].y, worldCoords[i].z);
-
-        //Scale
-        screenCoords[i] = Vector3f(screenCoords[i].x * model.scale.x,
-                                   screenCoords[i].y * model.scale.y,
-                                   screenCoords[i].z * model.scale.z);
-
-        //Rotate
-        screenCoords[i] = rotateAroundXAxis(screenCoords[i], model.rotation.x);
-        screenCoords[i] = rotateAroundYAxis(screenCoords[i], model.rotation.y);
-
-        //Translate
-        //apply world translation
-        screenCoords[i] = Vector3f(screenCoords[i].x - eye.x,
-                                   screenCoords[i].y - eye.y,
-                                   screenCoords[i].z - eye.z);
-
-        //then apply local translation
-        screenCoords[i] = Vector3f(screenCoords[i].x + model.translation.x,
-                                   screenCoords[i].y + model.translation.y,
-                                   screenCoords[i].z + model.translation.z);
-
-        //apply camera rotation
-        screenCoords[i] = rotateAroundXAxis(screenCoords[i], cameraRotation.x);
-        screenCoords[i] = rotateAroundYAxis(screenCoords[i], cameraRotation.y);
+        transformedWorldCoords[i] = applyTransformations(worldCoords[i], eye, cameraRotation, model.translation, model.rotation, model.scale);
 
         //Scale Z to (0,1)
-        float scaledZ = (screenCoords[i].z - zNear) / (zFar - zNear);
+        float scaledZ = (transformedWorldCoords[i].z - zNear) / (zFar - zNear);
 
         //are we drawing a triangle outside of our clipping planes?
         if(scaledZ >= 1.0 || scaledZ <= 0.0){
             return;
         }
 
+        float vFov = DEG_TO_RAD(64.0);
+
         //Perspective divide
-        screenCoords[i].x /= screenCoords[i].z;
-        screenCoords[i].y /= screenCoords[i].z;
+        screenCoords[i].x = transformedWorldCoords[i].x / transformedWorldCoords[i].z;
+        screenCoords[i].y = transformedWorldCoords[i].y / transformedWorldCoords[i].z;
+        screenCoords[i].z = transformedWorldCoords[i].z;
 
         //Perform scaling
-        float scaleFactor = 100.0f;
+        float scaleFactor = 50.0f;
         screenCoords[i].x = screenCoords[i].x * scaleFactor + SCREEN_WIDTH/2;
         screenCoords[i].y = screenCoords[i].y * scaleFactor + SCREEN_HEIGHT/2;
     }
 
     draw_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), Point(0,0), COLOR_GREEN);
 
-    //Vector3f normal = calculateSurfaceNormal(worldCoords);
-    //Vector3f normalizedNormal = normal.normalize();
-    //draw_filled_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), worldCoords, Point(0,0), COLOR_GREEN);
+/*
+    Vector3f faceNormal = calculateSurfaceNormal(transformedWorldCoords);
+    Vector3f lightDirection = Vector3f(0,0,1);
+    float lightIntensity = faceNormal.normalize() * lightDirection;
+    float lightLevel = (lightIntensity * 127) / 16.0;
+    lightLevel = std::min(lightLevel, 15.0f);
+    if(lightLevel >= 0){
+        draw_filled_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), worldCoords, Point(0,0), 0x10 + lightLevel);
+    }
+*/
 }
 
 void Framebuffer::draw_triangle(Triangle triangle, Point origin, int color){

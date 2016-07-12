@@ -62,35 +62,15 @@ int main(){
 
     WavefrontObject obj;
     obj.load_file("cube.3d");
-    obj.translation = Vector3f(0,0,0);
+    obj.translation = Vector3f(-5,0,0);
+    obj.scale = Vector3f(1,2.5,2.5);
     g_screen.addSceneObject("cube1", obj);
 
-/*
     WavefrontObject obj2;
     obj2.load_file("cube.3d");
-    obj2.translation = Vector3f(0,0,5);
+    obj2.translation = Vector3f(5,0,0);
+    obj2.scale = Vector3f(1,2.5,2.5);
     g_screen.addSceneObject("cube2", obj2);
-
-    WavefrontObject obj3;
-    obj3.load_file("cube.3d");
-    obj3.translation = Vector3f(1,0,5);
-    g_screen.addSceneObject("cube3", obj3);
-
-    WavefrontObject obj4;
-    obj4.load_file("cube.3d");
-    obj4.translation = Vector3f(-.5,1,5);
-    g_screen.addSceneObject("cube4", obj4);
-
-    WavefrontObject obj5;
-    obj5.load_file("cube.3d");
-    obj5.translation = Vector3f(.55,1,5);
-    g_screen.addSceneObject("cube5", obj5);
-    
-    WavefrontObject obj6;
-    obj6.load_file("cube.3d");
-    obj6.translation = Vector3f(0,2,5);
-    g_screen.addSceneObject("cube6", obj6);
-*/
     
     printf("OK\n");
 
