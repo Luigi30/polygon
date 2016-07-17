@@ -1,5 +1,6 @@
 #include "main.hpp"
 #include <cmath>
+#include <time.h>
 
 #define M_PI 3.141592653589793238462643383279502884
 #define DEG_TO_RAD(X) ((X * M_PI) / 180.0)
@@ -9,6 +10,27 @@ std::vector<Shape> shapesList;
 void abort(char *msg){
     printf("\r\nCritical error: %s\r\n", msg);
     exit(255);
+}
+
+void init_timer(int rate){
+    //The timer runs at 1193180Hz
+    //Timer frequency = 1193180/rate
+    
+    //Initialize our timer
+    myTimerTicks = 0;
+    
+    long timerReload = rate;
+    biosTimerHandler = _dos_getvect(0x08); //DOS timer handler
+
+    _disable();
+
+    //_dos_setvect(0x08, timerHandler);
+    //dpmi_set_pm_handler(0x08, timerHandler);
+    
+    outp(0x43, 0x34);
+    outp(0x40, timerReload & 0xFF);
+    outp(0x40, timerReload >> 8);
+    _enable();
 }
 
 void load_shapes(){
@@ -49,6 +71,8 @@ Point transform_2d(Matrix transformation, Point p){
 }
 
 int main(){
+    init_timer(11930); //100 ticks per second
+    
     VGA_PTR = (char*)VGA_LINEAR_ADDRESS;
     debugOutput("OK\r\n");
     
@@ -57,31 +81,23 @@ int main(){
 
     printf("Loading model\n");
 
-    Projection = Matrix::identity(4);
-    //Projection = perspective_projection(-1, 1, 0, 320, 1, 11);
-
     WavefrontObject obj;
     obj.load_file("cube.3d");
-    obj.translation = Vector3f(-5,0,0);
-    obj.scale = Vector3f(1,2.5,2.5);
+    obj.translation = Vector3f(0,0,0);
+    obj.rotation = Vector3f(0,0,0);
+    obj.scale = Vector3f(1,1,1);
     g_screen.addSceneObject("cube1", obj);
 
-    WavefrontObject obj2;
-    obj2.load_file("cube.3d");
-    obj2.translation = Vector3f(5,0,0);
-    obj2.scale = Vector3f(1,2.5,2.5);
-    g_screen.addSceneObject("cube2", obj2);
+    WavefrontObject ship;
+    obj.load_file("sqrship.3d");
+    obj.translation = Vector3f(0,0,5);
+    obj.scale = Vector3f(1,1,1);
+    g_screen.addSceneObject("ship", obj);
     
     printf("OK\n");
 
     printf("Found %d vertices\n", obj.getVertexCount());
     printf("Found %d faces\n", obj.getFaceCount());
-
-    //Transformation matrix
-    //http://www.opengl-tutorial.org/beginners-tutorials/tutorial-3-matrices/
-    //Matrix transformation = Matrix::transformation(0,0,0);   
-    //Matrix rotation = Matrix::identity(4);
-    //Matrix scale = Matrix::scale(1, 1, 1);
 
     _setvideomode(_MRES256COLOR); //Change to mode 13h
 
@@ -99,11 +115,6 @@ int main(){
     bool abort = false;
 
     while(!abort){
-        delay(50);
-
-        //g_screen.getSceneObjectPtr("cube1")->model.rotation = g_screen.getSceneObjectPtr("cube1")->model.rotation + Vector3f(0,5,0);
-        //g_screen.getSceneObjectPtr("cube1")->model.rotation = g_screen.getSceneObjectPtr("cube1")->model.rotation + Vector3f(4,0,0);
-
         //clamp rotation
         g_screen.getSceneObjectPtr("cube1")->model.rotation.x = std::fmod(g_screen.getSceneObjectPtr("cube1")->model.rotation.x, 360.0f);
         g_screen.getSceneObjectPtr("cube1")->model.rotation.y = std::fmod(g_screen.getSceneObjectPtr("cube1")->model.rotation.y, 360.0f);
@@ -112,10 +123,11 @@ int main(){
         g_screen.draw_object_debug_data(g_screen.getSceneObjectPtr("cube1")->model);
         g_screen.redraw();
 
+        Vector3f direction = Vector3f(0,0,0);
+        bool goForward = false;
+
         if(kbhit()){
             char key = getch();
-
-            Vector3f direction = Vector3f(0,0,0);
 
             if(key == 0x1B){ //ESC
                 abort = true;
@@ -139,60 +151,27 @@ int main(){
                 cameraRotation.y = std::fmod(cameraRotation.y + 5, 360.0f);
             }
             else if(key == 'r'){
-                cameraRotation.x = std::fmod(cameraRotation.x - 5, 360.0f);
-            }
-            else if(key == 'v'){
                 cameraRotation.x = std::fmod(cameraRotation.x + 5, 360.0f);
             }
+            else if(key == 'v'){
+                cameraRotation.x = std::fmod(cameraRotation.x - 5, 360.0f);
+            }
+            else if (key == 'g'){
+                goForward = ~goForward;
+            }
+            else if (key == 'h'){
+                g_screen.getSceneObjectPtr("cube1")->model.rotation.y = 5.0f + std::fmod(g_screen.getSceneObjectPtr("cube1")->model.rotation.y, 360.0f);
+            }
 
-            direction = rotateAroundXAxis(direction, -cameraRotation.x);
-            direction = rotateAroundYAxis(direction, -cameraRotation.y);
-            direction = rotateAroundZAxis(direction, -cameraRotation.z);
-            eye = eye + direction;
+        } else {
+            if(goForward) direction = Vector3f(0,0,0.05);
         }
+
+        direction = rotateAroundXAxis(direction, -cameraRotation.x);
+        direction = rotateAroundYAxis(direction, -cameraRotation.y);
+        direction = rotateAroundZAxis(direction, -cameraRotation.z);
+        eye = eye + direction;
     }
-
-/*
-    bool menu = true;
-   
-    while(menu == true){
-        char key = getch();
-        
-        if(key == 0x1B) {
-            menu = false;
-        }
-        else if(key == 'a'){
-            eye = eye + Vector3f(-1,0,0);
-            center = center + Vector3f(-1,0,0);
-        }
-        else if(key == 'd'){
-            eye = eye + Vector3f(1,0,0);
-            center = center + Vector3f(1,0,0);
-        }
-        else if(key == 'w'){
-            eye = eye + Vector3f(0,0,-1);
-            center = center + Vector3f(0,0,-1);
-        }
-        else if(key == 's'){
-            eye = eye + Vector3f(0,0,1);
-            center = center + Vector3f(0,0,1);
-        }
-        else if(key == 'q'){
-            rotationY = (rotationY - 5) % 360;
-        }
-        else if(key == 'e'){
-            rotationY = (rotationY + 5) % 360;
-        }
-
-        recalculate_transformation();
-
-        //g_screen.reset_layer_polygons();
-        //g_screen.draw_polygon_object(obj);
-        //g_screen.draw_polygon_object(cube2);
-        g_screen.draw_polygon_debug_data();
-        g_screen.redraw();
-    }
-*/
 
     _setvideomode(_DEFAULTMODE);
 

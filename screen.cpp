@@ -1,4 +1,7 @@
 #include "screen.hpp"
+#include <time.h>
+
+int polygonCount = 0;
 
 Matrix perspective_projection(){
     Matrix m = Matrix::identity(4);
@@ -22,6 +25,9 @@ Matrix perspective_projection(){
 }
 
 void Screen::redraw(){
+    polygonCount = 0;
+    clock_t start = clock();
+    
     //render buttons to layer_background and text to layer_text
     memset(layer_widgets.getPixels(), 0, VGA_SIZE);
     /*
@@ -41,6 +47,14 @@ void Screen::redraw(){
     layer_final.overlay(layer_polygons, VGA_SIZE);
     layer_final.overlay(layer_widgets, VGA_SIZE);
     layer_final.overlay(layer_text, VGA_SIZE);
+
+    clock_t timing = clock() - start;
+    char timingText[80];
+    sprintf(timingText, "TICKS : %d", timing);
+    layer_text.putString(timingText, strlen(timingText), Point(0,176), COLOR_GREEN, FONT_4x6);
+    char fpsText[80];
+    sprintf(fpsText, "FPS   : %f", (CLOCKS_PER_SEC / (float)timing));
+    layer_text.putString(fpsText, strlen(fpsText), Point(0,184), COLOR_GREEN, FONT_4x6);
 
     //disable cursor while redrawing or we get graphic garbage on screen
     //Mouse::cursorDisable();
@@ -136,22 +150,8 @@ void Screen::draw_polygon_object(SceneObject sceneObject){
 }
 
 void Screen::draw_polygon_object(WavefrontObject object){    
-/*
-    Matrix Model = object.getModelMatrix(); //local -> world transform matrix
-    Matrix modelView = perspective_projection() * View * Model;
-        
     for(int i=0;i<object.getFaceCount();i++){
-        Face face = object.getFaces()[i];
-        
-        if((object.getLocalVertices()[face.v1].z >= -1.0 && object.getLocalVertices()[face.v1].z <= 1.0) &&
-           (object.getLocalVertices()[face.v2].z >= -1.0 && object.getLocalVertices()[face.v2].z <= 1.0) &&
-           (object.getLocalVertices()[face.v3].z >= -1.0 && object.getLocalVertices()[face.v3].z <= 1.0))
-            layer_polygons.draw_face(object, eye, center, i);
-    }
-*/
-
-    for(int i=0;i<object.getFaceCount();i++){
-        layer_polygons.draw_face(object, eye, cameraRotation, i);
+        layer_polygons.draw_face(object, eye, cameraRotation, i) ? polygonCount++ : polygonCount;
     }
 }
 
@@ -163,6 +163,10 @@ void Screen::draw_polygon_debug_data(){
     char centerLocation[80];
     sprintf(centerLocation, "CAMROT: (%f, %f, %f)", cameraRotation.x, cameraRotation.y, cameraRotation.z);
     layer_text.putString(centerLocation, strlen(centerLocation), Point(0,8), COLOR_GREEN, FONT_4x6);
+
+    char polycountLocation[80];
+    sprintf(polycountLocation, "POLYS : %d", polygonCount);
+    layer_text.putString(polycountLocation, strlen(polycountLocation), Point(0,192), COLOR_GREEN, FONT_4x6);
 }
 
 void Screen::draw_object_debug_data(WavefrontObject model){
@@ -204,5 +208,6 @@ SceneObject* Screen::getSceneObjectPtr(std::string _name){
     }
     
     //no object found
+    assert(false);
     return NULL;
 }

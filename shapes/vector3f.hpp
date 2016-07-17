@@ -46,6 +46,10 @@ class Vector3f {
             return (a.x*b.x) + (a.y*b.y) + (a.z*b.z);
         }
 
+        Vector3f negate(){
+            return Vector3f(-x, -y, -z);
+        }
+
         operator Point2D() {
             int x_i, y_i;
             

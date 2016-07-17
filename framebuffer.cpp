@@ -30,7 +30,7 @@ Framebuffer::Framebuffer(){
 
 void Framebuffer::reset_zbuffer(){
     for(int i=0;i<64000+1;i++){
-        zbuffer[i] = -100.0; //TODO: negative infinity
+        zbuffer[i] = 200.0; //TODO: negative infinity
     }
 }
 
@@ -112,13 +112,6 @@ Point rotate(Point point, int rotation_degrees){
     return Point(rotatedX, rotatedY);
 }
 
-Vector3f calculateSurfaceNormal(Vector3f *triangle){
-    Vector3f U = triangle[2] - triangle[0];
-    Vector3f V = triangle[1] - triangle[0];
-
-    return Vector3f::cross_product(U, V);
-}
-
 Vector3f applyTransformations(Vector3f v, Vector3f eye, Vector3f cameraRotation, Vector3f translation, Vector3f rotation, Vector3f scale){
     Vector3f result = Vector3f(v.x, v.y, v.z);
 
@@ -149,9 +142,16 @@ Vector3f applyTransformations(Vector3f v, Vector3f eye, Vector3f cameraRotation,
     return result;
 }
 
-void Framebuffer::draw_face(WavefrontObject model, Vector3f eye, Vector3f cameraRotation, int face_number){
+Vector3f calculateSurfaceNormal(Vector3f *triangle){
+    Vector3f U = triangle[1] - triangle[0];
+    Vector3f V = triangle[2] - triangle[0];
+
+    return Vector3f::cross_product(U, V);
+}
+
+bool Framebuffer::draw_face(WavefrontObject model, Vector3f eye, Vector3f cameraRotation, int face_number){
     Face face = model.getFaces()[face_number];
-    float zNear = 0.1;
+    float zNear = 1.0;
     float zFar = 50.0;
 
     //Eye is the camera transform. the "camera" should point at Center.
@@ -174,7 +174,7 @@ void Framebuffer::draw_face(WavefrontObject model, Vector3f eye, Vector3f camera
 
         //are we drawing a triangle outside of our clipping planes?
         if(scaledZ >= 1.0 || scaledZ <= 0.0){
-            return;
+            return false;
         }
 
         float vFov = DEG_TO_RAD(64.0);
@@ -185,23 +185,36 @@ void Framebuffer::draw_face(WavefrontObject model, Vector3f eye, Vector3f camera
         screenCoords[i].z = transformedWorldCoords[i].z;
 
         //Perform scaling
-        float scaleFactor = 50.0f;
+        float scaleFactor = 200.0f;
         screenCoords[i].x = screenCoords[i].x * scaleFactor + SCREEN_WIDTH/2;
-        screenCoords[i].y = screenCoords[i].y * scaleFactor + SCREEN_HEIGHT/2;
+        screenCoords[i].y = -screenCoords[i].y * scaleFactor + SCREEN_HEIGHT/2;
     }
 
-    draw_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), Point(0,0), COLOR_GREEN);
+    Vector3f faceNormal = calculateSurfaceNormal(transformedWorldCoords).normalize();
+    Vector3f vectorCameraToTriangle = center - transformedWorldCoords[0];
+    float triangleFacing = Vector3f::dot_product(vectorCameraToTriangle.normalize(), faceNormal);
 
-/*
-    Vector3f faceNormal = calculateSurfaceNormal(transformedWorldCoords);
-    Vector3f lightDirection = Vector3f(0,0,1);
-    float lightIntensity = faceNormal.normalize() * lightDirection;
-    float lightLevel = (lightIntensity * 127) / 16.0;
-    lightLevel = std::min(lightLevel, 15.0f);
-    if(lightLevel >= 0){
-        draw_filled_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), worldCoords, Point(0,0), 0x10 + lightLevel);
+    if(triangleFacing > 0.0f){
+        Vector3f lightDirection = Vector3f(0,0,-1);
+        float lightIntensity = faceNormal * lightDirection;
+        int lightLevel = (lightIntensity * 127.0) / 16.0;
+        lightLevel = std::min(lightLevel, 0x18);
+
+        //if(lightLevel > 0){
+            draw_projected_triangle(pixels, zbuffer, Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), transformedWorldCoords, std::max(0x13, 0x10 + lightLevel), true);
+            //draw_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), Point(0,0), COLOR_GREEN);
+            return true;
+        //} else {
+        //    return false;
+        //}
+        
+        return true;
+
+        //draw_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), Point(0,0), COLOR_GREEN);
+        //return true;
+    } else {
+        return false;
     }
-*/
 }
 
 void Framebuffer::draw_triangle(Triangle triangle, Point origin, int color){
@@ -209,92 +222,6 @@ void Framebuffer::draw_triangle(Triangle triangle, Point origin, int color){
         Vector3f new_start = vector_offset(triangle.getPoint(i), origin);
         Vector3f new_end = vector_offset(triangle.getPoint((i+1) % 3), origin);
         draw_line((Point2D)new_start, (Point2D)new_end, color);
-    }
-}
-
-Vector3f barycentric_point(Point A, Point B, Point C, Point P){
-    /* Find the barycentric vector of triangle (A,B,C) and point P. */
-    
-    Vector3f s[2];
-
-    s[1].x = C.y - A.y;
-    s[1].y = B.y - A.y;
-    s[1].z = A.y - P.y;
-
-    s[0].x = C.x - A.x;
-    s[0].y = B.x - A.x;
-    s[0].z = A.x - P.x;
-
-    Vector3f U = Vector3f::cross_product(s[0], s[1]);
-
-    if(std::abs(U.z) > 1e-2){
-        return Vector3f(1.0 - (U.x + U.y)/U.z, U.y/U.z, U.x/U.z);
-    }
-
-    return Vector3f(-1.0, 1.0, 1.0);
-}
-
-void Framebuffer::draw_filled_triangle(Triangle triangle, Vector3f worldCoordinates[], Point origin, int color){
-
-    /* Reset the edge list. */
-    for(int i=0;i<200;i++){
-        verticesOnScanline[i].clear();
-    }
-
-    /* Calculate the screen coordinatesd of the triangle. */
-    Point screenPoints[3];
-    for(int i=0;i<3;i++){
-        screenPoints[i] = Point((int)triangle.getPoints()[i].x + .5, (int)triangle.getPoints()[i].y + .5);
-    }
-
-    //printf("draw_filled_triangle: triangle is (%d,%d),(%d,%d),(%d,%d)\n", screenPoints[0].x, screenPoints[0].y, screenPoints[1].x, screenPoints[1].y, screenPoints[2].x, screenPoints[2].y);
-
-    /* Find the bounding box of the triangle. */
-    int boundingBoxX[2] = {321, -1};
-    int boundingBoxY[2] = {201, -1};
-    
-    for(int i=0; i<3; i++){
-        if(screenPoints[i].x < boundingBoxX[0]) boundingBoxX[0] = screenPoints[i].x;
-        if(screenPoints[i].x > boundingBoxX[1]) boundingBoxX[1] = screenPoints[i].x;
-
-        if(screenPoints[i].y < boundingBoxY[0]) boundingBoxY[0] = screenPoints[i].y;
-        if(screenPoints[i].y > boundingBoxY[1]) boundingBoxY[1] = screenPoints[i].y;
-    }
-
-    for(int scanline = std::max(boundingBoxY[0], 0); scanline <= std::min(SCREEN_HEIGHT-1, boundingBoxY[1]); scanline++){
-        for(int x=std::max(0, boundingBoxX[0]);x<=std::min(SCREEN_WIDTH-1, boundingBoxX[1]);x++){
-
-            /* Is the point inside the triangle? */      
-            Vector3f barycentric = barycentric_point(screenPoints[0], screenPoints[1], screenPoints[2], Point(x, scanline));
-            if(barycentric.x < 0 || barycentric.y < 0 || barycentric.z < 0) continue;
-
-            /* Yes, so get the point's Z. */
-            float z = 0;
-            z += (worldCoordinates[0].z * barycentric.x);
-            z += (worldCoordinates[1].z * barycentric.y);
-            z += (worldCoordinates[2].z * barycentric.z);
-
-            /* Check the Z-buffer. Should we draw this point? */
-            if(z > zbuffer[x + (scanline * VGA_WIDTH)]) {
-
-                /* Did we fuck up at some point? */
-                assert(scanline >= 0);
-                assert(x >= 0);
-                assert(scanline < SCREEN_HEIGHT);
-                assert(x < SCREEN_WIDTH);
-
-                /* Yes, draw the point. */
-                zbuffer[x + (scanline * VGA_WIDTH)] = z;
-                setPixel(x, scanline, color);
-            }
-        }
-    }
-
-    /* Draw the triangle's wireframe. */
-    for(int i=0;i<3;i++){
-        Point start = triangle.getPoint(i);
-        Point end = triangle.getPoint((i+1) % 3);
-        draw_line(start, end, COLOR_GREEN);
     }
 }
 

@@ -9,6 +9,7 @@
 #include "shapes\triangle.hpp"
 #include "includes\wavefront.hpp"
 #include "includes\matrix.hpp"
+#include "rasterize.hpp"
 
 typedef unsigned char Pixel;
 
@@ -26,9 +27,9 @@ class Framebuffer {
     void reset_zbuffer();
 
     void draw_triangle(Triangle, Point, int);
-    void draw_filled_triangle(Triangle, Vector3f[], Point, int);
+    //void draw_filled_triangle(Triangle, Vector3f[], int);
 
-    void draw_face(WavefrontObject model, Vector3f eye, Vector3f center, int face);
+    bool draw_face(WavefrontObject model, Vector3f eye, Vector3f center, int face);
     
     void draw_rectangle(Point, int, int, int, int);
     void draw_rectangle_filled(Point, int, int, int);
