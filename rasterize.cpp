@@ -116,7 +116,7 @@ void draw_projected_triangle(unsigned char* pixels, float* zbuffer, Triangle tri
 
                 /* Is the point inside the triangle? */      
                 Vector3f barycentric = barycentric_point(screenPoints[0], screenPoints[1], screenPoints[2], Point(x, scanline));
-                if(barycentric.x < 0 || barycentric.y < 0 || barycentric.z < 0) continue;
+                if(barycentric.x < 0 || barycentric.y < 0 || barycentric.z < 0) continue; //If not, go to the next point
 
                 /* Yes, so get the point's Z. */
                 float z = 0;

@@ -126,6 +126,8 @@ int main(){
         Vector3f direction = Vector3f(0,0,0);
         bool goForward = false;
 
+#define ROTATION_DEGREES_PER_STEP 5
+
         if(kbhit()){
             char key = getch();
 
@@ -145,16 +147,16 @@ int main(){
                 direction = Vector3f(0,0,-1);
             }
             else if(key == 'e'){
-                cameraRotation.y = std::fmod(cameraRotation.y - 5, 360.0f);
+                cameraRotation.y = std::fmod(cameraRotation.y - ROTATION_DEGREES_PER_STEP, 360.0f);
             }
             else if(key == 'q'){
-                cameraRotation.y = std::fmod(cameraRotation.y + 5, 360.0f);
+                cameraRotation.y = std::fmod(cameraRotation.y + ROTATION_DEGREES_PER_STEP, 360.0f);
             }
             else if(key == 'r'){
-                cameraRotation.x = std::fmod(cameraRotation.x + 5, 360.0f);
+                cameraRotation.x += std::fmod((float)std::cos(DEG_TO_RAD(cameraRotation.y)), 360.0f) * ROTATION_DEGREES_PER_STEP;
             }
             else if(key == 'v'){
-                cameraRotation.x = std::fmod(cameraRotation.x - 5, 360.0f);
+                cameraRotation.x -= std::fmod((float)std::cos(DEG_TO_RAD(cameraRotation.y)), 360.0f) * ROTATION_DEGREES_PER_STEP;
             }
             else if (key == 'g'){
                 goForward = ~goForward;
