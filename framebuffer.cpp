@@ -24,7 +24,7 @@ Framebuffer::Framebuffer(){
 
     zbuffer = (float*)malloc(sizeof(float)*64000+1);
     for(int i=0;i<64000+1;i++){
-        zbuffer[i] = -100.0; //TODO: negative infinity
+        zbuffer[i] = 200.0; //TODO: negative infinity
     }
 }
 
@@ -32,10 +32,6 @@ void Framebuffer::reset_zbuffer(){
     for(int i=0;i<64000+1;i++){
         zbuffer[i] = 200.0; //TODO: negative infinity
     }
-}
-
-Pixel *Framebuffer::getPixels(){
-    return pixels;
 }
 
 void swap(int &a, int &b){
@@ -112,43 +108,6 @@ Point rotate(Point point, int rotation_degrees){
     return Point(rotatedX, rotatedY);
 }
 
-Vector3f applyTransformations(Vector3f v, Vector3f eye, Vector3f cameraRotation, Vector3f translation, Vector3f rotation, Vector3f scale){
-    Vector3f result = Vector3f(v.x, v.y, v.z);
-
-    //Scale
-    result = Vector3f(result.x * scale.x,
-                      result.y * scale.y,
-                      result.z * scale.z);
-
-    //Rotate
-    result = rotateAroundXAxis(result, rotation.x);
-    result = rotateAroundYAxis(result, rotation.y);
-
-    //Translate
-    //apply world translation
-    result = Vector3f(result.x - eye.x,
-                      result.y - eye.y,
-                      result.z - eye.z);
-
-    //then apply local translation
-    result = Vector3f(result.x + translation.x,
-                      result.y + translation.y,
-                      result.z + translation.z);
-
-    //then camera rotation
-    result = rotateAroundXAxis(result, cameraRotation.x);
-    result = rotateAroundYAxis(result, cameraRotation.y);
-
-    return result;
-}
-
-Vector3f calculateSurfaceNormal(Vector3f *triangle){
-    Vector3f U = triangle[1] - triangle[0];
-    Vector3f V = triangle[2] - triangle[0];
-
-    return Vector3f::cross_product(U, V);
-}
-
 bool Framebuffer::draw_face(WavefrontObject model, Vector3f eye, Vector3f cameraRotation, int face_number){
     Face face = model.getFaces()[face_number];
     float zNear = 1.0;
@@ -200,28 +159,10 @@ bool Framebuffer::draw_face(WavefrontObject model, Vector3f eye, Vector3f camera
         int lightLevel = (lightIntensity * 127.0) / 16.0;
         lightLevel = std::min(lightLevel, 0x18);
 
-        //if(lightLevel > 0){
-            draw_projected_triangle(pixels, zbuffer, Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), transformedWorldCoords, std::max(0x13, 0x10 + lightLevel), true);
-            //draw_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), Point(0,0), COLOR_GREEN);
-            return true;
-        //} else {
-        //    return false;
-        //}
-        
+        draw_projected_triangle(pixels, zbuffer, Triangle(screenCoords[0], screenCoords[1], screenCoords[2]).sortByY(), std::max(0x13, 0x10 + lightLevel), true);
         return true;
-
-        //draw_triangle(Triangle(screenCoords[0], screenCoords[1], screenCoords[2]), Point(0,0), COLOR_GREEN);
-        //return true;
     } else {
         return false;
-    }
-}
-
-void Framebuffer::draw_triangle(Triangle triangle, Point origin, int color){
-    for(int i=0;i<3;i++){
-        Vector3f new_start = vector_offset(triangle.getPoint(i), origin);
-        Vector3f new_end = vector_offset(triangle.getPoint((i+1) % 3), origin);
-        draw_line((Point2D)new_start, (Point2D)new_end, color);
     }
 }
 
@@ -246,13 +187,12 @@ void Framebuffer::draw_rectangle_filled(Point origin, int width, int height, int
     }
 }
 
-void Framebuffer::setPixel(int x, int y, int color){
-    unsigned int coord = VGA_Y_OFFSETS[y] + x;
-    pixels[coord] = color;
+inline void Framebuffer::setPixel(int x, int y, int color){
+    pixels[VGA_Y_OFFSETS[y] + x] = color;
 }
 
 
-void Framebuffer::setPixel(Point point, int color){
+inline void Framebuffer::setPixel(Point point, int color){
     //Set an individual pixel to a color.
     pixels[VGA_Y_OFFSETS[point.getY()] + point.getX()] = color; 
 }
@@ -262,8 +202,8 @@ void Framebuffer::overlay(Framebuffer source, int size){
     //Any pixels in the source of color 0x00 will be considered transparent.
     
     for(UInt32 i=0;i<size;i++){
-        if(source.getPixels()[i] != 0x00){
-            pixels[i] = source.getPixels()[i];
+        if(source.pixels[i] != 0x00){
+            pixels[i] = source.pixels[i];
         }
     }
 }
@@ -401,4 +341,41 @@ void Framebuffer::putString(const char *str, int len, Point destination, int vga
 
 void Framebuffer::putString(std::string str, Point destination, int color, Font font){
     putString(str.c_str(), str.length(), destination, color, font);
+}
+
+Vector3f applyTransformations(Vector3f v, Vector3f eye, Vector3f cameraRotation, Vector3f translation, Vector3f rotation, Vector3f scale){
+    Vector3f result = Vector3f(v.x, v.y, v.z);
+
+    //Scale
+    result = Vector3f(result.x * scale.x,
+                      result.y * scale.y,
+                      result.z * scale.z);
+
+    //Rotate
+    result = result.rotateAroundXAxis(rotation.x);
+    result = result.rotateAroundYAxis(rotation.y);
+
+    //Translate
+    //apply world translation
+    result = Vector3f(result.x - eye.x,
+                      result.y - eye.y,
+                      result.z - eye.z);
+
+    //then apply local translation
+    result = Vector3f(result.x + translation.x,
+                      result.y + translation.y,
+                      result.z + translation.z);
+
+    //then camera rotation
+    result = result.rotateAroundXAxis(cameraRotation.x);
+    result = result.rotateAroundYAxis(cameraRotation.y);
+
+    return result;
+}
+
+Vector3f calculateSurfaceNormal(Vector3f *triangle){
+    Vector3f U = triangle[1] - triangle[0];
+    Vector3f V = triangle[2] - triangle[0];
+
+    return Vector3f::cross_product(U, V);
 }

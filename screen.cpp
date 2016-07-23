@@ -29,20 +29,20 @@ void Screen::redraw(){
     clock_t start = clock();
     
     //render buttons to layer_background and text to layer_text
-    memset(layer_widgets.getPixels(), 0, VGA_SIZE);
+    memset(layer_widgets.pixels, 0, VGA_SIZE);
     /*
     for(int i=0;i<widgetsList.size();i++){
         widgetsList[i]->redraw(&layer_widgets, &layer_text);
     }
     */
 
-    memset(layer_polygons.getPixels(), 0, VGA_SIZE);
+    memset(layer_polygons.pixels, 0, VGA_SIZE);
     layer_polygons.reset_zbuffer();
     for(int i=0;i<sceneObjects.size();i++){
         draw_polygon_object(sceneObjects[i]);
     }
     
-    memset(layer_final.getPixels(), 0, VGA_SIZE);    
+    memset(layer_final.pixels, 0, VGA_SIZE);    
     layer_final.overlay(layer_background, VGA_SIZE);
     layer_final.overlay(layer_polygons, VGA_SIZE);
     layer_final.overlay(layer_widgets, VGA_SIZE);
@@ -58,7 +58,7 @@ void Screen::redraw(){
 
     //disable cursor while redrawing or we get graphic garbage on screen
     //Mouse::cursorDisable();
-    memcpy(VGA_PTR, layer_final.getPixels(), VGA_SIZE);
+    memcpy(VGA_PTR, layer_final.pixels, VGA_SIZE);
     //Mouse::cursorEnable();
 }
 
@@ -210,4 +210,10 @@ SceneObject* Screen::getSceneObjectPtr(std::string _name){
     //no object found
     assert(false);
     return NULL;
+}
+
+void Screen::applyObjectVelocities(){
+    for(int i=0;i<sceneObjects.size();i++){
+        sceneObjects[i].model.apply_velocity_to_translation();
+    }
 }

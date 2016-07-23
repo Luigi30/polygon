@@ -45,9 +45,15 @@ class WavefrontObject {
     int getVertexCount() { return vertexCount-1; };
     int getFaceCount() { return faceCount; };
 
+    void apply_velocity_to_translation() {
+        translation = translation + velocity;        
+    } 
+
     Vector3f translation;
     Vector3f rotation;
     Vector3f scale;
+    Vector3f velocity;
+    
     Matrix getModelMatrix() {
         return (Matrix::translation(translation.x, translation.y, translation.z) *
                 Matrix::rotation(rotation.x, rotation.y, rotation.z) *
@@ -162,6 +168,8 @@ bool WavefrontObject::load_file(std::string filename){
     translation = Vector3f(0,0,0); //Matrix::translation(0,0,0);
     rotation    = Vector3f(0,0,0); //Matrix::identity(4);
     scale       = Vector3f(1,1,1); //Matrix::scale(1,1,1);
+    
+    velocity    = Vector3f(0,0,0);
     return true;
 }
 

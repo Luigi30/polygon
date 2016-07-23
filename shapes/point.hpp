@@ -32,6 +32,16 @@ class Point {
             Point point = Point(this->x * multiplier, this->y * multiplier);
             return point;
         }
+
+        Point operator*(const float multiplier){
+            Point point = Point(this->x * multiplier, this->y * multiplier);
+            return point;
+        }
+
+        Point offset(Point offset_by){
+            Point point = Point(x + offset_by.getX(), y + offset_by.getY());
+            return point;
+        }
 };
 
 typedef Point Vector2i;

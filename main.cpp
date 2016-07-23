@@ -5,7 +5,17 @@
 #define M_PI 3.141592653589793238462643383279502884
 #define DEG_TO_RAD(X) ((X * M_PI) / 180.0)
 
+#define ROTATION_DEGREES_PER_STEP 5
+
 std::vector<Shape> shapesList;
+
+void wait_for_vsync(){
+    //Wait for the end of a retrace
+    do {} while(inp(0x3DA) & 0x08);
+
+    //Wait for the new retrace
+    do {} while (!(inp(0x3DA) & 0x08));
+}
 
 void abort(char *msg){
     printf("\r\nCritical error: %s\r\n", msg);
@@ -92,6 +102,7 @@ int main(){
     obj.load_file("sqrship.3d");
     obj.translation = Vector3f(0,0,5);
     obj.scale = Vector3f(1,1,1);
+    obj.velocity = Vector3f(0,0,0.02);
     g_screen.addSceneObject("ship", obj);
     
     printf("OK\n");
@@ -101,7 +112,7 @@ int main(){
 
     _setvideomode(_MRES256COLOR); //Change to mode 13h
 
-    recalculate_transformation();
+    //recalculate_transformation();
     g_screen.draw_polygon_debug_data();
     //g_screen.draw_view_data(View);
     //g_screen.draw_polygon_object(obj);
@@ -113,20 +124,27 @@ int main(){
     int rotationZ = 0;
 
     bool abort = false;
+    bool goForward = false;
 
+    //Game loop
     while(!abort){
+
+        //Limit to 35Hz refresh
+        wait_for_vsync();
+        wait_for_vsync();
+        
         //clamp rotation
         g_screen.getSceneObjectPtr("cube1")->model.rotation.x = std::fmod(g_screen.getSceneObjectPtr("cube1")->model.rotation.x, 360.0f);
         g_screen.getSceneObjectPtr("cube1")->model.rotation.y = std::fmod(g_screen.getSceneObjectPtr("cube1")->model.rotation.y, 360.0f);
+
+        //apply velocity to objects
+        g_screen.applyObjectVelocities();
 
         g_screen.draw_polygon_debug_data();
         g_screen.draw_object_debug_data(g_screen.getSceneObjectPtr("cube1")->model);
         g_screen.redraw();
 
         Vector3f direction = Vector3f(0,0,0);
-        bool goForward = false;
-
-#define ROTATION_DEGREES_PER_STEP 5
 
         if(kbhit()){
             char key = getch();
@@ -164,14 +182,15 @@ int main(){
             else if (key == 'h'){
                 g_screen.getSceneObjectPtr("cube1")->model.rotation.y = 5.0f + std::fmod(g_screen.getSceneObjectPtr("cube1")->model.rotation.y, 360.0f);
             }
-
-        } else {
-            if(goForward) direction = Vector3f(0,0,0.05);
         }
 
-        direction = rotateAroundXAxis(direction, -cameraRotation.x);
-        direction = rotateAroundYAxis(direction, -cameraRotation.y);
-        direction = rotateAroundZAxis(direction, -cameraRotation.z);
+        if(goForward) {
+            direction = direction + Vector3f(0,0,0.05);
+        }
+
+        direction = direction.rotateAroundXAxis(-cameraRotation.x);
+        direction = direction.rotateAroundYAxis(-cameraRotation.y);
+        direction = direction.rotateAroundZAxis(-cameraRotation.z);
         eye = eye + direction;
     }
 

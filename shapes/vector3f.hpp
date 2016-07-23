@@ -81,33 +81,10 @@ class Vector3f {
                             (a.z * b.x) - (a.x * b.z),
                             (a.x * b.y) - (a.y * b.x));
         }
+
+        Vector3f rotateAroundXAxis(float rotationDegrees);
+        Vector3f rotateAroundYAxis(float rotationDegrees);
+        Vector3f rotateAroundZAxis(float rotationDegrees);
 };
-
-Vector3f rotateAroundXAxis(Vector3f inputPoint, float rotationDegrees){
-    float sin = std::sin(DEG_TO_RAD(rotationDegrees));
-    float cos = std::cos(DEG_TO_RAD(rotationDegrees));
-
-    return Vector3f((inputPoint.x),
-                    (inputPoint.y * cos) - (inputPoint.z * sin),
-                    (inputPoint.y * sin) + (inputPoint.z * cos));
-}
-
-Vector3f rotateAroundYAxis(Vector3f inputPoint, float rotationDegrees){
-    float sin = std::sin(DEG_TO_RAD(rotationDegrees));
-    float cos = std::cos(DEG_TO_RAD(rotationDegrees));
-
-    return Vector3f(inputPoint.x * cos + inputPoint.z * sin,
-                    inputPoint.y,
-                    -inputPoint.x * sin + inputPoint.z * cos);
-}
-
-Vector3f rotateAroundZAxis(Vector3f inputPoint, float rotationDegrees){
-    float sin = std::sin(DEG_TO_RAD(rotationDegrees));
-    float cos = std::cos(DEG_TO_RAD(rotationDegrees));
-
-    return Vector3f(inputPoint.x * cos - inputPoint.y * sin,
-                    inputPoint.x * sin + inputPoint.y * cos,
-                    inputPoint.z);
-}
 
 #endif
