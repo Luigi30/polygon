@@ -2,7 +2,7 @@
 #define SCREEN_HPP
 
 #include <vector>
-#include <stdlib>
+#include <stdlib.h>
 //#include "includes\mouse.hpp"
 #include "framebuffer.hpp"
 #include "rasterize.hpp"

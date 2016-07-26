@@ -2,61 +2,61 @@
 
 Vector3f SceneObject::forward_vector(){
     Vector3f forward = Vector3f(0,0,-1);
-    forward = forward.rotateAroundXAxis(rotation.x);
-    forward = forward.rotateAroundYAxis(rotation.y);
-    forward = forward.rotateAroundZAxis(rotation.z);
+    forward = forward.rotateAroundXAxis(transformation.rotation.x);
+    forward = forward.rotateAroundYAxis(transformation.rotation.y);
+    forward = forward.rotateAroundZAxis(transformation.rotation.z);
     return forward;
 }
 
 void SceneObject::update_rotation() {
 
     //Clamp rotation to a range between 0 and 360 degrees
-    if(rotation.x < 0.0f){
-        rotation.x = rotation.x + 359.0f;
+    if(transformation.rotation.x < 0.0f){
+        transformation.rotation.x = transformation.rotation.x + 359.0f;
     }
-    if(rotation.y < 0.0f){
-        rotation.y = rotation.y + 359.0f;
+    if(transformation.rotation.y < 0.0f){
+        transformation.rotation.y = transformation.rotation.y + 359.0f;
     }
-    if(rotation.z < 0.0f){
-        rotation.z = rotation.z + 359.0f;
+    if(transformation.rotation.z < 0.0f){
+        transformation.rotation.z = transformation.rotation.z + 359.0f;
     }
 
     // how far are we from the desired rotation?
-    if(desired_rotation.x < 0){
-        desired_rotation.x += 360.0f;
+    if(movement.desired_rotation.x < 0){
+        movement.desired_rotation.x += 360.0f;
     }
-    if(desired_rotation.y < 0){
-        desired_rotation.y += 360.0f;
+    if(movement.desired_rotation.y < 0){
+        movement.desired_rotation.y += 360.0f;
     }
-    if(desired_rotation.z < 0){
-        desired_rotation.z += 360.0f;
+    if(movement.desired_rotation.z < 0){
+        movement.desired_rotation.z += 360.0f;
     }
 
-    float deltaX = desired_rotation.x - rotation.x;
-    float deltaY = desired_rotation.y - rotation.y;
-    float deltaZ = desired_rotation.z - rotation.z;
+    float deltaX = movement.desired_rotation.x - transformation.rotation.x;
+    float deltaY = movement.desired_rotation.y - transformation.rotation.y;
+    float deltaZ = movement.desired_rotation.z - transformation.rotation.z;
 
     if(deltaX != 0){
         if(deltaX > 180.0f || deltaX < 0.0f) {
-            rotation.x -= maximum_rotation_per_frame.x;
+            transformation.rotation.x -= movement.maximum_rotation_per_frame.x;
         } else {
-            rotation.x += maximum_rotation_per_frame.x;  
+            transformation.rotation.x += movement.maximum_rotation_per_frame.x;  
         }
     }
 
     if(deltaY != 0){
         if(deltaY > 180.0f || deltaY < 0.0f) {
-            rotation.y -= maximum_rotation_per_frame.y;
+            transformation.rotation.y -= movement.maximum_rotation_per_frame.y;
         } else {
-            rotation.y += maximum_rotation_per_frame.y;  
+            transformation.rotation.y += movement.maximum_rotation_per_frame.y;  
         }     
     }
 
     if(deltaZ != 0){
         if(deltaZ > 180.0f || deltaZ < 0.0f) {
-            rotation.z -= maximum_rotation_per_frame.z;
+            transformation.rotation.z -= movement.maximum_rotation_per_frame.z;
         } else {
-            rotation.z += maximum_rotation_per_frame.z;  
+            transformation.rotation.z += movement.maximum_rotation_per_frame.z;  
         }     
     }
 

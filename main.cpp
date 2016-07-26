@@ -92,7 +92,7 @@ int main(){
     WavefrontObject ship;
     ship.load_file("sqrship.3d");
     g_screen.addSceneObject("ship", ship, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
-    g_screen.getSceneObjectPtr("ship")->desired_rotation = Vector3f(0,0,0);
+    g_screen.getSceneObjectPtr("ship")->movement.desired_rotation = Vector3f(0,0,0);
     //g_screen.getSceneObjectPtr("ship")->velocity = Vector3f(0,0,0.01);
 
     _setvideomode(_MRES256COLOR); //Change to mode 13h
@@ -112,8 +112,8 @@ int main(){
         wait_for_vsync();
         
         //clamp rotation
-        g_screen.getSceneObjectPtr("ship")->rotation.x = std::fmod(g_screen.getSceneObjectPtr("ship")->rotation.x, 360.0f);
-        g_screen.getSceneObjectPtr("ship")->rotation.y = std::fmod(g_screen.getSceneObjectPtr("ship")->rotation.y, 360.0f);
+        g_screen.getSceneObjectPtr("ship")->transformation.rotation.x = std::fmod(g_screen.getSceneObjectPtr("ship")->transformation.rotation.x, 360.0f);
+        g_screen.getSceneObjectPtr("ship")->transformation.rotation.y = std::fmod(g_screen.getSceneObjectPtr("ship")->transformation.rotation.y, 360.0f);
 
         //update object location and orientation
         g_screen.applyObjectVelocities();
@@ -160,21 +160,20 @@ int main(){
                 goForward = ~goForward;
             }
             else if (key == 'h'){
-                g_screen.getSceneObjectPtr("ship")->desired_rotation = Vector3f(15, 30, 0);
+                g_screen.getSceneObjectPtr("ship")->movement.desired_rotation = Vector3f(15, 30, 0);
             }
             else if (key == 'j'){
-                g_screen.getSceneObjectPtr("ship")->desired_rotation = Vector3f(10, -25, 0);
+                g_screen.getSceneObjectPtr("ship")->movement.desired_rotation = Vector3f(10, -25, 0);
             }
             else if (key == 'k'){
-                g_screen.getSceneObjectPtr("ship")->forward_speed = 0.1f;
+                g_screen.getSceneObjectPtr("ship")->movement.forward_speed = 0.05f;
             }
         }
 
         if(goForward) {
             SceneObject *obj = g_screen.getSceneObjectPtr("ship");
             Vector3f delta = obj->forward_vector() * 0.1f;
-            obj->translation = obj->translation + delta;            
-            // g_screen.getSceneObjectPtr("ship")->forward_vector();
+            obj->transformation.translation = obj->transformation.translation + delta;
         }
 
         direction = direction.rotateAroundXAxis(-cameraRotation.x);

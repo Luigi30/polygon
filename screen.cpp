@@ -146,15 +146,15 @@ void Screen::draw_polygon_debug_data(){
 
 void Screen::draw_object_debug_data(SceneObject obj){
     char translationText[80];
-    sprintf(translationText, "ORIGIN: (%f, %f, %f)", obj.translation.x, obj.translation.y, obj.translation.z);
+    sprintf(translationText, "ORIGIN: (%f, %f, %f)", obj.transformation.translation.x, obj.transformation.translation.y, obj.transformation.translation.z);
     layer_text.putString(translationText, strlen(translationText), Point(0,16), COLOR_GREEN, FONT_4x6);
 
     char rotationText[80];
-    sprintf(rotationText, "ROTATE: (%f, %f, %f)", obj.rotation.x, obj.rotation.y, obj.rotation.z);
+    sprintf(rotationText, "ROTATE: (%f, %f, %f)", obj.transformation.rotation.x, obj.transformation.rotation.y, obj.transformation.rotation.z);
     layer_text.putString(rotationText, strlen(rotationText), Point(0,24), COLOR_GREEN, FONT_4x6);
 
     char scaleText[80];
-    sprintf(scaleText, "SCALE : (%f, %f, %f)", obj.scale.x, obj.scale.y, obj.scale.z);
+    sprintf(scaleText, "SCALE : (%f, %f, %f)", obj.transformation.scale.x, obj.transformation.scale.y, obj.transformation.scale.z);
     layer_text.putString(scaleText, strlen(scaleText), Point(0,32), COLOR_GREEN, FONT_4x6);
     
 }
@@ -163,9 +163,9 @@ void Screen::addSceneObject(std::string _name, WavefrontObject _model, Vector3f 
     SceneObject obj;
     obj.name = _name;
     obj.model = _model;
-    obj.translation = _translation;
-    obj.rotation = _rotation;
-    obj.scale = _scale;    
+    obj.transformation.translation = _translation;
+    obj.transformation.rotation = _rotation;
+    obj.transformation.scale = _scale;    
     sceneObjects.push_back(obj);
 }
 

@@ -3,7 +3,7 @@
 
 #include <math.h>
 #include <cassert>
-#include <algorithm>
+#include <algorith>
 #include "includes\defines.hpp"
 #include "includes\wavefront.hpp"
 #include "shapes\triangle.hpp"

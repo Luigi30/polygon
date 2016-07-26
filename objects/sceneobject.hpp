@@ -2,38 +2,38 @@
 #define SCENEOBJECT_HPP
 
 #include <string>
+#include "movement.hpp"
 #include "..\includes\wavefront.hpp"
+
+struct Transformation {
+    Vector3f translation;
+    Vector3f rotation;
+    Vector3f scale;
+};
 
 class SceneObject {
     public:
     std::string name;
     WavefrontObject model;
+    MovementInfo movement;
 
     //current
-    Vector3f translation;
-    Vector3f rotation;
-    Vector3f scale;
-
-    //desired
-    Vector3f desired_rotation;
-    Vector3f maximum_rotation_per_frame; //degrees per frame
-    
-    float forward_speed;
-    Vector3f velocity;
+    Transformation transformation;
 
     SceneObject() {
-        translation = Vector3f(0,0,0);
-        rotation = Vector3f(0,0,0);
-        scale = Vector3f(0,0,0);
-        velocity = Vector3f(0,0,0);
-        
+        transformation.translation = Vector3f(0,0,0);
+        transformation.rotation = Vector3f(0,0,0);
+        transformation.scale = Vector3f(0,0,0);
+
         //just set this for development
-        maximum_rotation_per_frame = Vector3f(0.5,0.5,0.5);
-        forward_speed = 0.0f;
+        movement = MovementInfo();
+        movement.velocity = Vector3f(0,0,0);
+        movement.maximum_rotation_per_frame = Vector3f(0.5,0.5,0.5);
+        movement.forward_speed = 0.0f;
     }
 
     void apply_velocity_to_translation() {
-        translation = translation + velocity;
+        transformation.translation = transformation.translation + movement.velocity;
     }
 
     Vector3f forward_vector();

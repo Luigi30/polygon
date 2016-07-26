@@ -129,9 +129,9 @@ bool Framebuffer::draw_face(SceneObject obj, Vector3f eye, Vector3f cameraRotati
         transformedWorldCoords[i] = applyTransformations(worldCoords[i], 
                                                          eye,
                                                          cameraRotation,
-                                                         obj.translation,
-                                                         obj.rotation,
-                                                         obj.scale);
+                                                         obj.transformation.translation,
+                                                         obj.transformation.rotation,
+                                                         obj.transformation.scale);
 
         //Scale Z to (0,1)
         float scaledZ = (transformedWorldCoords[i].z - zNear) / (zFar - zNear);
