@@ -8,8 +8,8 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "..\shapes\vector3f.hpp"
 #include "..\shapes\point3d.hpp"
-#include "..\includes\matrix.hpp"
 
 #define MAX_VERTICES 4096
 #define MAX_FACES 4096
@@ -45,20 +45,19 @@ class WavefrontObject {
     int getVertexCount() { return vertexCount-1; };
     int getFaceCount() { return faceCount; };
 
-    void apply_velocity_to_translation() {
-        translation = translation + velocity;        
-    } 
-
+    /*
     Vector3f translation;
     Vector3f rotation;
     Vector3f scale;
-    Vector3f velocity;
-    
+    */
+
+    /*
     Matrix getModelMatrix() {
         return (Matrix::translation(translation.x, translation.y, translation.z) *
                 Matrix::rotation(rotation.x, rotation.y, rotation.z) *
                 Matrix::scale(scale.x, scale.y, scale.z));
     }
+    */
         
     Vector3f* getWorldVertices(){
         return worldVertices;
@@ -165,11 +164,12 @@ bool WavefrontObject::load_file(std::string filename){
 
     fclose(objectFile);
 
+    /*
     translation = Vector3f(0,0,0); //Matrix::translation(0,0,0);
     rotation    = Vector3f(0,0,0); //Matrix::identity(4);
     scale       = Vector3f(1,1,1); //Matrix::scale(1,1,1);
-    
-    velocity    = Vector3f(0,0,0);
+    */
+
     return true;
 }
 

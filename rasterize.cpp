@@ -82,6 +82,9 @@ void draw_projected_triangle(unsigned char* pixels, float* zbuffer, Triangle tri
         for(int y = screenPoints[0].y; y <= screenPoints[1].y; y++){
             int top_segment_height = screenPoints[1].y - screenPoints[0].y + 1;
 
+            if(triangle_height == 0){
+                break;
+            }
             float alpha = (float)(y - screenPoints[0].y) / triangle_height;
             assert(top_segment_height != 0);
             float beta  = (float)(y - screenPoints[0].y) / top_segment_height;
@@ -105,6 +108,9 @@ void draw_projected_triangle(unsigned char* pixels, float* zbuffer, Triangle tri
         for(int y = screenPoints[1].y; y <= screenPoints[2].y; y++){
             int bottom_segment_height = screenPoints[2].y - screenPoints[1].y + 1;
 
+            if(triangle_height == 0){
+                break;
+            }
             float alpha = (float)(y - screenPoints[0].y) / triangle_height;
             assert(bottom_segment_height != 0);
             float beta  = (float)(y - screenPoints[1].y) / bottom_segment_height;

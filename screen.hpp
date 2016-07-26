@@ -7,11 +7,7 @@
 #include "framebuffer.hpp"
 #include "rasterize.hpp"
 #include "widgets\widget.hpp"
-
-struct SceneObject {
-    std::string name;
-    WavefrontObject model;
-};
+#include "objects\sceneobject.hpp"
 
 struct Button {
     Point position;
@@ -51,10 +47,12 @@ class Screen {
     std::vector<Widget*> widgetsList;
     void removeWidget(std::string _name);
 
-    void addSceneObject(std::string _name, WavefrontObject _model);
+    void addSceneObject(std::string _name, WavefrontObject _model, Vector3f _translation, Vector3f _rotation, Vector3f _scale);
     void removeSceneObject(std::string _name);
     SceneObject *getSceneObjectPtr(std::string _name);
+    
     void Screen::applyObjectVelocities();
+    void Screen::applyObjectRotations();
 
     void addButton(Button);
     void drawButton(Button);
@@ -63,9 +61,8 @@ class Screen {
     void redraw();
 
     void draw_polygon_object(SceneObject sceneObject);
-    void draw_polygon_object(WavefrontObject object);
     void draw_polygon_debug_data();
-    void draw_object_debug_data(WavefrontObject object);
+    void draw_object_debug_data(SceneObject obj);
 };
 
 Screen g_screen;

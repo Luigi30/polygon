@@ -108,8 +108,8 @@ Point rotate(Point point, int rotation_degrees){
     return Point(rotatedX, rotatedY);
 }
 
-bool Framebuffer::draw_face(WavefrontObject model, Vector3f eye, Vector3f cameraRotation, int face_number){
-    Face face = model.getFaces()[face_number];
+bool Framebuffer::draw_face(SceneObject obj, Vector3f eye, Vector3f cameraRotation, int face_number){
+    Face face = obj.model.getFaces()[face_number];
     float zNear = 1.0;
     float zFar = 50.0;
 
@@ -117,16 +117,21 @@ bool Framebuffer::draw_face(WavefrontObject model, Vector3f eye, Vector3f camera
     //so we need to rotate the scene so Center is in the center of the screen
 
     Vector3f worldCoords[3];
-    worldCoords[0] = Vector3f(model.getLocalVertices()[face.v1].x, model.getLocalVertices()[face.v1].y, model.getLocalVertices()[face.v1].z);
-    worldCoords[1] = Vector3f(model.getLocalVertices()[face.v2].x, model.getLocalVertices()[face.v2].y, model.getLocalVertices()[face.v2].z);
-    worldCoords[2] = Vector3f(model.getLocalVertices()[face.v3].x, model.getLocalVertices()[face.v3].y, model.getLocalVertices()[face.v3].z);
+    worldCoords[0] = Vector3f(obj.model.getLocalVertices()[face.v1].x, obj.model.getLocalVertices()[face.v1].y, obj.model.getLocalVertices()[face.v1].z);
+    worldCoords[1] = Vector3f(obj.model.getLocalVertices()[face.v2].x, obj.model.getLocalVertices()[face.v2].y, obj.model.getLocalVertices()[face.v2].z);
+    worldCoords[2] = Vector3f(obj.model.getLocalVertices()[face.v3].x, obj.model.getLocalVertices()[face.v3].y, obj.model.getLocalVertices()[face.v3].z);
 
     Vector3f transformedWorldCoords[3];
     Vector3f screenCoords[3];
 
     //Scale -> Rotate -> Translate    
     for(int i=0;i<3;i++){
-        transformedWorldCoords[i] = applyTransformations(worldCoords[i], eye, cameraRotation, model.translation, model.rotation, model.scale);
+        transformedWorldCoords[i] = applyTransformations(worldCoords[i], 
+                                                         eye,
+                                                         cameraRotation,
+                                                         obj.translation,
+                                                         obj.rotation,
+                                                         obj.scale);
 
         //Scale Z to (0,1)
         float scaledZ = (transformedWorldCoords[i].z - zNear) / (zFar - zNear);

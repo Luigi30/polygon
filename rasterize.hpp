@@ -1,9 +1,10 @@
 #ifndef RASTERIZE_HPP
 #define RASTERIZE_HPP
 
+#include <math.h>
+#include <cassert>
 #include <algorithm>
 #include "includes\defines.hpp"
-#include "includes\matrix.hpp"
 #include "includes\wavefront.hpp"
 #include "shapes\triangle.hpp"
 

@@ -3,27 +3,6 @@
 
 int polygonCount = 0;
 
-Matrix perspective_projection(){
-    Matrix m = Matrix::identity(4);
-
-    float aspectratio = 320.0 / 200.0;
-    float verticalFOV = 30.0;
-    float zNear = 1.0;
-    float zFar = 50.0;
-    float zRange = zNear - zFar;
-    float tanHalfFOV = (std::tan(((verticalFOV/2) * M_PI) / 180.0));
-
-    m[0][0] = 1.0f / (tanHalfFOV * aspectratio);
-    m[1][1] = 1.0f / tanHalfFOV;
-    m[2][2] = -(zNear - zFar) / zRange;
-    m[2][3] = (2.0 * zFar * zNear) / zRange;
-    m[3][2] = 1.0;
-    m[3][3] = 0.0;
-    
-    return m.transpose();
-    //return m;
-}
-
 void Screen::redraw(){
     polygonCount = 0;
     clock_t start = clock();
@@ -145,12 +124,8 @@ Widget* Screen::getWidgetByName(std::string _name){
 }
 
 /* Polygon routines */
-void Screen::draw_polygon_object(SceneObject sceneObject){
-    draw_polygon_object(sceneObject.model);
-}
-
-void Screen::draw_polygon_object(WavefrontObject object){    
-    for(int i=0;i<object.getFaceCount();i++){
+void Screen::draw_polygon_object(SceneObject object){    
+    for(int i=0;i<object.model.getFaceCount();i++){
         layer_polygons.draw_face(object, eye, cameraRotation, i) ? polygonCount++ : polygonCount;
     }
 }
@@ -169,25 +144,28 @@ void Screen::draw_polygon_debug_data(){
     layer_text.putString(polycountLocation, strlen(polycountLocation), Point(0,192), COLOR_GREEN, FONT_4x6);
 }
 
-void Screen::draw_object_debug_data(WavefrontObject model){
+void Screen::draw_object_debug_data(SceneObject obj){
     char translationText[80];
-    sprintf(translationText, "ORIGIN: (%f, %f, %f)", model.translation.x, model.translation.y, model.translation.z);
+    sprintf(translationText, "ORIGIN: (%f, %f, %f)", obj.translation.x, obj.translation.y, obj.translation.z);
     layer_text.putString(translationText, strlen(translationText), Point(0,16), COLOR_GREEN, FONT_4x6);
 
     char rotationText[80];
-    sprintf(rotationText, "ROTATE: (%f, %f, %f)", model.rotation.x, model.rotation.y, model.rotation.z);
+    sprintf(rotationText, "ROTATE: (%f, %f, %f)", obj.rotation.x, obj.rotation.y, obj.rotation.z);
     layer_text.putString(rotationText, strlen(rotationText), Point(0,24), COLOR_GREEN, FONT_4x6);
 
     char scaleText[80];
-    sprintf(scaleText, "SCALE : (%f, %f, %f)", model.scale.x, model.scale.y, model.scale.z);
+    sprintf(scaleText, "SCALE : (%f, %f, %f)", obj.scale.x, obj.scale.y, obj.scale.z);
     layer_text.putString(scaleText, strlen(scaleText), Point(0,32), COLOR_GREEN, FONT_4x6);
     
 }
 
-void Screen::addSceneObject(std::string _name, WavefrontObject _model){
+void Screen::addSceneObject(std::string _name, WavefrontObject _model, Vector3f _translation, Vector3f _rotation, Vector3f _scale){
     SceneObject obj;
     obj.name = _name;
     obj.model = _model;
+    obj.translation = _translation;
+    obj.rotation = _rotation;
+    obj.scale = _scale;    
     sceneObjects.push_back(obj);
 }
 
@@ -198,6 +176,10 @@ void Screen::removeSceneObject(std::string _name){
             return;
         }
     }
+
+    //error: trying to delete object that doesn't exist
+    assert(false);
+    return;
 }
 
 SceneObject* Screen::getSceneObjectPtr(std::string _name){
@@ -214,6 +196,12 @@ SceneObject* Screen::getSceneObjectPtr(std::string _name){
 
 void Screen::applyObjectVelocities(){
     for(int i=0;i<sceneObjects.size();i++){
-        sceneObjects[i].model.apply_velocity_to_translation();
+        sceneObjects[i].apply_velocity_to_translation();
+    }
+}
+
+void Screen::applyObjectRotations(){
+    for(int i=0;i<sceneObjects.size();i++){
+        sceneObjects[i].update_rotation();
     }
 }

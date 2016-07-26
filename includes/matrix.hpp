@@ -1,3 +1,4 @@
+/*
 #ifndef MATRIX_HPP
 #define MATRIX_HPP
 
@@ -151,8 +152,7 @@ class Matrix {
         return result;
     }
 
-
-    /* Vector behavior */
+    // Vector behavior
     static Matrix Matrix::vector(float x){
         Matrix m = Matrix(1,1);
         m[0][0] = x;
@@ -306,12 +306,8 @@ class Matrix {
                         (result.Y()/(1-result.Z()/c)),
                         (result.Z()/(1-result.Z()/c)));
 
-/*
-        return Vector3f((int)((result.X()/(1-result.Z()/c)+.5)),
-                        (int)((result.Y()/(1-result.Z()/c)+.5)),
-                        (result.Z()/(1-result.Z()/c)));
-*/
     }
 };
 
 #endif
+*/

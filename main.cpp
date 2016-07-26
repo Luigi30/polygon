@@ -72,14 +72,6 @@ void load_lookup_tables(){
     }
 }
 
-Point transform_2d(Matrix transformation, Point p){
-    //We need a 3x3 matrix to transform a point
-    assert(transformation.numRows() == 3 && transformation.numColumns() == 3);
-    Matrix result = transformation * Matrix::vector(p.x, p.y, 1); //Vector3f(p.x, p.y, 1);
-    printf("(%d,%d) -> (%f,%f,%f)\n", p.x, p.y, result.X(), result.Y(), result.Z());
-    return Point(result.X()/result.Z(), result.Y()/result.Z());
-}
-
 int main(){
     init_timer(11930); //100 ticks per second
     
@@ -89,44 +81,30 @@ int main(){
     std::printf("Polygon\n");
     load_lookup_tables();
 
-    printf("Loading model\n");
+    printf("Loading models\n");
 
+    /*
     WavefrontObject obj;
     obj.load_file("cube.3d");
-    obj.translation = Vector3f(0,0,0);
-    obj.rotation = Vector3f(0,0,0);
-    obj.scale = Vector3f(1,1,1);
-    g_screen.addSceneObject("cube1", obj);
+    g_screen.addSceneObject("cube1", obj, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
+    */
 
     WavefrontObject ship;
-    obj.load_file("sqrship.3d");
-    obj.translation = Vector3f(0,0,5);
-    obj.scale = Vector3f(1,1,1);
-    obj.velocity = Vector3f(0,0,0.02);
-    g_screen.addSceneObject("ship", obj);
-    
-    printf("OK\n");
-
-    printf("Found %d vertices\n", obj.getVertexCount());
-    printf("Found %d faces\n", obj.getFaceCount());
+    ship.load_file("sqrship.3d");
+    g_screen.addSceneObject("ship", ship, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
+    g_screen.getSceneObjectPtr("ship")->desired_rotation = Vector3f(0,0,0);
+    //g_screen.getSceneObjectPtr("ship")->velocity = Vector3f(0,0,0.01);
 
     _setvideomode(_MRES256COLOR); //Change to mode 13h
 
-    //recalculate_transformation();
     g_screen.draw_polygon_debug_data();
-    //g_screen.draw_view_data(View);
-    //g_screen.draw_polygon_object(obj);
-    g_screen.draw_object_debug_data(g_screen.getSceneObjectPtr("cube1")->model);
+    g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("ship"));
     g_screen.redraw();
-
-    int rotationX = 0;
-    int rotationY = 0;
-    int rotationZ = 0;
 
     bool abort = false;
     bool goForward = false;
 
-    //Game loop
+    //Scene loop
     while(!abort){
 
         //Limit to 35Hz refresh
@@ -134,14 +112,16 @@ int main(){
         wait_for_vsync();
         
         //clamp rotation
-        g_screen.getSceneObjectPtr("cube1")->model.rotation.x = std::fmod(g_screen.getSceneObjectPtr("cube1")->model.rotation.x, 360.0f);
-        g_screen.getSceneObjectPtr("cube1")->model.rotation.y = std::fmod(g_screen.getSceneObjectPtr("cube1")->model.rotation.y, 360.0f);
+        g_screen.getSceneObjectPtr("ship")->rotation.x = std::fmod(g_screen.getSceneObjectPtr("ship")->rotation.x, 360.0f);
+        g_screen.getSceneObjectPtr("ship")->rotation.y = std::fmod(g_screen.getSceneObjectPtr("ship")->rotation.y, 360.0f);
 
-        //apply velocity to objects
+        //update object location and orientation
         g_screen.applyObjectVelocities();
+        g_screen.applyObjectRotations();
 
+        //draw some debug data
         g_screen.draw_polygon_debug_data();
-        g_screen.draw_object_debug_data(g_screen.getSceneObjectPtr("cube1")->model);
+        g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("ship"));
         g_screen.redraw();
 
         Vector3f direction = Vector3f(0,0,0);
@@ -180,12 +160,21 @@ int main(){
                 goForward = ~goForward;
             }
             else if (key == 'h'){
-                g_screen.getSceneObjectPtr("cube1")->model.rotation.y = 5.0f + std::fmod(g_screen.getSceneObjectPtr("cube1")->model.rotation.y, 360.0f);
+                g_screen.getSceneObjectPtr("ship")->desired_rotation = Vector3f(15, 30, 0);
+            }
+            else if (key == 'j'){
+                g_screen.getSceneObjectPtr("ship")->desired_rotation = Vector3f(10, -25, 0);
+            }
+            else if (key == 'k'){
+                g_screen.getSceneObjectPtr("ship")->forward_speed = 0.1f;
             }
         }
 
         if(goForward) {
-            direction = direction + Vector3f(0,0,0.05);
+            SceneObject *obj = g_screen.getSceneObjectPtr("ship");
+            Vector3f delta = obj->forward_vector() * 0.1f;
+            obj->translation = obj->translation + delta;            
+            // g_screen.getSceneObjectPtr("ship")->forward_vector();
         }
 
         direction = direction.rotateAroundXAxis(-cameraRotation.x);

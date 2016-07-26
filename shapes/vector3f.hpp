@@ -22,6 +22,12 @@ class Vector3f {
             z = _z;
         }
 
+        Vector3f(const Vector3f &original){
+            x = original.x;
+            y = original.y;
+            z = original.z;
+        }
+
         Vector3f operator+(const Vector3f &second){
             return Vector3f(this->x + second.x, this->y + second.y, this->z + second.z);
         }
