@@ -356,7 +356,8 @@ Vector3f applyTransformations(Vector3f v, Vector3f eye, Vector3f cameraRotation,
                       result.y * scale.y,
                       result.z * scale.z);
 
-    //Rotate
+    //Rotate - Intrinsic object rotation
+    result = result.rotateAroundZAxis(rotation.z);
     result = result.rotateAroundXAxis(rotation.x);
     result = result.rotateAroundYAxis(rotation.y);
 
@@ -371,9 +372,10 @@ Vector3f applyTransformations(Vector3f v, Vector3f eye, Vector3f cameraRotation,
                       result.y + translation.y,
                       result.z + translation.z);
 
-    //then camera rotation
-    result = result.rotateAroundXAxis(cameraRotation.x);
+    //then perform extrinsic camera rotation
     result = result.rotateAroundYAxis(cameraRotation.y);
+    result = result.rotateAroundXAxis(cameraRotation.x);
+    result = result.rotateAroundZAxis(cameraRotation.z);
 
     return result;
 }

@@ -27,6 +27,7 @@ class SceneObject {
 
         //just set this for development
         movement = MovementInfo();
+        movement.enableDesiredRotation = false;
         movement.velocity = Vector3f(0,0,0);
         movement.maximum_rotation_per_frame = Vector3f(0.5,0.5,0.5);
         movement.forward_speed = 0.0f;

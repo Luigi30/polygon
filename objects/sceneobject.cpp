@@ -2,8 +2,8 @@
 
 Vector3f SceneObject::forward_vector(){
     Vector3f forward = Vector3f(0,0,-1);
-    forward = forward.rotateAroundXAxis(transformation.rotation.x);
     forward = forward.rotateAroundYAxis(transformation.rotation.y);
+    forward = forward.rotateAroundXAxis(transformation.rotation.x);
     forward = forward.rotateAroundZAxis(transformation.rotation.z);
     return forward;
 }

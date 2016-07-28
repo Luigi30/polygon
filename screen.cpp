@@ -202,6 +202,7 @@ void Screen::applyObjectVelocities(){
 
 void Screen::applyObjectRotations(){
     for(int i=0;i<sceneObjects.size();i++){
-        sceneObjects[i].update_rotation();
+        if(sceneObjects[i].movement.enableDesiredRotation)
+            sceneObjects[i].update_rotation();
     }
 }

@@ -89,16 +89,21 @@ int main(){
     g_screen.addSceneObject("cube1", obj, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
     */
 
-    WavefrontObject ship;
-    ship.load_file("sqrship.3d");
-    g_screen.addSceneObject("ship", ship, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
-    g_screen.getSceneObjectPtr("ship")->movement.desired_rotation = Vector3f(0,0,0);
-    //g_screen.getSceneObjectPtr("ship")->velocity = Vector3f(0,0,0.01);
+    WavefrontObject head;
+    head.load_file("cube.3d");
+
+    g_screen.addSceneObject("head", head, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
+    g_screen.getSceneObjectPtr("head")->transformation.rotation = Vector3f(0,0,0);
+    g_screen.getSceneObjectPtr("head")->movement.desired_rotation = Vector3f(0,0,0);
+
+    g_screen.addSceneObject("player", head, Vector3f(0,0,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
+    g_screen.getSceneObjectPtr("player")->transformation.rotation = Vector3f(0,0,0);
+    g_screen.getSceneObjectPtr("player")->movement.desired_rotation = Vector3f(0,0,0);
 
     _setvideomode(_MRES256COLOR); //Change to mode 13h
 
     g_screen.draw_polygon_debug_data();
-    g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("ship"));
+    g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("head"));
     g_screen.redraw();
 
     bool abort = false;
@@ -112,8 +117,8 @@ int main(){
         wait_for_vsync();
         
         //clamp rotation
-        g_screen.getSceneObjectPtr("ship")->transformation.rotation.x = std::fmod(g_screen.getSceneObjectPtr("ship")->transformation.rotation.x, 360.0f);
-        g_screen.getSceneObjectPtr("ship")->transformation.rotation.y = std::fmod(g_screen.getSceneObjectPtr("ship")->transformation.rotation.y, 360.0f);
+        g_screen.getSceneObjectPtr("head")->transformation.rotation.x = std::fmod(g_screen.getSceneObjectPtr("head")->transformation.rotation.x, 360.0f);
+        g_screen.getSceneObjectPtr("head")->transformation.rotation.y = std::fmod(g_screen.getSceneObjectPtr("head")->transformation.rotation.y, 360.0f);
 
         //update object location and orientation
         g_screen.applyObjectVelocities();
@@ -121,7 +126,7 @@ int main(){
 
         //draw some debug data
         g_screen.draw_polygon_debug_data();
-        g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("ship"));
+        g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("head"));
         g_screen.redraw();
 
         Vector3f direction = Vector3f(0,0,0);
@@ -151,34 +156,45 @@ int main(){
                 cameraRotation.y = std::fmod(cameraRotation.y + ROTATION_DEGREES_PER_STEP, 360.0f);
             }
             else if(key == 'r'){
-                cameraRotation.x += std::fmod((float)std::cos(DEG_TO_RAD(cameraRotation.y)), 360.0f) * ROTATION_DEGREES_PER_STEP;
+                cameraRotation.x = std::fmod(cameraRotation.x - ROTATION_DEGREES_PER_STEP, 360.0f);
             }
             else if(key == 'v'){
-                cameraRotation.x -= std::fmod((float)std::cos(DEG_TO_RAD(cameraRotation.y)), 360.0f) * ROTATION_DEGREES_PER_STEP;
+                cameraRotation.x = std::fmod(cameraRotation.x + ROTATION_DEGREES_PER_STEP, 360.0f);
+            }
+            else if(key == 'u'){
+                cameraRotation.z = std::fmod(cameraRotation.z - ROTATION_DEGREES_PER_STEP, 360.0f);
+            }
+            else if(key == 'i'){
+                cameraRotation.z = std::fmod(cameraRotation.z + ROTATION_DEGREES_PER_STEP, 360.0f);
+            }
+            else if(key == 'f'){
+                g_screen.getSceneObjectPtr("head")->transformation.rotation.y += 5.0;
             }
             else if (key == 'g'){
                 goForward = ~goForward;
             }
             else if (key == 'h'){
-                g_screen.getSceneObjectPtr("ship")->movement.desired_rotation = Vector3f(15, 30, 0);
+                g_screen.getSceneObjectPtr("head")->movement.desired_rotation = Vector3f(15, 30, 0);
             }
             else if (key == 'j'){
-                g_screen.getSceneObjectPtr("ship")->movement.desired_rotation = Vector3f(10, -25, 0);
+                g_screen.getSceneObjectPtr("head")->movement.desired_rotation = Vector3f(10, -25, 0);
             }
             else if (key == 'k'){
-                g_screen.getSceneObjectPtr("ship")->movement.forward_speed = 0.05f;
+                g_screen.getSceneObjectPtr("head")->movement.forward_speed = 0.05f;
             }
         }
 
         if(goForward) {
-            SceneObject *obj = g_screen.getSceneObjectPtr("ship");
+            SceneObject *obj = g_screen.getSceneObjectPtr("head");
             Vector3f delta = obj->forward_vector() * 0.1f;
             obj->transformation.translation = obj->transformation.translation + delta;
         }
-
+        
+        //eye = g_screen.getSceneObjectPtr("player")->transformation.translation;
+        
+        direction = direction.rotateAroundZAxis(-cameraRotation.z);
         direction = direction.rotateAroundXAxis(-cameraRotation.x);
         direction = direction.rotateAroundYAxis(-cameraRotation.y);
-        direction = direction.rotateAroundZAxis(-cameraRotation.z);
         eye = eye + direction;
     }
 

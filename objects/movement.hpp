@@ -8,6 +8,7 @@ class MovementInfo {
     float forward_speed;
     Vector3f velocity;
     bool alwaysRemainUpright;
+    bool enableDesiredRotation;
 
     //desired
     Vector3f desired_rotation;

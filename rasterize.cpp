@@ -62,82 +62,78 @@ void draw_line(unsigned char* pixels, Point start, Point end, int color){
     }
 }
 
+void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, int color){
+    int triangle_height = screenPoints[2].y - screenPoints[0].y;
+
+    for(int y = screenPoints[0].y; y <= screenPoints[1].y; y++){
+        int top_segment_height = screenPoints[1].y - screenPoints[0].y + 1;
+
+        if(triangle_height == 0){
+            break;
+        }
+        float alpha = (float)(y - screenPoints[0].y) / (float)triangle_height;
+        assert(top_segment_height != 0);
+        float beta  = (float)(y - screenPoints[0].y) / (float)top_segment_height;
+
+        Point A = screenPoints[0] + (screenPoints[2] - screenPoints[0]) * alpha;
+        Point B = screenPoints[0] + (screenPoints[1] - screenPoints[0]) * beta;
+
+        if(A.x > B.x) std::swap(A, B);           
+        for(int horiz=A.x; horiz<=B.x; horiz++){
+            if(horiz >= 0 && horiz < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT){
+                float z = triangle.solve_plane_for_z(Point(horiz, y));
+                if(z < zbuffer[PIXEL_OFFSET(horiz, y)]){
+                    zbuffer[PIXEL_OFFSET(horiz, y)] = z;
+                    assert(horiz <= 319 && y <= 199);
+                    setPixel(pixels, horiz, y, color);
+                }
+            }
+        }
+    }    
+}
+
+void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, int color){
+    int triangle_height = screenPoints[2].y - screenPoints[0].y;
+
+    for(int y = screenPoints[1].y; y <= screenPoints[2].y; y++){
+        int bottom_segment_height = screenPoints[2].y - screenPoints[1].y + 1;
+
+        if(triangle_height == 0){
+            break;
+        }
+        float alpha = (float)(y - screenPoints[0].y) / (float)triangle_height;
+        assert(bottom_segment_height != 0);
+        float beta  = (float)(y - screenPoints[1].y) / (float)bottom_segment_height;
+
+        Point A = screenPoints[0] + (screenPoints[2] - screenPoints[0]) * alpha;
+        Point B = screenPoints[1] + (screenPoints[2] - screenPoints[1]) * beta;
+
+        if(A.x > B.x) std::swap(A, B);           
+        for(int horiz=A.x; horiz<=B.x; horiz++){
+            if((horiz >= 0 && horiz < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT)){
+                float z = triangle.solve_plane_for_z(Point(horiz, y));
+                if(z < zbuffer[PIXEL_OFFSET(horiz, y)]){
+                    assert(horiz <= 319 && y <= 199);
+                    zbuffer[PIXEL_OFFSET(horiz, y)] = z;
+                    setPixel(pixels, horiz, y, color);
+                }
+            }
+        }
+    }
+}
+
 void draw_projected_triangle(unsigned char* pixels, float* zbuffer, Triangle triangle, int color, bool filled){    
     /* Calculate the screen coordinates of the triangle. */
     Point screenPoints[3];
     for(int i=0;i<3;i++){
-        screenPoints[i] = Point((int)triangle.getPoints()[i].x + .5, (int)triangle.getPoints()[i].y + .5);
+        screenPoints[i] = Point((int)triangle.getPoints()[i].x, (int)triangle.getPoints()[i].y);
     }
     
-    if(filled){
-        //draw_line(pixels, screenPoints[0], screenPoints[1], COLOR_GREEN);
-        //draw_line(pixels, screenPoints[1], screenPoints[2], COLOR_GREEN);
-        //draw_line(pixels, screenPoints[2], screenPoints[0], COLOR_RED);
+    //draw_line(pixels, screenPoints[0], screenPoints[1], COLOR_GREEN);
+    //draw_line(pixels, screenPoints[1], screenPoints[2], COLOR_GREEN);
+    //draw_line(pixels, screenPoints[2], screenPoints[0], COLOR_RED);
 
-        int triangle_height = screenPoints[2].y - screenPoints[0].y;
-        
-        //split triangle in half along the middle point
-
-        //draw top half
-        for(int y = screenPoints[0].y; y <= screenPoints[1].y; y++){
-            int top_segment_height = screenPoints[1].y - screenPoints[0].y + 1;
-
-            if(triangle_height == 0){
-                break;
-            }
-            float alpha = (float)(y - screenPoints[0].y) / triangle_height;
-            assert(top_segment_height != 0);
-            float beta  = (float)(y - screenPoints[0].y) / top_segment_height;
-
-            Point A = screenPoints[0] + (screenPoints[2] - screenPoints[0]) * alpha;
-            Point B = screenPoints[0] + (screenPoints[1] - screenPoints[0]) * beta;
-
-            if(A.x > B.x) std::swap(A, B);           
-            for(int horiz=A.x; horiz<=B.x; horiz++){
-                if(horiz >= 0 && horiz < SCREEN_WIDTH-1){
-                    float z = triangle.solve_plane_for_z(Point(horiz, y));
-                    if(z < zbuffer[PIXEL_OFFSET(horiz, y)]){
-                        zbuffer[PIXEL_OFFSET(horiz, y)] = z;
-                        setPixel(pixels, horiz, y, color);
-                    }
-                }
-            }
-        }
-
-        //draw bottom half
-        for(int y = screenPoints[1].y; y <= screenPoints[2].y; y++){
-            int bottom_segment_height = screenPoints[2].y - screenPoints[1].y + 1;
-
-            if(triangle_height == 0){
-                break;
-            }
-            float alpha = (float)(y - screenPoints[0].y) / triangle_height;
-            assert(bottom_segment_height != 0);
-            float beta  = (float)(y - screenPoints[1].y) / bottom_segment_height;
-
-            Point A = screenPoints[0] + (screenPoints[2] - screenPoints[0]) * alpha;
-            Point B = screenPoints[1] + (screenPoints[2] - screenPoints[1]) * beta;
-
-            if(A.x > B.x) std::swap(A, B);           
-            for(int horiz=A.x; horiz<=B.x; horiz++){
-                if(horiz >= 0 && horiz < SCREEN_WIDTH-1){
-                    float z = triangle.solve_plane_for_z(Point(horiz, y));
-                    if(z < zbuffer[PIXEL_OFFSET(horiz, y)]){
-                        zbuffer[PIXEL_OFFSET(horiz, y)] = z;
-                        setPixel(pixels, horiz, y, color);
-                    }
-                }
-            }
-        }
-    }      
-
-    /* Draw the triangle's wireframe. */
-    /*
-    for(int i=0;i<3;i++){
-        Point start = triangle.getPoint(i);
-        Point end = triangle.getPoint((i+1) % 3);
-        draw_line(start, end, COLOR_GREEN);
-    }
-    */
+    draw_top_triangle(pixels, zbuffer, triangle, screenPoints, color);
+    draw_bottom_triangle(pixels, zbuffer, triangle, screenPoints, color);
 }
 

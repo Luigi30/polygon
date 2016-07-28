@@ -21,8 +21,10 @@ Vector3f center(0,0,0); //the camera is pointed at this point
 Vector3f up(0.0, 1.0, 0.0); //up vector
 Vector3f cameraRotation(0, 0, 0);
 
+void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, int color);
+void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, int color);
+
 void draw_projected_triangle(unsigned char* pixels, float* zbuffer, Triangle triangle, int color, bool filled);
-float solve_plane_for_z(Triangle triangle, Point P);
 
 inline void setPixel(unsigned char* pixels, int x, int y, int color){
     pixels[VGA_Y_OFFSETS[y] + x] = color;
