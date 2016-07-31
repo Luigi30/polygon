@@ -106,8 +106,7 @@ void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle,
         for(int horiz=A.x; horiz<=B.x; horiz++){
             if(horiz >= 0 && horiz < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT){
                 float z = triangle.solve_plane_for_z(Point(horiz, y));
-                //color = checkerboardTexture[0 + v*256];
-                color = COLOR_RED;
+                color = checkerboardTexture[0 + v*256];
                 if(z < zbuffer[PIXEL_OFFSET(horiz, y)]){
                     zbuffer[PIXEL_OFFSET(horiz, y)] = z;
                     assert(horiz <= 319 && y <= 199);
@@ -160,8 +159,7 @@ void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triang
             
             if((horiz >= 0 && horiz < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT)){
                 float z = triangle.solve_plane_for_z(Point(horiz, y));
-                //color = checkerboardTexture[0 + v*256];
-                color = COLOR_BLUE;
+                color = checkerboardTexture[0 + v*256];
                 if(z < zbuffer[PIXEL_OFFSET(horiz, y)]){
                     assert(horiz <= 319 && y <= 199);
                     zbuffer[PIXEL_OFFSET(horiz, y)] = z;
@@ -223,7 +221,7 @@ void draw_projected_triangle(unsigned char* pixels, float* zbuffer, Triangle tri
     //draw_line(pixels, screenPoints[1], screenPoints[2], COLOR_GREEN);
     //draw_line(pixels, screenPoints[2], screenPoints[0], COLOR_RED);
 
-    draw_top_triangle(pixels, zbuffer, triangle, screenPoints, COLOR_RED);
-    draw_bottom_triangle(pixels, zbuffer, triangle, screenPoints, COLOR_BLUE);
+    draw_top_triangle(pixels, zbuffer, triangle, screenPoints, color);
+    draw_bottom_triangle(pixels, zbuffer, triangle, screenPoints, color);
 }
 
