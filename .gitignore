@@ -1,0 +1,12 @@
+*.sym
+*.exe
+*.err
+*.map
+*.lk1
+*.LX
+*.mtl
+*.obj
+*.SMP
+/.vscode/.browse.VC.db
+/.vscode/c_cpp_properties.json
+/.vscode/settings.json
