@@ -121,6 +121,11 @@ bool Framebuffer::draw_face(SceneObject obj, Vector3f eye, Vector3f cameraRotati
     worldCoords[1] = Vector3f(obj.model.getLocalVertices()[face.v2].x, obj.model.getLocalVertices()[face.v2].y, obj.model.getLocalVertices()[face.v2].z);
     worldCoords[2] = Vector3f(obj.model.getLocalVertices()[face.v3].x, obj.model.getLocalVertices()[face.v3].y, obj.model.getLocalVertices()[face.v3].z);
 
+    Vector3f textureCoords[3];
+    textureCoords[0] = Vector3f(obj.model.getTextureVertices()[face.v1].x, obj.model.getTextureVertices()[face.v1].y, obj.model.getTextureVertices()[face.v1].z);
+    textureCoords[1] = Vector3f(obj.model.getTextureVertices()[face.v2].x, obj.model.getTextureVertices()[face.v2].y, obj.model.getTextureVertices()[face.v2].z);
+    textureCoords[2] = Vector3f(obj.model.getTextureVertices()[face.v3].x, obj.model.getTextureVertices()[face.v3].y, obj.model.getTextureVertices()[face.v3].z);
+
     Vector3f transformedWorldCoords[3];
     Vector3f screenCoords[3];
 
@@ -164,7 +169,7 @@ bool Framebuffer::draw_face(SceneObject obj, Vector3f eye, Vector3f cameraRotati
         int lightLevel = (lightIntensity * 127.0) / 16.0;
         lightLevel = std::min(lightLevel, 0x18);
 
-        draw_projected_triangle(pixels, zbuffer, Triangle(screenCoords[0], screenCoords[1], screenCoords[2]).sortByY(), std::max(0x13, 0x10 + lightLevel), true);
+        draw_projected_triangle(pixels, zbuffer, Triangle(screenCoords[0], screenCoords[1], screenCoords[2], textureCoords[0], textureCoords[1], textureCoords[2]).sortByY(), std::max(0x13, 0x10 + lightLevel), true);
         return true;
     } else {
         return false;

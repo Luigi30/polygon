@@ -30,4 +30,6 @@ inline void setPixel(unsigned char* pixels, int x, int y, int color){
     pixels[VGA_Y_OFFSETS[y] + x] = color;
 }
 
+char *checkerboardTexture;
+
 #endif

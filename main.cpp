@@ -83,20 +83,13 @@ int main(){
 
     printf("Loading models\n");
 
-    /*
-    WavefrontObject obj;
-    obj.load_file("cube.3d");
-    g_screen.addSceneObject("cube1", obj, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
-    */
+    WavefrontObject cube = WavefrontObject("cube.3d");
 
-    WavefrontObject head;
-    head.load_file("cube.3d");
-
-    g_screen.addSceneObject("head", head, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
+    g_screen.addSceneObject("head", cube, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
     g_screen.getSceneObjectPtr("head")->transformation.rotation = Vector3f(0,0,0);
     g_screen.getSceneObjectPtr("head")->movement.desired_rotation = Vector3f(0,0,0);
 
-    g_screen.addSceneObject("player", head, Vector3f(0,0,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
+    g_screen.addSceneObject("player", cube, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(.5,.5,.5));
     g_screen.getSceneObjectPtr("player")->transformation.rotation = Vector3f(0,0,0);
     g_screen.getSceneObjectPtr("player")->movement.desired_rotation = Vector3f(0,0,0);
 
@@ -111,6 +104,9 @@ int main(){
 
     //Scene loop
     while(!abort){
+
+        //we need a player object
+        assert(g_screen.getSceneObjectPtr("player") != NULL);
 
         //Limit to 35Hz refresh
         wait_for_vsync();
@@ -190,12 +186,14 @@ int main(){
             obj->transformation.translation = obj->transformation.translation + delta;
         }
         
-        //eye = g_screen.getSceneObjectPtr("player")->transformation.translation;
-        
+        //eye = g_screen.getSceneObjectPtr("player")->transformation.translation;       
         direction = direction.rotateAroundZAxis(-cameraRotation.z);
         direction = direction.rotateAroundXAxis(-cameraRotation.x);
         direction = direction.rotateAroundYAxis(-cameraRotation.y);
         eye = eye + direction;
+        
+        g_screen.getSceneObjectPtr("player")->transformation.translation = eye;
+        g_screen.getSceneObjectPtr("player")->transformation.rotation = cameraRotation;
     }
 
     _setvideomode(_DEFAULTMODE);
