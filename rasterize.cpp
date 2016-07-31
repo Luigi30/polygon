@@ -2,9 +2,10 @@
 
 #define PIXEL_OFFSET(X, Y) VGA_Y_OFFSETS[Y] + X
 
-float lerp(float x1, float x2, float t){
-    assert(t >= 0.0f && t <= 1.0f);
-    return x1 + (x2 - x1) * t;
+template <typename T>
+T lerp(T x1, T x2, float weight){
+    assert(weight >= 0.0f && weight <= 1.0f);
+    return x1 + (x2 - x1) * weight;
 }
 
 void swap(int &a, int &b){
@@ -71,8 +72,8 @@ void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle,
     int triangle_height = screenPoints[2].y - screenPoints[0].y;
     int scanlines = 0;
 
-    int v_top    = triangle.getTexturePoint(1).y * 256;
-    int v_bottom = triangle.getTexturePoint(2).y * 256;
+    int v_top    = triangle.getTexturePoint(0).y * 256;
+    int v_bottom = triangle.getTexturePoint(1).y * 256;
     int v_steps  = v_bottom - v_top;
 
 /*
@@ -88,9 +89,12 @@ void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle,
 */
 
     for(int y = screenPoints[0].y; y <= screenPoints[1].y; y++){
-        int v = (int)lerp(v_top, v_bottom, ((float)scanlines / (float)screenPoints[2].y));
+        if(y < 0) {
+            continue;
+        }
         //printf("lerp is %d. parameters are %d, %d, %d, %d\n", v, v_top, v_bottom, scanlines, screenPoints[2].y);
         int top_segment_height = screenPoints[1].y - screenPoints[0].y + 1;
+        int v = (int)lerp(v_top, v_bottom, ((float)scanlines / (float)top_segment_height));
 
         if(triangle_height == 0){
             break;
@@ -99,8 +103,8 @@ void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle,
         assert(top_segment_height != 0);
         float beta  = (float)(y - screenPoints[0].y) / (float)top_segment_height;
 
-        Point A = screenPoints[0] + (screenPoints[2] - screenPoints[0]) * alpha;
-        Point B = screenPoints[0] + (screenPoints[1] - screenPoints[0]) * beta;
+        Point A = lerp(screenPoints[0], screenPoints[2], alpha);
+        Point B = lerp(screenPoints[0], screenPoints[1], beta);
 
         if(A.x > B.x) std::swap(A, B);           
         for(int horiz=A.x; horiz<=B.x; horiz++){
@@ -139,9 +143,13 @@ void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triang
 */
 
     for(int y = screenPoints[1].y; y <= screenPoints[2].y; y++){
-        int v = (int)lerp(v_top, v_bottom, ((float)scanlines / (float)screenPoints[2].y));
+        if(y < 0){
+            continue;
+        }
+
         //printf("lerp is %d. parameters are %d, %d, %d, %d\n", v, v_top, v_bottom, scanlines, screenPoints[2].y);
         int bottom_segment_height = screenPoints[2].y - screenPoints[1].y + 1;
+        int v = (int)lerp(v_top, v_bottom, ((float)scanlines / (float)bottom_segment_height));
 
         if(triangle_height == 0){
             break;
@@ -151,8 +159,8 @@ void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triang
         assert(bottom_segment_height != 0);
         float beta  = (float)(y - screenPoints[1].y) / (float)bottom_segment_height;
 
-        Point A = screenPoints[0] + (screenPoints[2] - screenPoints[0]) * alpha;
-        Point B = screenPoints[1] + (screenPoints[2] - screenPoints[1]) * beta;
+        Point A = lerp(screenPoints[0], screenPoints[2], alpha);
+        Point B = lerp(screenPoints[1], screenPoints[2], beta);
 
         if(A.x > B.x) std::swap(A, B);           
         for(int horiz=A.x; horiz<=B.x; horiz++){
