@@ -206,3 +206,33 @@ void Screen::applyObjectRotations(){
             sceneObjects[i].update_rotation();
     }
 }
+
+void Screen::mode7_background(int angle_degrees, float scale_factor){
+    //float angle_radians = angle_degrees * (M_PI/180.0f);
+
+    angle_degrees = angle_degrees % 360;
+
+    const int TEXTURE_WIDTH = 256, TEXTURE_HEIGHT = 256;
+    const int HALF_TEXTURE_WIDTH = TEXTURE_WIDTH/2, HALF_TEXTURE_HEIGHT = TEXTURE_HEIGHT/2;
+
+    float scaled_width  = TEXTURE_WIDTH * scale_factor;
+    float scaled_height = TEXTURE_HEIGHT * scale_factor;
+    int offset = std::max(0, (SCREEN_WIDTH - (int)scaled_width) / 2);
+
+    if(checkerboardTexture == NULL){
+        construct_checkerboard();
+    }
+
+    for(int screenY = 0; screenY < std::min((int)scaled_height, (SCREEN_HEIGHT)); screenY++){
+        for(int screenX = 0; screenX < std::min((int)scaled_width, SCREEN_WIDTH); screenX++){
+            int u = (int)lerp(-HALF_TEXTURE_WIDTH, HALF_TEXTURE_WIDTH, (screenX/scaled_width));
+            int v = (int)lerp(-HALF_TEXTURE_HEIGHT+offset, HALF_TEXTURE_HEIGHT+offset, (screenY/scaled_height));
+            //now the origin of the texture is (0,0) - correct it
+            int u_prime = ((int)((u * COS_TABLE[angle_degrees]) - (v * SIN_TABLE[angle_degrees]) + HALF_TEXTURE_WIDTH));
+            int v_prime = ((int)((v * COS_TABLE[angle_degrees]) + (u * SIN_TABLE[angle_degrees]) + HALF_TEXTURE_HEIGHT));
+
+            layer_background.pixels[VGA_Y_OFFSETS[screenY] + screenX+offset] = checkerboardTexture[(u_prime % TEXTURE_WIDTH) + ((v_prime % TEXTURE_HEIGHT)*256)];
+        }
+
+    }    
+}

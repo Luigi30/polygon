@@ -30,6 +30,10 @@ inline void setPixel(unsigned char* pixels, int x, int y, int color){
     pixels[VGA_Y_OFFSETS[y] + x] = color;
 }
 
+void construct_checkerboard();
 char *checkerboardTexture;
+
+template <typename T>
+T lerp(T x1, T x2, float weight);
 
 #endif

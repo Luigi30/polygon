@@ -88,6 +88,22 @@ class Vector3f {
                             (a.x * b.y) - (a.y * b.x));
         }
 
+        float carmack(float input){
+            //Fast inverse floating point
+
+            long i;
+            float x2, y;
+            const float threehalves = 1.5f;
+
+            x2 = input * 0.5f;
+            y = input;
+            i = *(long*)&y;
+            i = 0x5f3759df - (i >> 1); //what the fuck?
+            y = *(float*) &i;
+            y = y * (threehalves - (x2*y*y));
+            return y;
+        }
+
         Vector3f rotateAroundXAxis(float rotationDegrees);
         Vector3f rotateAroundYAxis(float rotationDegrees);
         Vector3f rotateAroundZAxis(float rotationDegrees);

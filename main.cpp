@@ -21,7 +21,7 @@ void abort(char *msg){
     printf("\r\nCritical error: %s\r\n", msg);
     exit(255);
 }
-
+/*
 void init_timer(int rate){
     //The timer runs at 1193180Hz
     //Timer frequency = 1193180/rate
@@ -42,6 +42,7 @@ void init_timer(int rate){
     outp(0x40, timerReload >> 8);
     _enable();
 }
+*/
 
 void load_shapes(){
     //Read SHAPES.DAT
@@ -70,10 +71,16 @@ void load_lookup_tables(){
     for(int i=0;i<VGA_HEIGHT;i++){
         VGA_Y_OFFSETS[i] = i * VGA_WIDTH;
     }
+
+    //Trigonometry tables
+    for(int i=0;i<360;i++){
+        SIN_TABLE[i] = std::sin(i * (M_PI/180.0f));
+        COS_TABLE[i] = std::cos(i * (M_PI/180.0f));
+    }
 }
 
 int main(){
-    init_timer(11930); //100 ticks per second
+    //init_timer(11930); //100 ticks per second
     
     VGA_PTR = (char*)VGA_LINEAR_ADDRESS;
     debugOutput("OK\r\n");
@@ -101,6 +108,7 @@ int main(){
 
     bool abort = false;
     bool goForward = false;
+    int mode7_angle = 0;
 
     //Scene loop
     while(!abort){
@@ -110,7 +118,7 @@ int main(){
 
         //Limit to 35Hz refresh
         wait_for_vsync();
-        wait_for_vsync();
+        //wait_for_vsync();
         
         //clamp rotation
         g_screen.getSceneObjectPtr("head")->transformation.rotation.x = std::fmod(g_screen.getSceneObjectPtr("head")->transformation.rotation.x, 360.0f);
@@ -123,6 +131,7 @@ int main(){
         //draw some debug data
         g_screen.draw_polygon_debug_data();
         g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("head"));
+        g_screen.mode7_background(mode7_angle, 1.0f);
         g_screen.redraw();
 
         Vector3f direction = Vector3f(0,0,0);
@@ -181,9 +190,12 @@ int main(){
         }
 
         if(goForward) {
+            /*
             SceneObject *obj = g_screen.getSceneObjectPtr("head");
             Vector3f delta = obj->forward_vector() * 0.1f;
             obj->transformation.translation = obj->transformation.translation + delta;
+            */
+            mode7_angle++;
         }
         
         //eye = g_screen.getSceneObjectPtr("player")->transformation.translation;       

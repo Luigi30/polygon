@@ -76,32 +76,27 @@ void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle,
     int v_bottom = triangle.getTexturePoint(1).y * 256;
     int v_steps  = v_bottom - v_top;
 
-/*
-    if(v_steps == 0){
-        _setvideomode(_DEFAULTMODE);
-        printf("triangle top texture height is 0!\n");
-        printf("v_top %d, v_bottom %d\n", v_top, v_bottom);
-        printf("v0 U,V,W: %f,%f,%f\n", triangle.getTexturePoint(0).x, triangle.getTexturePoint(0).y, triangle.getTexturePoint(0).z);
-        printf("v1 U,V,W: %f,%f,%f\n", triangle.getTexturePoint(1).x, triangle.getTexturePoint(1).y, triangle.getTexturePoint(1).z);
-        printf("v2 U,V,W: %f,%f,%f\n", triangle.getTexturePoint(2).x, triangle.getTexturePoint(2).y, triangle.getTexturePoint(2).z);
-        exit(0);
-    }
-*/
-
     for(int y = screenPoints[0].y; y <= screenPoints[1].y; y++){
         if(y < 0) {
             continue;
         }
         //printf("lerp is %d. parameters are %d, %d, %d, %d\n", v, v_top, v_bottom, scanlines, screenPoints[2].y);
-        int top_segment_height = screenPoints[1].y - screenPoints[0].y + 1;
+        int top_segment_height = screenPoints[1].y - screenPoints[0].y;
         int v = (int)lerp(v_top, v_bottom, ((float)scanlines / (float)top_segment_height));
 
         if(triangle_height == 0){
             break;
         }
-        float alpha = (float)(y - screenPoints[0].y) / (float)triangle_height;
-        assert(top_segment_height != 0);
-        float beta  = (float)(y - screenPoints[0].y) / (float)top_segment_height;
+        float alpha, beta;
+        
+        //assert(top_segment_height != 0);
+
+        alpha = (float)(y - screenPoints[0].y) / (float)triangle_height;
+        if(top_segment_height == 0){
+            beta = 0;
+        } else {
+            beta = (float)(y - screenPoints[0].y) / (float)top_segment_height;
+        }
 
         Point A = lerp(screenPoints[0], screenPoints[2], alpha);
         Point B = lerp(screenPoints[0], screenPoints[1], beta);
@@ -110,7 +105,7 @@ void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle,
         for(int horiz=A.x; horiz<=B.x; horiz++){
             if(horiz >= 0 && horiz < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT){
                 float z = triangle.solve_plane_for_z(Point(horiz, y));
-                color = checkerboardTexture[0 + v*256];
+                //color = checkerboardTexture[0 + v*256];
                 if(z < zbuffer[PIXEL_OFFSET(horiz, y)]){
                     zbuffer[PIXEL_OFFSET(horiz, y)] = z;
                     assert(horiz <= 319 && y <= 199);
@@ -130,34 +125,27 @@ void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triang
     int v_bottom = triangle.getTexturePoint(2).y * 256;
     int v_steps  = v_bottom - v_top;
 
-/*
-    if(v_steps == 0){
-        _setvideomode(_DEFAULTMODE);
-        printf("triangle bottom texture height is 0!\n");
-        printf("v_top %d, v_bottom %d\n", v_top, v_bottom);
-        printf("v0 U,V,W: %f,%f,%f\n", triangle.getTexturePoint(0).x, triangle.getTexturePoint(0).y, triangle.getTexturePoint(0).z);
-        printf("v1 U,V,W: %f,%f,%f\n", triangle.getTexturePoint(1).x, triangle.getTexturePoint(1).y, triangle.getTexturePoint(1).z);
-        printf("v2 U,V,W: %f,%f,%f\n", triangle.getTexturePoint(2).x, triangle.getTexturePoint(2).y, triangle.getTexturePoint(2).z);
-        exit(0);
-    }
-*/
-
     for(int y = screenPoints[1].y; y <= screenPoints[2].y; y++){
         if(y < 0){
             continue;
         }
 
         //printf("lerp is %d. parameters are %d, %d, %d, %d\n", v, v_top, v_bottom, scanlines, screenPoints[2].y);
-        int bottom_segment_height = screenPoints[2].y - screenPoints[1].y + 1;
+        int bottom_segment_height = screenPoints[2].y - screenPoints[1].y;
         int v = (int)lerp(v_top, v_bottom, ((float)scanlines / (float)bottom_segment_height));
 
         if(triangle_height == 0){
             break;
         }
 
-        float alpha = (float)(y - screenPoints[0].y) / (float)triangle_height;
-        assert(bottom_segment_height != 0);
-        float beta  = (float)(y - screenPoints[1].y) / (float)bottom_segment_height;
+        float alpha, beta;
+
+        alpha = (float)(y - screenPoints[0].y) / (float)triangle_height;
+        if(bottom_segment_height == 0){
+            beta = 0.0;
+        } else {
+            beta = (float)(y - screenPoints[1].y) / (float)bottom_segment_height;
+        }
 
         Point A = lerp(screenPoints[0], screenPoints[2], alpha);
         Point B = lerp(screenPoints[1], screenPoints[2], beta);
@@ -167,7 +155,7 @@ void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triang
             
             if((horiz >= 0 && horiz < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT)){
                 float z = triangle.solve_plane_for_z(Point(horiz, y));
-                color = checkerboardTexture[0 + v*256];
+                //color = checkerboardTexture[0 + v*256];
                 if(z < zbuffer[PIXEL_OFFSET(horiz, y)]){
                     assert(horiz <= 319 && y <= 199);
                     zbuffer[PIXEL_OFFSET(horiz, y)] = z;
@@ -180,49 +168,68 @@ void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triang
     }
 }
 
-void draw_projected_triangle(unsigned char* pixels, float* zbuffer, Triangle triangle, int color, bool filled){    
-    if(checkerboardTexture == NULL){
-        checkerboardTexture = (char*)malloc(256*256);
-        int col0, col1;
-        for(int row=0;row<256;row++){
-            if(row % 2 == 0){
-                col0 = 0x0F; //white
-                col1 = 0x10; //black
-            } else {
+void construct_checkerboard(){
+    checkerboardTexture = (char*)malloc(256*256);
+    int col0, col1;
+    bool switched = false;
+
+    for(int row=0;row<256;row++){
+        if(row % 32 == 0){
+            if(switched){
                 col0 = 0x10; //black
                 col1 = 0x0F; //white
-            }
-            for(int col=0;col<32;col++){
-                checkerboardTexture[(row*256) + col] = col0;
-            }
-            for(int col=32;col<64;col++){
-                checkerboardTexture[(row*256) + col] = col1;
-            }
-            for(int col=64;col<96;col++){
-                checkerboardTexture[(row*256) + col] = col0;
-            }
-            for(int col=96;col<128;col++){
-                checkerboardTexture[(row*256) + col] = col1;
-            }
-            for(int col=128;col<160;col++){
-                checkerboardTexture[(row*256) + col] = col0;
-            }
-            for(int col=160;col<192;col++){
-                checkerboardTexture[(row*256) + col] = col1;
-            }
-            for(int col=192;col<224;col++){
-                checkerboardTexture[(row*256) + col] = col0;
-            }
-            for(int col=224;col<256;col++){
-                checkerboardTexture[(row*256) + col] = col1;
+                switched = false;
+            } else {
+                col0 = 0x0F; //white
+                col1 = 0x10; //black
+                switched = true;
             }
         }
+
+        for(int col=0;col<32;col++){
+            checkerboardTexture[(row*256) + col] = col0;
+            continue;
+        }
+        for(int col=32;col<64;col++){
+            checkerboardTexture[(row*256) + col] = col1;
+            continue;
+        }
+        for(int col=64;col<96;col++){
+            checkerboardTexture[(row*256) + col] = col0;
+            continue;
+        }
+        for(int col=96;col<128;col++){
+            checkerboardTexture[(row*256) + col] = col1;
+            continue;
+        }
+        for(int col=128;col<160;col++){
+            checkerboardTexture[(row*256) + col] = col0;
+            continue;
+        }
+        for(int col=160;col<192;col++){
+            checkerboardTexture[(row*256) + col] = col1;
+            continue;
+        }
+        for(int col=192;col<224;col++){
+            checkerboardTexture[(row*256) + col] = col0;
+            continue;
+        }
+        for(int col=224;col<256;col++){
+            checkerboardTexture[(row*256) + col] = col1;
+            continue;
+        }
+    }
+}
+
+void draw_projected_triangle(unsigned char* pixels, float* zbuffer, Triangle triangle, int color, bool filled){    
+    if(checkerboardTexture == NULL){
+        construct_checkerboard();
     }
 
     /* Calculate the screen coordinates of the triangle. */
     Point screenPoints[3];
     for(int i=0;i<3;i++){
-        screenPoints[i] = Point((int)triangle.getGeometryPoints()[i].x, (int)triangle.getGeometryPoints()[i].y);
+        screenPoints[i] = Point((int)(triangle.getGeometryPoints()[i].x+.5), (int)(triangle.getGeometryPoints()[i].y+.5));
     }
     
     //draw_line(pixels, screenPoints[0], screenPoints[1], COLOR_GREEN);

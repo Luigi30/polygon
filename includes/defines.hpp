@@ -19,6 +19,8 @@ double PI = 3.14159265;
 #define VGA_WIDTH 320
 #define VGA_SIZE (VGA_HEIGHT * VGA_WIDTH)
 int VGA_Y_OFFSETS[VGA_HEIGHT];
+float SIN_TABLE[360];
+float COS_TABLE[360];
 char *VGA_PTR;
 
 //Timer

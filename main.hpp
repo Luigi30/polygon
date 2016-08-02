@@ -4,7 +4,7 @@
 
 #include "dos.h"
 
-#include "timer.hpp"
+//#include "timer.hpp"
 #include "screen.hpp"
 #include "includes\matrix.hpp"
 #include "includes\wavefront.hpp"
@@ -34,7 +34,7 @@ int dpmi_set_pm_handler(unsigned intnum, void far * isr )
                 return 0;
         return 1;
 }
-
+/*
 // PIT interrupt handler
 void __interrupt __far timerHandler () {
     //This will fire at a rate set in init_timer()
@@ -59,3 +59,4 @@ void __interrupt __far timerHandler () {
         outp( 0x20, 0x20 );
     }
 }
+*/

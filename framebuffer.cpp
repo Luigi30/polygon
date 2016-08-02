@@ -166,7 +166,7 @@ bool Framebuffer::draw_face(SceneObject obj, Vector3f eye, Vector3f cameraRotati
     if(triangleFacing > 0.0f){
         Vector3f lightDirection = Vector3f(0,0,-1);
         float lightIntensity = faceNormal * lightDirection;
-        int lightLevel = (lightIntensity * 127.0) / 16.0;
+        int lightLevel = (lightIntensity * 128.0) / 16.0;
         lightLevel = std::min(lightLevel, 0x18);
 
         draw_projected_triangle(pixels, zbuffer, Triangle(screenCoords[0], screenCoords[1], screenCoords[2], textureCoords[0], textureCoords[1], textureCoords[2]).sortByY(), std::max(0x13, 0x10 + lightLevel), true);
@@ -200,7 +200,6 @@ void Framebuffer::draw_rectangle_filled(Point origin, int width, int height, int
 inline void Framebuffer::setPixel(int x, int y, int color){
     pixels[VGA_Y_OFFSETS[y] + x] = color;
 }
-
 
 inline void Framebuffer::setPixel(Point point, int color){
     //Set an individual pixel to a color.

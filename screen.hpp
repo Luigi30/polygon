@@ -63,6 +63,8 @@ class Screen {
     void draw_polygon_object(SceneObject sceneObject);
     void draw_polygon_debug_data();
     void draw_object_debug_data(SceneObject obj);
+
+    void mode7_background(int angle_degrees, float scale_factor);
 };
 
 Screen g_screen;
