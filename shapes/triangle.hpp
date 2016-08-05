@@ -3,12 +3,13 @@
 
 #include "point.hpp"
 #include "vector3f.hpp"
+#include <algorith>
 
 class Triangle {
+    public:
     Vector3f geometryPoints[3];
     Vector3f texturePoints[3];
 
-    public:
     Triangle(Vector3f a, Vector3f b, Vector3f c) {
         geometryPoints[0] = Vector3f(a.x, a.y, a.z);
         geometryPoints[1] = Vector3f(b.x, b.y, b.z);

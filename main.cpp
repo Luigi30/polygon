@@ -90,7 +90,8 @@ int main(){
 
     printf("Loading models\n");
 
-    WavefrontObject cube = WavefrontObject("cube.3d");
+    //WavefrontObject cube = WavefrontObject("cube.3d");
+    WavefrontObject cube = WavefrontObject("triangle.3d");
 
     g_screen.addSceneObject("head", cube, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
     g_screen.getSceneObjectPtr("head")->transformation.rotation = Vector3f(0,0,0);
@@ -131,7 +132,7 @@ int main(){
         //draw some debug data
         g_screen.draw_polygon_debug_data();
         g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("head"));
-        g_screen.mode7_background(mode7_angle, 1.0f);
+        //g_screen.mode7_background(mode7_angle, 1.0f);
         g_screen.redraw();
 
         Vector3f direction = Vector3f(0,0,0);
@@ -190,12 +191,10 @@ int main(){
         }
 
         if(goForward) {
-            /*
             SceneObject *obj = g_screen.getSceneObjectPtr("head");
             Vector3f delta = obj->forward_vector() * 0.1f;
             obj->transformation.translation = obj->transformation.translation + delta;
-            */
-            mode7_angle++;
+            //mode7_angle++;
         }
         
         //eye = g_screen.getSceneObjectPtr("player")->transformation.translation;       

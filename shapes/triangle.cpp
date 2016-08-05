@@ -2,7 +2,6 @@
 
 Triangle Triangle::sortByY(){
         int order[3]; //integer order of vertex Y coordinates
-        int temp;
         order[0] = 0;
         order[1] = 1;
         order[2] = 2;
@@ -13,23 +12,40 @@ Triangle Triangle::sortByY(){
             sorted = true;
             
             if(geometryPoints[order[0]].y > geometryPoints[order[1]].y){
-                temp = order[0];
-                order[0] = order[1];
-                order[1] = temp;
+                //temp = order[0];
+                //order[0] = order[1];
+                //order[1] = temp;
+                std::swap(order[0], order[1]);
                 sorted = false;
             }
             if(geometryPoints[order[0]].y > geometryPoints[order[2]].y){
-                temp = order[0];
-                order[0] = order[2];
-                order[2] = temp;
+                //temp = order[0];
+                //order[0] = order[2];
+                //order[2] = temp;
+                std::swap(order[0], order[2]);
                 sorted = false;
             }
             if(geometryPoints[order[1]].y > geometryPoints[order[2]].y){
-                temp = order[1];
-                order[1] = order[2];
-                order[2] = temp;
+                //temp = order[1];
+                //order[1] = order[2];
+                //order[2] = temp;
+                std::swap(order[1], order[2]);
                 sorted = false;
-            }          
+            }
+
+            if((geometryPoints[order[0]].y == geometryPoints[order[1]].y) && (geometryPoints[order[0]].x > geometryPoints[order[1]].x)){
+                std::swap(order[0], order[1]);
+                sorted = false;
+            }
+            if((geometryPoints[order[0]].y == geometryPoints[order[2]].y) && (geometryPoints[order[0]].x > geometryPoints[order[2]].x)){
+                std::swap(order[0], order[1]);
+                sorted = false;
+            }
+            if((geometryPoints[order[1]].y == geometryPoints[order[2]].y) && (geometryPoints[order[1]].x > geometryPoints[order[2]].x)){
+                std::swap(order[1], order[2]);
+                sorted = false;
+            }
+
         } while(!sorted);
 
         return Triangle(geometryPoints[order[0]], geometryPoints[order[1]], geometryPoints[order[2]], texturePoints[order[0]], texturePoints[order[1]], texturePoints[order[2]]);

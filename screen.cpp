@@ -6,8 +6,9 @@ int polygonCount = 0;
 void Screen::redraw(){
     polygonCount = 0;
     clock_t start = clock();
+    memset(layer_background.pixels, 0x03, VGA_SIZE);
     
-    //render buttons to layer_background and text to layer_text
+    //render buttons to layer_widgets and text to layer_text
     memset(layer_widgets.pixels, 0, VGA_SIZE);
     /*
     for(int i=0;i<widgetsList.size();i++){
@@ -223,7 +224,7 @@ void Screen::mode7_background(int angle_degrees, float scale_factor){
         construct_checkerboard();
     }
 
-    for(int screenY = 0; screenY < std::min((int)scaled_height, (SCREEN_HEIGHT)); screenY++){
+    for(int screenY = 0; screenY < std::min((int)scaled_height, SCREEN_HEIGHT); screenY++){
         for(int screenX = 0; screenX < std::min((int)scaled_width, SCREEN_WIDTH); screenX++){
             int u = (int)lerp(-HALF_TEXTURE_WIDTH, HALF_TEXTURE_WIDTH, (screenX/scaled_width));
             int v = (int)lerp(-HALF_TEXTURE_HEIGHT+offset, HALF_TEXTURE_HEIGHT+offset, (screenY/scaled_height));

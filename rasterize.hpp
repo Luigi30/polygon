@@ -34,6 +34,9 @@ void construct_checkerboard();
 char *checkerboardTexture;
 
 template <typename T>
-T lerp(T x1, T x2, float weight);
+T lerp(T x1, T x2, float weight){
+    assert(weight >= 0.0f && weight <= 1.0f);
+    return x1 + (x2 - x1) * weight;
+}
 
 #endif
