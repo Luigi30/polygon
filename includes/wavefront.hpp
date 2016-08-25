@@ -12,8 +12,8 @@
 #include "..\shapes\vector3f.hpp"
 #include "..\shapes\point3d.hpp"
 
-#define MAX_VERTICES 4096
-#define MAX_FACES 4096
+#define MAX_VERTICES 512
+#define MAX_FACES 512
 
 struct Face {
     //Geometry vertices

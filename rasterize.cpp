@@ -122,15 +122,14 @@ void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triang
         if(A.x > B.x) std::swap(A, B);           
         for(int horiz=A.x; horiz<=B.x; horiz++){
             if(horiz >= 0 && horiz < SCREEN_WIDTH && y >= 0 && y < SCREEN_HEIGHT){
-                Vector3f barycentric = barycentric_point(screenPoints[0], screenPoints[1], screenPoints[2], Point(horiz, y));
+                //Vector3f barycentric = barycentric_point(triangle.geometryPoints[0], triangle.geometryPoints[1], triangle.geometryPoints[2], Point(horiz, y));
                 float z = triangle.solve_plane_for_z(Point(horiz, y));
 
                 //texture: X = U, Y = V, Z = W.
                 //W is always 1 here so simplify (triangle.texturePoints[0].x / triangle.texturePoints[0].z) to triangle.texturePoints[0].x
-                float w_prime = barycentric.x + barycentric.y + barycentric.z;
-                int u_prime = (int)(((barycentric.x * triangle.texturePoints[0].x + barycentric.y * triangle.texturePoints[1].x + barycentric.z * triangle.texturePoints[2].x) / w_prime) * 256);
-                int v_prime = (int)(((barycentric.x * triangle.texturePoints[0].y + barycentric.y * triangle.texturePoints[1].y + barycentric.z * triangle.texturePoints[2].y) / w_prime) * 256);
-                color = checkerboardTexture[u_prime + (v_prime*256)];
+                //int u_prime = (int)(((barycentric.x * triangle.texturePoints[0].x + barycentric.y * triangle.texturePoints[1].x + barycentric.z * triangle.texturePoints[2].x)) * 256);
+                //int v_prime = (int)(((barycentric.x * triangle.texturePoints[0].y + barycentric.y * triangle.texturePoints[1].y + barycentric.z * triangle.texturePoints[2].y)) * 256);
+                //color = checkerboardTexture[u_prime + (v_prime*256)];
 
                 if(z < zbuffer[PIXEL_OFFSET(horiz, y)]){
                     zbuffer[PIXEL_OFFSET(horiz, y)] = z;
@@ -193,17 +192,38 @@ void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle,
                 float z = triangle.solve_plane_for_z(Point(screen_x, screen_y));
 
                 //texture: X = U, Y = V, Z = W.
-                //W is always 1 here so simplify (triangle.texturePoints[0].x / triangle.texturePoints[0].z) to triangle.texturePoints[0].x
-                Vector3f barycentric = barycentric_point(screenPoints[0], screenPoints[1], screenPoints[2], Point(screen_x, screen_y));
-                float w_prime = barycentric.x + barycentric.y + barycentric.z;
-                int u_prime = (int)(((barycentric.x * triangle.texturePoints[0].x + barycentric.y * triangle.texturePoints[1].x + barycentric.z * triangle.texturePoints[2].x) / w_prime) * 256);
-                int v_prime = (int)(((barycentric.x * triangle.texturePoints[0].y + barycentric.y * triangle.texturePoints[1].y + barycentric.z * triangle.texturePoints[2].y) / w_prime) * 256);
-                color = checkerboardTexture[u_prime + (v_prime*256)];
+                //W is always 1 here so simplify (triangle.texturePoints[0].x / triangle.texturePoints[0].z) to triangle.texturePoints[0].x? wrong
+                //don't use the screen points to calculate barycentric coordinates, use clip coordinates
+                //Vector3f barycentric = barycentric_point(triangle.geometryPoints[0], triangle.geometryPoints[1], triangle.geometryPoints[2], Point(screen_x, screen_y));
+                //int u_prime = (int)((barycentric.x * triangle.texturePoints[0].x + barycentric.y * triangle.texturePoints[1].x + barycentric.z * triangle.texturePoints[2].x) * 256);
+                //int v_prime = (int)((barycentric.x * triangle.texturePoints[0].y + barycentric.y * triangle.texturePoints[1].y + barycentric.z * triangle.texturePoints[2].y) * 256);
+                //color = checkerboardTexture[u_prime + (v_prime*256)];
 
                 if(z < zbuffer[PIXEL_OFFSET(screen_x, screen_y)]){
                     assert(screen_x <= 319 && screen_y <= 199);
                     zbuffer[PIXEL_OFFSET(screen_x, screen_y)] = z;
                     setPixel(pixels, screen_x, screen_y, color);
+
+#ifdef PIXEL_DEBUGGING
+                    memcpy(VGA_PTR, pixels, 320*200);
+                    printf("Barycentric: %f %f %f\n X %f %f %f\n Y %f %f %f\n Z %f %f %f\n UV: %f %f\n",
+                        barycentric.x,
+                        barycentric.y,
+                        barycentric.z,
+                        triangle.texturePoints[0].x,
+                        triangle.texturePoints[0].y,
+                        triangle.texturePoints[0].z,
+                        triangle.texturePoints[1].x,
+                        triangle.texturePoints[1].y,
+                        triangle.texturePoints[1].z,
+                        triangle.texturePoints[2].x,
+                        triangle.texturePoints[2].y,
+                        triangle.texturePoints[2].z,
+                        barycentric.x * triangle.texturePoints[0].x + barycentric.y * triangle.texturePoints[1].x + barycentric.z * triangle.texturePoints[2].x,
+                        barycentric.x * triangle.texturePoints[0].y + barycentric.y * triangle.texturePoints[1].y + barycentric.z * triangle.texturePoints[2].y);
+                    delay(1);
+#endif
+
                 }
             }
         }

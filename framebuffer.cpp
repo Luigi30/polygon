@@ -128,6 +128,7 @@ bool Framebuffer::draw_face(SceneObject obj, Vector3f eye, Vector3f cameraRotati
 
     Vector3f transformedWorldCoords[3];
     Vector3f screenCoords[3];
+    Vector3f clipCoords[3];
 
     //Scale -> Rotate -> Translate    
     for(int i=0;i<3;i++){
@@ -147,6 +148,11 @@ bool Framebuffer::draw_face(SceneObject obj, Vector3f eye, Vector3f cameraRotati
         }
 
         float vFov = DEG_TO_RAD(64.0);
+
+        //before we perspective divide, these are clipping coordinates
+        clipCoords[i].x = screenCoords[i].x;
+        clipCoords[i].y = screenCoords[i].y;
+        clipCoords[i].z = screenCoords[i].z;
 
         //Perspective divide
         screenCoords[i].x = transformedWorldCoords[i].x / transformedWorldCoords[i].z;
@@ -169,7 +175,7 @@ bool Framebuffer::draw_face(SceneObject obj, Vector3f eye, Vector3f cameraRotati
         int lightLevel = (lightIntensity * 128.0) / 16.0;
         lightLevel = std::min(lightLevel, 0x18);
 
-        draw_projected_triangle(pixels, zbuffer, Triangle(screenCoords[0], screenCoords[1], screenCoords[2], textureCoords[0], textureCoords[1], textureCoords[2]).sortByY(), std::max(0x13, 0x10 + lightLevel), true);
+        draw_projected_triangle(pixels, zbuffer, Triangle(screenCoords[0], screenCoords[1], screenCoords[2], textureCoords[0], textureCoords[1], textureCoords[2], clipCoords[0], clipCoords[1], clipCoords[2]).sortByY(), std::max(0x13, 0x10 + lightLevel), true);
         return true;
     } else {
         return false;

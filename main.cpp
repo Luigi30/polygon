@@ -1,13 +1,6 @@
 #include "main.hpp"
-#include <cmath>
-#include <time.h>
 
-#define M_PI 3.141592653589793238462643383279502884
-#define DEG_TO_RAD(X) ((X * M_PI) / 180.0)
-
-#define ROTATION_DEGREES_PER_STEP 5
-
-std::vector<Shape> shapesList;
+#define GAMEOBJECT(X) g_screen.getSceneObjectPtr(X)
 
 void wait_for_vsync(){
     //Wait for the end of a retrace
@@ -21,6 +14,7 @@ void abort(char *msg){
     printf("\r\nCritical error: %s\r\n", msg);
     exit(255);
 }
+
 /*
 void init_timer(int rate){
     //The timer runs at 1193180Hz
@@ -79,6 +73,13 @@ void load_lookup_tables(){
     }
 }
 
+void updatePlayerPosition(Vector3f _eye, Vector3f _cameraRotation){
+    //Player's position and rotation = camera, effectively
+    g_screen.getSceneObjectPtr("player")->transformation.translation = _eye;
+    g_screen.getSceneObjectPtr("player")->transformation.rotation = _cameraRotation;
+
+}
+
 int main(){
     //init_timer(11930); //100 ticks per second
     
@@ -90,8 +91,8 @@ int main(){
 
     printf("Loading models\n");
 
-    //WavefrontObject cube = WavefrontObject("cube.3d");
-    WavefrontObject cube = WavefrontObject("triangle.3d");
+    WavefrontObject cube = WavefrontObject("cube.3d");
+    //WavefrontObject cube = WavefrontObject("triangle.3d");
 
     g_screen.addSceneObject("head", cube, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
     g_screen.getSceneObjectPtr("head")->transformation.rotation = Vector3f(0,0,0);
@@ -107,109 +108,137 @@ int main(){
     g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("head"));
     g_screen.redraw();
 
-    bool abort = false;
-    bool goForward = false;
+    bool stop = false;
     int mode7_angle = 0;
 
     //Scene loop
-    while(!abort){
-
-        //we need a player object
-        assert(g_screen.getSceneObjectPtr("player") != NULL);
-
-        //Limit to 35Hz refresh
-        wait_for_vsync();
-        //wait_for_vsync();
-        
-        //clamp rotation
-        g_screen.getSceneObjectPtr("head")->transformation.rotation.x = std::fmod(g_screen.getSceneObjectPtr("head")->transformation.rotation.x, 360.0f);
-        g_screen.getSceneObjectPtr("head")->transformation.rotation.y = std::fmod(g_screen.getSceneObjectPtr("head")->transformation.rotation.y, 360.0f);
-
-        //update object location and orientation
-        g_screen.applyObjectVelocities();
-        g_screen.applyObjectRotations();
-
-        //draw some debug data
-        g_screen.draw_polygon_debug_data();
-        g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("head"));
-        //g_screen.mode7_background(mode7_angle, 1.0f);
-        g_screen.redraw();
-
-        Vector3f direction = Vector3f(0,0,0);
-
-        if(kbhit()){
-            char key = getch();
-
-            if(key == 0x1B){ //ESC
-                abort = true;
-            }
-            else if(key == 'a'){
-                direction = Vector3f(-1,0,0);
-            }
-            else if(key == 'd'){
-                direction = Vector3f(1,0,0);
-            }
-            else if(key == 'w'){
-                direction = Vector3f(0,0,1);
-            }
-            else if(key == 's'){
-                direction = Vector3f(0,0,-1);
-            }
-            else if(key == 'e'){
-                cameraRotation.y = std::fmod(cameraRotation.y - ROTATION_DEGREES_PER_STEP, 360.0f);
-            }
-            else if(key == 'q'){
-                cameraRotation.y = std::fmod(cameraRotation.y + ROTATION_DEGREES_PER_STEP, 360.0f);
-            }
-            else if(key == 'r'){
-                cameraRotation.x = std::fmod(cameraRotation.x - ROTATION_DEGREES_PER_STEP, 360.0f);
-            }
-            else if(key == 'v'){
-                cameraRotation.x = std::fmod(cameraRotation.x + ROTATION_DEGREES_PER_STEP, 360.0f);
-            }
-            else if(key == 'u'){
-                cameraRotation.z = std::fmod(cameraRotation.z - ROTATION_DEGREES_PER_STEP, 360.0f);
-            }
-            else if(key == 'i'){
-                cameraRotation.z = std::fmod(cameraRotation.z + ROTATION_DEGREES_PER_STEP, 360.0f);
-            }
-            else if(key == 'f'){
-                g_screen.getSceneObjectPtr("head")->transformation.rotation.y += 5.0;
-            }
-            else if (key == 'g'){
-                goForward = ~goForward;
-            }
-            else if (key == 'h'){
-                g_screen.getSceneObjectPtr("head")->movement.desired_rotation = Vector3f(15, 30, 0);
-            }
-            else if (key == 'j'){
-                g_screen.getSceneObjectPtr("head")->movement.desired_rotation = Vector3f(10, -25, 0);
-            }
-            else if (key == 'k'){
-                g_screen.getSceneObjectPtr("head")->movement.forward_speed = 0.05f;
-            }
-        }
-
-        if(goForward) {
-            SceneObject *obj = g_screen.getSceneObjectPtr("head");
-            Vector3f delta = obj->forward_vector() * 0.1f;
-            obj->transformation.translation = obj->transformation.translation + delta;
-            //mode7_angle++;
-        }
-        
-        //eye = g_screen.getSceneObjectPtr("player")->transformation.translation;       
-        direction = direction.rotateAroundZAxis(-cameraRotation.z);
-        direction = direction.rotateAroundXAxis(-cameraRotation.x);
-        direction = direction.rotateAroundYAxis(-cameraRotation.y);
-        eye = eye + direction;
-        
-        g_screen.getSceneObjectPtr("player")->transformation.translation = eye;
-        g_screen.getSceneObjectPtr("player")->transformation.rotation = cameraRotation;
+    while(!stop){
+        stop = DoSceneLoop();
     }
 
     _setvideomode(_DEFAULTMODE);
 
     printf("exiting!\n");
     return 0;
+}
 
+bool DoSceneLoop(){
+    bool stopLooping = false;
+
+    //TODO: split these off into controls setup
+    bool goForward = false;
+    float throttle = 0;
+
+    //we need a player object
+    assert(g_screen.getSceneObjectPtr("player") != NULL);
+
+    //Limit to 35Hz refresh
+    wait_for_vsync();
+    //wait_for_vsync();
+    
+    //clamp rotation
+    g_screen.getSceneObjectPtr("head")->transformation.rotation.x = std::fmod(g_screen.getSceneObjectPtr("head")->transformation.rotation.x, 360.0f);
+    g_screen.getSceneObjectPtr("head")->transformation.rotation.y = std::fmod(g_screen.getSceneObjectPtr("head")->transformation.rotation.y, 360.0f);
+
+    //update object location and orientation
+    g_screen.applyObjectVelocities();
+    g_screen.applyObjectRotations();
+
+    //draw some debug data
+    g_screen.draw_polygon_debug_data();
+    g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("head"));
+    //g_screen.mode7_background(mode7_angle, 1.0f);
+    g_screen.redraw();
+
+    //Vector3f direction = Vector3f(0,0,0);
+    read_keyboard();
+
+    if(kbhit()){
+        char key = getch();
+
+        if(key == 0x1B){ //ESC
+            stopLooping = true;
+        }
+        /*
+        else if(key == 'a'){
+            direction = Vector3f(-1,0,0);
+        }
+        else if(key == 'd'){
+            direction = Vector3f(1,0,0);
+        }
+        else if(key == 'w'){
+            direction = Vector3f(0,0,1);
+        }
+        else if(key == 's'){
+            direction = Vector3f(0,0,-1);
+        }
+        */
+        /*
+        else if(key == 'e'){
+            cameraRotation.y = std::fmod(cameraRotation.y - ROTATION_DEGREES_PER_STEP, 360.0f);
+        }
+        else if(key == 'q'){
+            cameraRotation.y = std::fmod(cameraRotation.y + ROTATION_DEGREES_PER_STEP, 360.0f);
+        }
+        else if(key == 'r'){
+            cameraRotation.x = std::fmod(cameraRotation.x - ROTATION_DEGREES_PER_STEP, 360.0f);
+        }
+        else if(key == 'v'){
+            cameraRotation.x = std::fmod(cameraRotation.x + ROTATION_DEGREES_PER_STEP, 360.0f);
+        }
+        else if(key == 'u'){
+            cameraRotation.z = std::fmod(cameraRotation.z - ROTATION_DEGREES_PER_STEP, 360.0f);
+        }
+        else if(key == 'i'){
+            cameraRotation.z = std::fmod(cameraRotation.z + ROTATION_DEGREES_PER_STEP, 360.0f);
+        }
+        */
+        else if(key == 'f'){
+            GAMEOBJECT("head")->transformation.rotation.y += 5.0;
+        }
+        else if (key == 'g'){
+            goForward = ~goForward;
+        }
+        else if (key == 'h'){
+            GAMEOBJECT("head")->movement.desired_rotation = Vector3f(15, 30, 0);
+        }
+        else if (key == 'j'){
+            GAMEOBJECT("head")->movement.desired_rotation = Vector3f(10, -25, 0);
+        }
+        /*
+        else if (key == 'k'){
+            throttle = std::min(throttle + 0.05, 1.0);
+        }
+        else if (key == ','){
+            throttle = std::max(throttle - 0.05, 0.0);
+        }
+        */
+    }
+
+    if(goForward) {
+        SceneObject *obj = g_screen.getSceneObjectPtr("head");
+        Vector3f delta = obj->forward_vector() * 0.1f;
+        obj->transformation.translation = obj->transformation.translation + delta;
+        //mode7_angle++;
+    }
+
+    //Update player's forward speed
+    GAMEOBJECT("player")->movement.forward_speed = controlsState.forward_throttle * GAMEOBJECT("player")->movement.maximum_throttle_speed;
+    //Apply this speed to the direction vector
+    Vector3f direction = controlsState.direction + Vector3f(0, 0, GAMEOBJECT("player")->movement.forward_speed);
+    
+    //Rotate direction to align with the camera
+    cameraRotation.z = controlsState.rotation.z;
+    cameraRotation.x = controlsState.rotation.x;
+    cameraRotation.y = controlsState.rotation.y;
+
+    eye = GAMEOBJECT("player")->transformation.translation;       
+    direction = direction.rotateAroundZAxis(-cameraRotation.z);
+    direction = direction.rotateAroundXAxis(-cameraRotation.x);
+    direction = direction.rotateAroundYAxis(-cameraRotation.y);
+    eye = eye + direction;
+    
+    updatePlayerPosition(eye, cameraRotation);
+
+    return stopLooping;
 }

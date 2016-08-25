@@ -31,6 +31,7 @@ class SceneObject {
         movement.velocity = Vector3f(0,0,0);
         movement.maximum_rotation_per_frame = Vector3f(0.5,0.5,0.5);
         movement.forward_speed = 0.0f;
+        movement.maximum_throttle_speed = 1.0f;
     }
 
     void apply_velocity_to_translation() {

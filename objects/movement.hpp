@@ -9,6 +9,7 @@ class MovementInfo {
     Vector3f velocity;
     bool alwaysRemainUpright;
     bool enableDesiredRotation;
+    int maximum_throttle_speed;
 
     //desired
     Vector3f desired_rotation;

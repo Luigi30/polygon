@@ -9,6 +9,14 @@
 #include "includes\matrix.hpp"
 #include "includes\wavefront.hpp"
 #include "rasterize.hpp"
+#include "input.hpp"
+#include <cmath>
+#include <time.h>
+
+#define M_PI 3.141592653589793238462643383279502884
+#define DEG_TO_RAD(X) ((X * M_PI) / 180.0)
+
+std::vector<Shape> shapesList;
 
 //Timers
 void __interrupt __far timerHandler();
@@ -18,6 +26,8 @@ unsigned long timerReload;
 volatile unsigned long myTimerTicks;
 volatile unsigned int timer60Hz;
 volatile unsigned int timer24Hz;
+
+bool DoSceneLoop();
 
 int dpmi_set_pm_handler(unsigned intnum, void far * isr )
 {

@@ -6,7 +6,7 @@ int polygonCount = 0;
 void Screen::redraw(){
     polygonCount = 0;
     clock_t start = clock();
-    memset(layer_background.pixels, 0x03, VGA_SIZE);
+    //memset(layer_background.pixels, 0x03, VGA_SIZE);
     
     //render buttons to layer_widgets and text to layer_text
     memset(layer_widgets.pixels, 0, VGA_SIZE);
