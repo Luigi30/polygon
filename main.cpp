@@ -1,7 +1,5 @@
 #include "main.hpp"
 
-#define GAMEOBJECT(X) g_screen.getSceneObjectPtr(X)
-
 void wait_for_vsync(){
     //Wait for the end of a retrace
     do {} while(inp(0x3DA) & 0x08);
@@ -98,7 +96,7 @@ int main(){
     g_screen.getSceneObjectPtr("head")->transformation.rotation = Vector3f(0,0,0);
     g_screen.getSceneObjectPtr("head")->movement.desired_rotation = Vector3f(0,0,0);
 
-    g_screen.addSceneObject("player", cube, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(.5,.5,.5));
+    g_screen.addSceneObject("player", cube, Vector3f(0,0,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
     g_screen.getSceneObjectPtr("player")->transformation.rotation = Vector3f(0,0,0);
     g_screen.getSceneObjectPtr("player")->movement.desired_rotation = Vector3f(0,0,0);
 
@@ -109,7 +107,7 @@ int main(){
     g_screen.redraw();
 
     bool stop = false;
-    int mode7_angle = 0;
+    controlsState.escapePressed = false;
 
     //Scene loop
     while(!stop){
@@ -123,18 +121,11 @@ int main(){
 }
 
 bool DoSceneLoop(){
-    bool stopLooping = false;
-
-    //TODO: split these off into controls setup
-    bool goForward = false;
-    float throttle = 0;
-
     //we need a player object
     assert(g_screen.getSceneObjectPtr("player") != NULL);
 
     //Limit to 35Hz refresh
     wait_for_vsync();
-    //wait_for_vsync();
     
     //clamp rotation
     g_screen.getSceneObjectPtr("head")->transformation.rotation.x = std::fmod(g_screen.getSceneObjectPtr("head")->transformation.rotation.x, 360.0f);
@@ -150,77 +141,8 @@ bool DoSceneLoop(){
     //g_screen.mode7_background(mode7_angle, 1.0f);
     g_screen.redraw();
 
-    //Vector3f direction = Vector3f(0,0,0);
+    //Process inputs
     read_keyboard();
-
-    if(kbhit()){
-        char key = getch();
-
-        if(key == 0x1B){ //ESC
-            stopLooping = true;
-        }
-        /*
-        else if(key == 'a'){
-            direction = Vector3f(-1,0,0);
-        }
-        else if(key == 'd'){
-            direction = Vector3f(1,0,0);
-        }
-        else if(key == 'w'){
-            direction = Vector3f(0,0,1);
-        }
-        else if(key == 's'){
-            direction = Vector3f(0,0,-1);
-        }
-        */
-        /*
-        else if(key == 'e'){
-            cameraRotation.y = std::fmod(cameraRotation.y - ROTATION_DEGREES_PER_STEP, 360.0f);
-        }
-        else if(key == 'q'){
-            cameraRotation.y = std::fmod(cameraRotation.y + ROTATION_DEGREES_PER_STEP, 360.0f);
-        }
-        else if(key == 'r'){
-            cameraRotation.x = std::fmod(cameraRotation.x - ROTATION_DEGREES_PER_STEP, 360.0f);
-        }
-        else if(key == 'v'){
-            cameraRotation.x = std::fmod(cameraRotation.x + ROTATION_DEGREES_PER_STEP, 360.0f);
-        }
-        else if(key == 'u'){
-            cameraRotation.z = std::fmod(cameraRotation.z - ROTATION_DEGREES_PER_STEP, 360.0f);
-        }
-        else if(key == 'i'){
-            cameraRotation.z = std::fmod(cameraRotation.z + ROTATION_DEGREES_PER_STEP, 360.0f);
-        }
-        */
-        else if(key == 'f'){
-            GAMEOBJECT("head")->transformation.rotation.y += 5.0;
-        }
-        else if (key == 'g'){
-            goForward = ~goForward;
-        }
-        else if (key == 'h'){
-            GAMEOBJECT("head")->movement.desired_rotation = Vector3f(15, 30, 0);
-        }
-        else if (key == 'j'){
-            GAMEOBJECT("head")->movement.desired_rotation = Vector3f(10, -25, 0);
-        }
-        /*
-        else if (key == 'k'){
-            throttle = std::min(throttle + 0.05, 1.0);
-        }
-        else if (key == ','){
-            throttle = std::max(throttle - 0.05, 0.0);
-        }
-        */
-    }
-
-    if(goForward) {
-        SceneObject *obj = g_screen.getSceneObjectPtr("head");
-        Vector3f delta = obj->forward_vector() * 0.1f;
-        obj->transformation.translation = obj->transformation.translation + delta;
-        //mode7_angle++;
-    }
 
     //Update player's forward speed
     GAMEOBJECT("player")->movement.forward_speed = controlsState.forward_throttle * GAMEOBJECT("player")->movement.maximum_throttle_speed;
@@ -232,6 +154,7 @@ bool DoSceneLoop(){
     cameraRotation.x = controlsState.rotation.x;
     cameraRotation.y = controlsState.rotation.y;
 
+    //Update transformation matrix with the player's location and rotation
     eye = GAMEOBJECT("player")->transformation.translation;       
     direction = direction.rotateAroundZAxis(-cameraRotation.z);
     direction = direction.rotateAroundXAxis(-cameraRotation.x);
@@ -240,5 +163,5 @@ bool DoSceneLoop(){
     
     updatePlayerPosition(eye, cameraRotation);
 
-    return stopLooping;
+    return controlsState.escapePressed;
 }

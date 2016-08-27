@@ -9,6 +9,8 @@
 #include "widgets\widget.hpp"
 #include "objects\sceneobject.hpp"
 
+#define GAMEOBJECT(X) g_screen.getSceneObjectPtr(X)
+
 struct Button {
     Point position;
     int sizeX;

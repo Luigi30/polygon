@@ -4,6 +4,7 @@ void read_keyboard(){
     if(kbhit()){
         char key = getch();
 
+        //Input axes
         if(key == 'a'){
             controlsState.direction = Vector3f(-1,0,0);
         }
@@ -39,6 +40,22 @@ void read_keyboard(){
         }
         else if(key == 'i'){
             controlsState.rotation.z = std::fmod(controlsState.rotation.z + ROTATION_DEGREES_PER_STEP, 360.0f);
+        }
+
+        //Special keys
+        else if(key == 0x1B){
+            controlsState.escapePressed = true;
+        }
+
+        //Debugging keys
+        else if(key == 'f'){
+            GAMEOBJECT("head")->transformation.rotation.y += 5.0;
+        }
+        else if (key == 'h'){
+            GAMEOBJECT("head")->movement.desired_rotation = Vector3f(15, 30, 0);
+        }
+        else if (key == 'j'){
+            GAMEOBJECT("head")->movement.desired_rotation = Vector3f(10, -25, 0);
         }
 
     } else {
