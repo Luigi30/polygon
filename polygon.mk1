@@ -1,140 +1,183 @@
 !define BLANK ""
-C:\Users\Luigi\Documents\watcom\polygon\framebuffer.obj : C:\Users\Luigi\Doc&
-uments\watcom\polygon\framebuffer.cpp .AUTODEPEND
+C:\Users\Luigi\Documents\watcom\polygon\font.obj : C:\Users\Luigi\Documents\&
+watcom\polygon\src\fonts\font.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 framebuffer.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=dos -&
-fo=.obj -mf -xs -xr
+ *wpp386 src\fonts\font.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documents\wa&
+tcom\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs -xr
+
+C:\Users\Luigi\Documents\watcom\polygon\font8x8.obj : C:\Users\Luigi\Documen&
+ts\watcom\polygon\src\fonts\font8x8.cpp .AUTODEPEND
+ @C:
+ cd C:\Users\Luigi\Documents\watcom\polygon
+ *wpp386 src\fonts\font8x8.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documents&
+\watcom\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs -&
+xr
+
+C:\Users\Luigi\Documents\watcom\polygon\framebuffer.obj : C:\Users\Luigi\Doc&
+uments\watcom\polygon\src\framebuffer.cpp .AUTODEPEND
+ @C:
+ cd C:\Users\Luigi\Documents\watcom\polygon
+ *wpp386 src\framebuffer.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documents\w&
+atcom\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs -xr
 
 C:\Users\Luigi\Documents\watcom\polygon\input.obj : C:\Users\Luigi\Documents&
-\watcom\polygon\input.cpp .AUTODEPEND
+\watcom\polygon\src\input.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 input.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=dos -fo=.ob&
-j -mf -xs -xr
+ *wpp386 src\input.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documents\watcom\&
+polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs -xr
 
 C:\Users\Luigi\Documents\watcom\polygon\main.obj : C:\Users\Luigi\Documents\&
-watcom\polygon\main.cpp .AUTODEPEND
+watcom\polygon\src\main.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 main.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=dos -fo=.obj&
- -mf -xs -xr
+ *wpp386 src\main.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documents\watcom\p&
+olygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs -xr
 
 C:\Users\Luigi\Documents\watcom\polygon\movement.obj : C:\Users\Luigi\Docume&
-nts\watcom\polygon\objects\movement.cpp .AUTODEPEND
+nts\watcom\polygon\src\objects\movement.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 objects\movement.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=&
-dos -fo=.obj -mf -xs -xr
+ *wpp386 src\objects\movement.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Docume&
+nts\watcom\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -x&
+s -xr
 
 C:\Users\Luigi\Documents\watcom\polygon\sceneobject.obj : C:\Users\Luigi\Doc&
-uments\watcom\polygon\objects\sceneobject.cpp .AUTODEPEND
+uments\watcom\polygon\src\objects\sceneobject.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 objects\sceneobject.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -&
-bt=dos -fo=.obj -mf -xs -xr
+ *wpp386 src\objects\sceneobject.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Doc&
+uments\watcom\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf&
+ -xs -xr
 
 C:\Users\Luigi\Documents\watcom\polygon\rasterize.obj : C:\Users\Luigi\Docum&
-ents\watcom\polygon\rasterize.cpp .AUTODEPEND
+ents\watcom\polygon\src\rasterize.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 rasterize.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=dos -fo&
-=.obj -mf -xs -xr
+ *wpp386 src\rasterize.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documents\wat&
+com\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs -xr
 
 C:\Users\Luigi\Documents\watcom\polygon\screen.obj : C:\Users\Luigi\Document&
-s\watcom\polygon\screen.cpp .AUTODEPEND
+s\watcom\polygon\src\screen.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 screen.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=dos -fo=.o&
-bj -mf -xs -xr
+ *wpp386 src\screen.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documents\watcom&
+\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs -xr
 
 C:\Users\Luigi\Documents\watcom\polygon\serial.obj : C:\Users\Luigi\Document&
-s\watcom\polygon\serial.cpp .AUTODEPEND
+s\watcom\polygon\src\serial.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 serial.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=dos -fo=.o&
-bj -mf -xs -xr
+ *wpp386 src\serial.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documents\watcom&
+\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs -xr
 
 C:\Users\Luigi\Documents\watcom\polygon\point.obj : C:\Users\Luigi\Documents&
-\watcom\polygon\shapes\point.cpp .AUTODEPEND
+\watcom\polygon\src\shapes\point.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 shapes\point.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=dos &
--fo=.obj -mf -xs -xr
+ *wpp386 src\shapes\point.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documents\&
+watcom\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs -x&
+r
 
 C:\Users\Luigi\Documents\watcom\polygon\point3d.obj : C:\Users\Luigi\Documen&
-ts\watcom\polygon\shapes\point3d.cpp .AUTODEPEND
+ts\watcom\polygon\src\shapes\point3d.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 shapes\point3d.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=do&
-s -fo=.obj -mf -xs -xr
+ *wpp386 src\shapes\point3d.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Document&
+s\watcom\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs &
+-xr
 
 C:\Users\Luigi\Documents\watcom\polygon\shapes.obj : C:\Users\Luigi\Document&
-s\watcom\polygon\shapes\shapes.cpp .AUTODEPEND
+s\watcom\polygon\src\shapes\shapes.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 shapes\shapes.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=dos&
- -fo=.obj -mf -xs -xr
+ *wpp386 src\shapes\shapes.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documents&
+\watcom\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs -&
+xr
 
 C:\Users\Luigi\Documents\watcom\polygon\triangle.obj : C:\Users\Luigi\Docume&
-nts\watcom\polygon\shapes\triangle.cpp .AUTODEPEND
+nts\watcom\polygon\src\shapes\triangle.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 shapes\triangle.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=d&
-os -fo=.obj -mf -xs -xr
+ *wpp386 src\shapes\triangle.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documen&
+ts\watcom\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs&
+ -xr
 
 C:\Users\Luigi\Documents\watcom\polygon\vector3f.obj : C:\Users\Luigi\Docume&
-nts\watcom\polygon\shapes\vector3f.cpp .AUTODEPEND
+nts\watcom\polygon\src\shapes\vector3f.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 shapes\vector3f.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=d&
-os -fo=.obj -mf -xs -xr
+ *wpp386 src\shapes\vector3f.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documen&
+ts\watcom\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs&
+ -xr
+
+C:\Users\Luigi\Documents\watcom\polygon\timer.obj : C:\Users\Luigi\Documents&
+\watcom\polygon\src\timer.cpp .AUTODEPEND
+ @C:
+ cd C:\Users\Luigi\Documents\watcom\polygon
+ *wpp386 src\timer.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Documents\watcom\&
+polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs -xr
 
 C:\Users\Luigi\Documents\watcom\polygon\button.obj : C:\Users\Luigi\Document&
-s\watcom\polygon\widgets\button.cpp .AUTODEPEND
+s\watcom\polygon\src\widgets\button.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 widgets\button.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=do&
-s -fo=.obj -mf -xs -xr
+ *wpp386 src\widgets\button.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Document&
+s\watcom\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs &
+-xr
 
 C:\Users\Luigi\Documents\watcom\polygon\widget.obj : C:\Users\Luigi\Document&
-s\watcom\polygon\widgets\widget.cpp .AUTODEPEND
+s\watcom\polygon\src\widgets\widget.cpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- *wpp386 widgets\widget.cpp -i="C:\WATCOM/h" -w4 -e25 -zq -od -d2 -4r -bt=do&
-s -fo=.obj -mf -xs -xr
+ *wpp386 src\widgets\widget.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Document&
+s\watcom\polygon\include" -w4 -e25 -zq -od -d2 -6r -bt=dos -fo=.obj -mf -xs &
+-xr
 
 C:\Users\Luigi\Documents\watcom\polygon\polygon.exe : C:\Users\Luigi\Documen&
-ts\watcom\polygon\framebuffer.obj C:\Users\Luigi\Documents\watcom\polygon\in&
-put.obj C:\Users\Luigi\Documents\watcom\polygon\main.obj C:\Users\Luigi\Docu&
-ments\watcom\polygon\movement.obj C:\Users\Luigi\Documents\watcom\polygon\sc&
-eneobject.obj C:\Users\Luigi\Documents\watcom\polygon\rasterize.obj C:\Users&
-\Luigi\Documents\watcom\polygon\screen.obj C:\Users\Luigi\Documents\watcom\p&
-olygon\serial.obj C:\Users\Luigi\Documents\watcom\polygon\point.obj C:\Users&
-\Luigi\Documents\watcom\polygon\point3d.obj C:\Users\Luigi\Documents\watcom\&
-polygon\shapes.obj C:\Users\Luigi\Documents\watcom\polygon\triangle.obj C:\U&
-sers\Luigi\Documents\watcom\polygon\vector3f.obj C:\Users\Luigi\Documents\wa&
-tcom\polygon\button.obj C:\Users\Luigi\Documents\watcom\polygon\widget.obj C&
-:\Users\Luigi\Documents\watcom\polygon\framebuffer.hpp C:\Users\Luigi\Docume&
-nts\watcom\polygon\includes\defines.hpp C:\Users\Luigi\Documents\watcom\poly&
-gon\includes\matrix.hpp C:\Users\Luigi\Documents\watcom\polygon\includes\mou&
-se.hpp C:\Users\Luigi\Documents\watcom\polygon\includes\wavefront.hpp C:\Use&
-rs\Luigi\Documents\watcom\polygon\input.hpp C:\Users\Luigi\Documents\watcom\&
-polygon\main.hpp C:\Users\Luigi\Documents\watcom\polygon\objects\movement.hp&
-p C:\Users\Luigi\Documents\watcom\polygon\objects\sceneobject.hpp C:\Users\L&
-uigi\Documents\watcom\polygon\rasterize.hpp C:\Users\Luigi\Documents\watcom\&
-polygon\screen.hpp C:\Users\Luigi\Documents\watcom\polygon\serial.hpp C:\Use&
-rs\Luigi\Documents\watcom\polygon\shapes\point.hpp C:\Users\Luigi\Documents\&
-watcom\polygon\shapes\point3d.hpp C:\Users\Luigi\Documents\watcom\polygon\sh&
-apes\shapes.hpp C:\Users\Luigi\Documents\watcom\polygon\shapes\triangle.hpp &
-C:\Users\Luigi\Documents\watcom\polygon\shapes\vector3f.hpp C:\Users\Luigi\D&
-ocuments\watcom\polygon\widgets\button.hpp C:\Users\Luigi\Documents\watcom\p&
-olygon\widgets\widget.hpp .AUTODEPEND
+ts\watcom\polygon\font.obj C:\Users\Luigi\Documents\watcom\polygon\font8x8.o&
+bj C:\Users\Luigi\Documents\watcom\polygon\framebuffer.obj C:\Users\Luigi\Do&
+cuments\watcom\polygon\input.obj C:\Users\Luigi\Documents\watcom\polygon\mai&
+n.obj C:\Users\Luigi\Documents\watcom\polygon\movement.obj C:\Users\Luigi\Do&
+cuments\watcom\polygon\sceneobject.obj C:\Users\Luigi\Documents\watcom\polyg&
+on\rasterize.obj C:\Users\Luigi\Documents\watcom\polygon\screen.obj C:\Users&
+\Luigi\Documents\watcom\polygon\serial.obj C:\Users\Luigi\Documents\watcom\p&
+olygon\point.obj C:\Users\Luigi\Documents\watcom\polygon\point3d.obj C:\User&
+s\Luigi\Documents\watcom\polygon\shapes.obj C:\Users\Luigi\Documents\watcom\&
+polygon\triangle.obj C:\Users\Luigi\Documents\watcom\polygon\vector3f.obj C:&
+\Users\Luigi\Documents\watcom\polygon\timer.obj C:\Users\Luigi\Documents\wat&
+com\polygon\button.obj C:\Users\Luigi\Documents\watcom\polygon\widget.obj C:&
+\Users\Luigi\Documents\watcom\polygon\include\colors.hpp C:\Users\Luigi\Docu&
+ments\watcom\polygon\include\defines.hpp C:\Users\Luigi\Documents\watcom\pol&
+ygon\include\fonts\font.hpp C:\Users\Luigi\Documents\watcom\polygon\include\&
+fonts\font4x6.hpp C:\Users\Luigi\Documents\watcom\polygon\include\fonts\font&
+5x8.hpp C:\Users\Luigi\Documents\watcom\polygon\include\fonts\font6x8.hpp C:&
+\Users\Luigi\Documents\watcom\polygon\include\fonts\font8x8.hpp C:\Users\Lui&
+gi\Documents\watcom\polygon\include\framebuffer.hpp C:\Users\Luigi\Documents&
+\watcom\polygon\include\framebuffer.hpp C:\Users\Luigi\Documents\watcom\poly&
+gon\include\input.hpp C:\Users\Luigi\Documents\watcom\polygon\include\main.h&
+pp C:\Users\Luigi\Documents\watcom\polygon\include\matrix.hpp C:\Users\Luigi&
+\Documents\watcom\polygon\include\mouse.hpp C:\Users\Luigi\Documents\watcom\&
+polygon\include\objects\movement.hpp C:\Users\Luigi\Documents\watcom\polygon&
+\include\objects\sceneobject.hpp C:\Users\Luigi\Documents\watcom\polygon\inc&
+lude\rasterize.hpp C:\Users\Luigi\Documents\watcom\polygon\include\rasterize&
+.hpp C:\Users\Luigi\Documents\watcom\polygon\include\screen.hpp C:\Users\Lui&
+gi\Documents\watcom\polygon\include\serial.hpp C:\Users\Luigi\Documents\watc&
+om\polygon\include\shapes\point.hpp C:\Users\Luigi\Documents\watcom\polygon\&
+include\shapes\point3d.hpp C:\Users\Luigi\Documents\watcom\polygon\include\s&
+hapes\shapes.hpp C:\Users\Luigi\Documents\watcom\polygon\include\shapes\tria&
+ngle.hpp C:\Users\Luigi\Documents\watcom\polygon\include\shapes\vector3f.hpp&
+ C:\Users\Luigi\Documents\watcom\polygon\include\timer.hpp C:\Users\Luigi\Do&
+cuments\watcom\polygon\include\wavefront.hpp C:\Users\Luigi\Documents\watcom&
+\polygon\include\widgets\button.hpp C:\Users\Luigi\Documents\watcom\polygon\&
+include\widgets\widget.hpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
- @%write polygon.lk1 FIL framebuffer.obj,input.obj,main.obj,movement.obj,sce&
-neobject.obj,rasterize.obj,screen.obj,serial.obj,point.obj,point3d.obj,shape&
-s.obj,triangle.obj,vector3f.obj,button.obj,widget.obj
+ @%write polygon.lk1 FIL font.obj,font8x8.obj,framebuffer.obj,input.obj,main&
+.obj,movement.obj,sceneobject.obj,rasterize.obj,screen.obj,serial.obj,point.&
+obj,point3d.obj,shapes.obj,triangle.obj,vector3f.obj,timer.obj,button.obj,wi&
+dget.obj
  @%append polygon.lk1 
  *wlink name polygon d all sys dos32x op m op maxe=25 op q op symf @polygon.&
 lk1
