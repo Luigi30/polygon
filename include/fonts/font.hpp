@@ -12,6 +12,8 @@
 #include "font6x8.hpp"
 #include "font5x8.hpp"
 
+typedef int COLOR;
+
 class Font {
     unsigned char *glyphs;
     int sizeX;
@@ -46,7 +48,7 @@ Font fontsList[16] = {  Font(console_font_8x8, 8, 8),
 #define FONT_5x8 fontsList[3]
 
 void fbPutString(char *framebuffer, const char *str, int len, Point destination, int vga_color, Font font);
-void fbPutString(char *framebuffer, std::string str, Point destination, int color, Font font);
+void fbPutString(char *framebuffer, std::string str, Point destination, COLOR color, Font font);
 void fbPutGlyph(char *framebuffer, unsigned char *tile, int sizeX, int sizeY, int destX, int destY, int vga_color);
 
 #endif

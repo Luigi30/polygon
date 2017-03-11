@@ -13,29 +13,6 @@ void abort(char *msg){
     exit(255);
 }
 
-/*
-void init_timer(int rate){
-    //The timer runs at 1193180Hz
-    //Timer frequency = 1193180/rate
-    
-    //Initialize our timer
-    myTimerTicks = 0;
-    
-    long timerReload = rate;
-    biosTimerHandler = _dos_getvect(0x08); //DOS timer handler
-
-    _disable();
-
-    //_dos_setvect(0x08, timerHandler);
-    //dpmi_set_pm_handler(0x08, timerHandler);
-    
-    outp(0x43, 0x34);
-    outp(0x40, timerReload & 0xFF);
-    outp(0x40, timerReload >> 8);
-    _enable();
-}
-*/
-
 void load_shapes(){
     //Read SHAPES.DAT
     FILE *hShapesFile;
@@ -73,42 +50,94 @@ void load_lookup_tables(){
 
 void updatePlayerPosition(Vector3f _eye, Vector3f _cameraRotation){
     //Player's position and rotation = camera, effectively
-    g_screen.getSceneObjectPtr("player")->transformation.translation = _eye;
-    g_screen.getSceneObjectPtr("player")->transformation.rotation = _cameraRotation;
+    PTR_SCENEOBJECT("player")->transformation.translation = _eye;
+    PTR_SCENEOBJECT("player")->transformation.rotation = _cameraRotation;
 
 }
 
 int main(){
+    load_lookup_tables();   //needed for any draw routine
+    Install_KBHook();       //needed for input processing
+
     //Debug_Init();
     //init_timer(11930); //100 ticks per second
     serialPort = Serial(0x3F8, SER_9600_BAUD);
-    printf("main(): serialPort setup.");
+    printf("main(): serialPort setup\n");
     serialPort.sendString("\n\n\r\n*** CONNECTED ***\r\n");
     serialPort.sendString("main(): Serial connected\r\n");
     
     VGA_PTR = (char*)VGA_LINEAR_ADDRESS;
-    
-    std::printf("Polygon\n");
-    load_lookup_tables();
+    _setvideomode(_MRES256COLOR); //Change to mode 13h
+    //MainMenu();
+    BeginSimulation();
+
+    //exit cleanup routines
+    Restore_KBHook();
+    _setvideomode(_DEFAULTMODE);
+    printf("exiting!\n");
+    return 0;
+}
+
+void MainMenu(){
+    Mouse::cursorEnable();
+
+    controlsState.escapePressed = false;
+
+    g_screen.layer_background.draw_rectangle_filled(Point(80, 50), Size2D(160, 100), COLOR_LTGRAY);
+    g_screen.layer_background.shade_rectangle(Point(80, 50), Size2D(160, 100), COLOR_WHITE, COLOR_DKGRAY);
+    g_screen.layer_text.putString("Main Menu", strlen("Main Menu"), Point(85, 55), COLOR_GRAYS, FONT_6x8);
+
+    g_screen.widgetsList.push_back(new W_Button("btn_Launch", Point(85, 70), BUTTON_SHAPE_RECT, Size2D(30, 50), "", true));
+
+    while(controlsState.escapePressed == false){
+        wait_for_vsync();
+        controlsState.DecayAxes();
+        
+        //Process inputs
+        read_keyboard();
+
+        Mouse::cursorDisable();
+        g_screen.redraw();
+        Mouse::cursorEnable();
+    }
+
+    //BeginSimulation();
+}
+
+void BeginSimulation(){
+    _setvideomode(_DEFAULTMODE);
+
+    std::printf("Polysim Engine\n");
+    std::printf("Now loading...\n");
+    std::printf("Connect 9600,8,N,1 terminal to COM1\n");
 
     printf("Loading models\n");
-    serialPort.sendString("main(): Loading models\r\n");
-
     WavefrontObject cube = WavefrontObject("cube.3d");
-    //WavefrontObject cube = WavefrontObject("triangle.3d");
+    WavefrontObject ship = WavefrontObject("sqrship.3d");
 
-    g_screen.addSceneObject("head", cube, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
-    g_screen.getSceneObjectPtr("head")->transformation.rotation = Vector3f(0,0,0);
-    g_screen.getSceneObjectPtr("head")->movement.desired_rotation = Vector3f(0,0,0);
+    /*
+    g_SceneManager.addSceneObject("ship", ship, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
+    PTR_SCENEOBJECT("ship")->transformation.rotation = Vector3f(0,0,0);
+    PTR_SCENEOBJECT("ship")->movement.desired_rotation = Vector3f(0,0,0);
+    */
 
-    g_screen.addSceneObject("player", cube, Vector3f(0,0,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
-    g_screen.getSceneObjectPtr("player")->transformation.rotation = Vector3f(0,0,0);
-    g_screen.getSceneObjectPtr("player")->movement.desired_rotation = Vector3f(0,0,0);
+    ptr_DumbShip dumbShip(new DumbShip);
+    dumbShip->name = "ship";
+    dumbShip->model = ship;
+    dumbShip->transformation.translation = Vector3f(0,0,0);
+    dumbShip->transformation.rotation = Vector3f(0,0,0);
+    dumbShip->transformation.scale = Vector3f(1,1,1);  
+    dumbShip->can_think = true;  
+    g_SceneManager.addSceneObject(dumbShip);
+
+    g_SceneManager.addSceneObject("player", cube, Vector3f(0,0,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
+    PTR_SCENEOBJECT("player")->transformation.rotation = Vector3f(0,0,0);
+    PTR_SCENEOBJECT("player")->movement.desired_rotation = Vector3f(0,0,0);
 
     _setvideomode(_MRES256COLOR); //Change to mode 13h
 
     g_screen.draw_polygon_debug_data();
-    g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("head"));
+    g_screen.draw_object_debug_data(*PTR_SCENEOBJECT("ship"));
     g_screen.redraw();
 
     bool stop = false;
@@ -121,48 +150,46 @@ int main(){
         stop = DoSceneLoop();
     }
 
-    _setvideomode(_DEFAULTMODE);
-
-    printf("exiting!\n");
-    return 0;
 }
 
 bool DoSceneLoop(){
     //we need a player object
-    assert(g_screen.getSceneObjectPtr("player") != NULL);
+    assert(PTR_SCENEOBJECT("player") != NULL);
 
     //Limit to 35Hz refresh
     wait_for_vsync();
     
     //clamp rotation
-    g_screen.getSceneObjectPtr("head")->transformation.rotation.x = std::fmod(g_screen.getSceneObjectPtr("head")->transformation.rotation.x, 360.0f);
-    g_screen.getSceneObjectPtr("head")->transformation.rotation.y = std::fmod(g_screen.getSceneObjectPtr("head")->transformation.rotation.y, 360.0f);
+    PTR_SCENEOBJECT("ship")->transformation.rotation.x = std::fmod(PTR_SCENEOBJECT("ship")->transformation.rotation.x, 360.0f);
+    PTR_SCENEOBJECT("ship")->transformation.rotation.y = std::fmod(PTR_SCENEOBJECT("ship")->transformation.rotation.y, 360.0f);
+
+    //SceneObjects now think.
+    g_SceneManager.objectsThink();
 
     //update object location and orientation
-    g_screen.applyObjectVelocities();
-    g_screen.applyObjectRotations();
+    g_SceneManager.applyObjectVelocities();
+    g_SceneManager.applyObjectRotations();
 
     //draw some debug data
     g_screen.draw_polygon_debug_data();
-    g_screen.draw_object_debug_data(*g_screen.getSceneObjectPtr("head"));
-    //g_screen.mode7_background(mode7_angle, 1.0f);
+    g_screen.draw_object_debug_data(*PTR_SCENEOBJECT("ship"));
     g_screen.redraw();
 
-    //Process inputs
+    //Process inputs, update controlsState
     read_keyboard();
 
     //Update player's forward speed
-    GAMEOBJECT("player")->movement.forward_speed = controlsState.forward_throttle * GAMEOBJECT("player")->movement.maximum_throttle_speed;
+    PTR_SCENEOBJECT("player")->movement.forward_speed = controlsState.forward_throttle * PTR_SCENEOBJECT("player")->movement.maximum_throttle_speed;
     //Apply this speed to the direction vector
-    Vector3f direction = controlsState.direction + Vector3f(0, 0, GAMEOBJECT("player")->movement.forward_speed);
+    Vector3f direction = controlsState.direction + Vector3f(0, 0, PTR_SCENEOBJECT("player")->movement.forward_speed);
     
     //Rotate direction to align with the camera
     cameraRotation.z = controlsState.rotation.z;
     cameraRotation.x = controlsState.rotation.x;
     cameraRotation.y = controlsState.rotation.y;
 
-    //Update transformation matrix with the player's location and rotation
-    eye = GAMEOBJECT("player")->transformation.translation;       
+    //Update global transformation matrix with the player's location and rotation
+    eye = PTR_SCENEOBJECT("player")->transformation.translation;     
     direction = direction.rotateAroundZAxis(-cameraRotation.z);
     direction = direction.rotateAroundXAxis(-cameraRotation.x);
     direction = direction.rotateAroundYAxis(-cameraRotation.y);

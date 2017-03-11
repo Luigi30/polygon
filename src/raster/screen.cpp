@@ -1,4 +1,4 @@
-#include "screen.hpp"
+#include "raster\screen.hpp"
 #include <time.h>
 
 int polygonCount = 0;
@@ -6,28 +6,29 @@ int polygonCount = 0;
 void Screen::redraw(){
     polygonCount = 0;
     clock_t start = clock();
-    //memset(layer_background.pixels, 0x03, VGA_SIZE);
+
+    std::vector<SceneObject_ptr> sceneObjects = g_SceneManager.getSceneObjectsList();
     
     //render buttons to layer_widgets and text to layer_text
     memset(layer_widgets.pixels, 0, VGA_SIZE);
-    /*
     for(int i=0;i<widgetsList.size();i++){
         widgetsList[i]->redraw(&layer_widgets, &layer_text);
     }
-    */
 
     memset(layer_polygons.pixels, 0, VGA_SIZE);
     layer_polygons.reset_zbuffer();
     for(int i=0;i<sceneObjects.size();i++){
-        draw_polygon_object(sceneObjects[i]);
+        draw_polygon_object(*sceneObjects[i]);
     }
     
+    //Reset layer_final and write the other four layers onto it.
     memset(layer_final.pixels, 0, VGA_SIZE);    
     layer_final.overlay(layer_background, VGA_SIZE);
     layer_final.overlay(layer_polygons, VGA_SIZE);
     layer_final.overlay(layer_widgets, VGA_SIZE);
     layer_final.overlay(layer_text, VGA_SIZE);
 
+    /*
     clock_t timing = clock() - start;
     char timingText[80];
     sprintf(timingText, "TICKS : %d", timing);
@@ -35,11 +36,9 @@ void Screen::redraw(){
     char fpsText[80];
     sprintf(fpsText, "FPS   : %f", (CLOCKS_PER_SEC / (float)timing));
     layer_text.putString(fpsText, strlen(fpsText), Point(0,184), COLOR_GREEN, FONT_4x6);
+    */
 
-    //disable cursor while redrawing or we get graphic garbage on screen
-    //Mouse::cursorDisable();
     memcpy(VGA_PTR, layer_final.pixels, VGA_SIZE);
-    //Mouse::cursorEnable();
 }
 
 void Screen::init_framebuffers(){
@@ -57,8 +56,7 @@ void Screen::addButton(Button _button){
 void Screen::drawButton(Button _button){
     
 //Draw a rectangle at position.
-    //if(shape == BUTTON_SHAPE_RECT) {
-        layer_widgets.draw_rectangle_filled(_button.position, _button.sizeX, _button.sizeY, COLOR_LTGRAY);
+        layer_widgets.draw_rectangle_filled(_button.position, Size2D(_button.sizeX, _button.sizeY), COLOR_LTGRAY);
         
         //shading: brighter in the upper and left sides
         layer_widgets.draw_line(_button.position,
@@ -75,7 +73,6 @@ void Screen::drawButton(Button _button){
         layer_widgets.draw_line(Point(_button.position.getX(), _button.position.getY()+_button.sizeY),
                 Point(_button.position.getX()+_button.sizeX, _button.position.getY()+_button.sizeY),
                 COLOR_DKGRAY);
-    //}
 
     //now draw the text
     layer_text.putString(_button.text.c_str(), _button.text.length(), Point(_button.position.getX(), _button.position.getY() + ((_button.sizeY - 6)/2)), 0x10, FONT_4x6);
@@ -127,7 +124,9 @@ Widget* Screen::getWidgetByName(std::string _name){
 /* Polygon routines */
 void Screen::draw_polygon_object(SceneObject object){    
     for(int i=0;i<object.model.getFaceCount();i++){
-        layer_polygons.draw_face(object, eye, cameraRotation, i) ? polygonCount++ : polygonCount;
+        if(layer_polygons.draw_face(object, eye, cameraRotation, i)) {
+            polygonCount++;
+        }
     }
 }
 
@@ -160,54 +159,7 @@ void Screen::draw_object_debug_data(SceneObject obj){
     
 }
 
-void Screen::addSceneObject(std::string _name, WavefrontObject _model, Vector3f _translation, Vector3f _rotation, Vector3f _scale){
-    SceneObject obj;
-    obj.name = _name;
-    obj.model = _model;
-    obj.transformation.translation = _translation;
-    obj.transformation.rotation = _rotation;
-    obj.transformation.scale = _scale;    
-    sceneObjects.push_back(obj);
-}
-
-void Screen::removeSceneObject(std::string _name){
-    for(int i=0;i<sceneObjects.size();i++){
-        if(sceneObjects[i].name == _name){
-            sceneObjects.erase(sceneObjects.begin() + i);
-            return;
-        }
-    }
-
-    //error: trying to delete object that doesn't exist
-    assert(false);
-    return;
-}
-
-SceneObject* Screen::getSceneObjectPtr(std::string _name){
-    for(int i=0;i<sceneObjects.size();i++){
-        if(sceneObjects[i].name == _name){
-            return &sceneObjects[i];
-        }
-    }
-    
-    //no object found
-    assert(false);
-    return NULL;
-}
-
-void Screen::applyObjectVelocities(){
-    for(int i=0;i<sceneObjects.size();i++){
-        sceneObjects[i].apply_velocity_to_translation();
-    }
-}
-
-void Screen::applyObjectRotations(){
-    for(int i=0;i<sceneObjects.size();i++){
-        if(sceneObjects[i].movement.enableDesiredRotation)
-            sceneObjects[i].update_rotation();
-    }
-}
-
+/*
 void Screen::mode7_background(int angle_degrees, float scale_factor){
     //float angle_radians = angle_degrees * (M_PI/180.0f);
 
@@ -237,3 +189,4 @@ void Screen::mode7_background(int angle_degrees, float scale_factor){
 
     }    
 }
+*/

@@ -1,4 +1,4 @@
-#include "rasterize.hpp"
+#include "raster\rasterize.hpp"
 
 #define PIXEL_OFFSET(X, Y) VGA_Y_OFFSETS[Y] + X
 
@@ -30,7 +30,7 @@ Vector3f barycentric_point(Point A, Point B, Point C, Point P){
     return Vector3f(-1.0, 1.0, 1.0);
 }
 
-void draw_line(unsigned char* pixels, Point start, Point end, int color){
+void draw_line(unsigned char* pixels, Point start, Point end, COLOR color){
     //Draw a 1-pixel thick line between two points.
     int x1 = start.getX();
     int x2 = end.getX();
@@ -84,7 +84,7 @@ void draw_line(unsigned char* pixels, Point start, Point end, int color){
     }
 }
 
-void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, int color){
+void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, COLOR color){
     int triangle_height = screenPoints[2].y - screenPoints[0].y;
     int scanlines = 0;
 
@@ -142,7 +142,7 @@ void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triang
     }    
 }
 
-void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, int color){
+void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, COLOR color){
     int triangle_height = screenPoints[2].y - screenPoints[0].y;
     float uv_triangle_height = triangle.getTexturePoint(2).y - triangle.getTexturePoint(0).y;
 
@@ -231,6 +231,7 @@ void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle,
     }
 }
 
+/*
 void construct_checkerboard(){
     checkerboardTexture = (char*)malloc(256*256);
     int col0, col1;
@@ -283,10 +284,11 @@ void construct_checkerboard(){
         }
     }
 }
+*/
 
-void scanline_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, int color){
+void scanline_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, COLOR color){
     int boundingBoxX[2] = {321, -1};
-	int boundingBoxY[2] = {201, -1};
+        int boundingBoxY[2] = {201, -1};
 
     for(int i=0; i<3; i++){
         if(screenPoints[i].x < boundingBoxX[0]) boundingBoxX[0] = screenPoints[i].x;
@@ -313,7 +315,7 @@ void scanline_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle,
             float w_prime = barycentric.x + barycentric.y + barycentric.z;
             int u_prime = (int)(((barycentric.x * triangle.texturePoints[0].x + barycentric.y * triangle.texturePoints[1].x + barycentric.z * triangle.texturePoints[2].x) / w_prime) * 256);
             int v_prime = (int)(((barycentric.x * triangle.texturePoints[0].y + barycentric.y * triangle.texturePoints[1].y + barycentric.z * triangle.texturePoints[2].y) / w_prime) * 256);
-            color = checkerboardTexture[u_prime + (v_prime*256)];
+            //color = checkerboardTexture[u_prime + (v_prime*256)];
 
             if(z < zbuffer[x + (scanline * VGA_WIDTH)]) {
                 zbuffer[x + (scanline * VGA_WIDTH)] = z;
@@ -323,10 +325,12 @@ void scanline_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle,
     }
 }
 
-void draw_projected_triangle(unsigned char* pixels, float* zbuffer, Triangle triangle, int color, bool filled){    
+void draw_projected_triangle(unsigned char* pixels, float* zbuffer, Triangle triangle, COLOR color){    
+    /*
     if(checkerboardTexture == NULL){
         construct_checkerboard();
     }
+    */
 
     /* Calculate the screen coordinates of the triangle. */
     Point screenPoints[3];

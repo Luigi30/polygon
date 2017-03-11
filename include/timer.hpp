@@ -1,5 +1,4 @@
-#ifndef TIMER_HPP
-#define TIMER_HPP
+#pragma once
 
 /* Timer class. One master clock interrupt is fired at 240Hz. */
 enum TIMER_STATUS { TIMER_STOP, TIMER_START, TIMER_EXPIRED };
@@ -23,5 +22,3 @@ class Timer {
 };
 
 Timer timerList[8];
-
-#endif TIMER_HPP

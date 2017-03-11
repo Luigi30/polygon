@@ -8,13 +8,16 @@
 
 class Framebuffer;
 
+#define W_CLICKABLE       true;
+#define W_NOT_CLICKABLE   false;
+
 class Widget {
     //An interactive control on the screen, i.e. button or something
 
     protected:
     Point position;
     Size2D size;
-    int color;
+    COLOR color;
     std::string name;
     bool isClickable;
 
@@ -24,8 +27,10 @@ class Widget {
     Size2D getSize() { return size; };
     bool getIsClickable() { return isClickable; };
     virtual void onClick(){};
-    virtual void redraw(Framebuffer *background, Framebuffer *text){};
-    virtual void remove(Framebuffer *background, Framebuffer *text){};
+
+    /* virtual methods */
+    virtual void redraw(Framebuffer *background, Framebuffer *text) = 0;
+    //virtual void remove(Framebuffer *background, Framebuffer *text) = 0;
     virtual int pointIsInside(Point);
 };
 

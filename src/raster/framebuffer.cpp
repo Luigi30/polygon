@@ -1,4 +1,5 @@
-#include "framebuffer.hpp"
+#include "raster\framebuffer.hpp"
+
 #include <algorithm>
 #include <utility>
 #include <vector>
@@ -42,7 +43,7 @@ void swap(int &a, int &b){
 
 std::vector<int> verticesOnScanline[200];
 
-void Framebuffer::draw_line(Point start, Point end, int color){
+void Framebuffer::draw_line(Point start, Point end, COLOR color){
     //Draw a 1-pixel thick line between two points.
     int x1 = start.getX();
     int x2 = end.getX();
@@ -175,39 +176,21 @@ bool Framebuffer::draw_face(SceneObject obj, Vector3f eye, Vector3f cameraRotati
         int lightLevel = (lightIntensity * 128.0) / 16.0;
         lightLevel = std::min(lightLevel, 0x18);
 
-        draw_projected_triangle(pixels, zbuffer, Triangle(screenCoords[0], screenCoords[1], screenCoords[2], textureCoords[0], textureCoords[1], textureCoords[2], clipCoords[0], clipCoords[1], clipCoords[2]).sortByY(), std::max(0x13, 0x10 + lightLevel), true);
+        draw_projected_triangle(pixels,
+                                zbuffer,
+                                Triangle(screenCoords[0], screenCoords[1], screenCoords[2], textureCoords[0], textureCoords[1], textureCoords[2], clipCoords[0], clipCoords[1], clipCoords[2]).sortByY(),
+                                std::max(0x13, 0x10 + lightLevel));
         return true;
     } else {
         return false;
     }
 }
 
-void Framebuffer::draw_rectangle(Point origin, int width, int height, int thickness, int color){
-    //Draw a rectangle at point Origin of Height*Width area Thickness pixels thick.
-    for(int cur_thickness=0;cur_thickness<thickness;cur_thickness++){
-        Point topLeft       = Point(origin.getX() + cur_thickness, origin.getY() + cur_thickness);
-        Point topRight      = Point(origin.getX() + width - cur_thickness, origin.getY() + cur_thickness);
-        Point bottomLeft    = Point(origin.getX() + cur_thickness, origin.getY() + height - cur_thickness);
-        Point bottomRight   = Point(origin.getX() + width - cur_thickness, origin.getY() + height - cur_thickness);
-        
-        draw_line(topLeft, topRight, color);
-        draw_line(topLeft, bottomLeft, color);
-        draw_line(bottomLeft, bottomRight, color);
-        draw_line(topRight, bottomRight, color);   
-    }
-}
-
-void Framebuffer::draw_rectangle_filled(Point origin, int width, int height, int color){ 
-    for(int i=0;i<height;i++){
-        draw_line(Point(origin.getX(), origin.getY() + i), Point(origin.getX() + width, origin.getY() + i), color);
-    }
-}
-
-inline void Framebuffer::setPixel(int x, int y, int color){
+inline void Framebuffer::setPixel(int x, int y, COLOR color){
     pixels[VGA_Y_OFFSETS[y] + x] = color;
 }
 
-inline void Framebuffer::setPixel(Point point, int color){
+inline void Framebuffer::setPixel(Point point, COLOR color){
     //Set an individual pixel to a color.
     pixels[VGA_Y_OFFSETS[point.getY()] + point.getX()] = color; 
 }
@@ -243,7 +226,7 @@ void Framebuffer::clear_area(Point start, Size2D size){
     }
 }
 
-void Framebuffer::draw_area(const Pixel *source, Point start, Size2D size){
+void Framebuffer::blit_area(const Pixel *source, Point start, Size2D size, BLIT_Operation blit_operation){
     int i=0;
 
     uint16_t startx = start.getX();
@@ -254,15 +237,17 @@ void Framebuffer::draw_area(const Pixel *source, Point start, Size2D size){
 
     uint16_t endx = startx + sizex;
     uint16_t endy = starty + sizey;
-    
-    for(int y = starty; y < endy; y++){
-        for(int x = startx; x < endx; x++){
-            if(source[i] != COLOR_TRANSPARENT){
-                pixels[VGA_Y_OFFSETS[y] + x] = source[i];
+
+    if(blit_operation == BLIT_OVERWRITE_D){
+        for(int y = starty; y < endy; y++){
+            for(int x = startx; x < endx; x++){
+                if(source[i] != COLOR_TRANSPARENT){
+                   pixels[VGA_Y_OFFSETS[y] + x] = source[i];
+                }
+                i++;
             }
-            i++;
         }
-    }
+    } 
 }
 
 double getSlope(Point start, Point end){
@@ -287,11 +272,11 @@ Point rotate_degrees(Point point, int rotation_degrees){
 }
 
 /* Font routines */
-void Framebuffer::putGlyph(Pixel *tile, int sizeX, int sizeY, int destX, int destY, int vga_color){ //8x8 font tile
-    
-    long bytePos = (destY * 320) + destX;
+void Framebuffer::putGlyph(Pixel *tile, Size2D size, Point2D destination, int vga_color){ //8x8 font tile
 
-    for(int y=0; y<sizeY; y++) {
+    long bytePos = (destination.y * 320) + destination.x;
+
+    for(int y=0; y<size.y; y++) {
         //for each row of the tile
         if(tile[y] & 0x80) {
             pixels[bytePos] = vga_color;
@@ -351,11 +336,11 @@ void Framebuffer::putString(const char *str, int len, Point destination, int vga
     int sizeY = font.getSizeY();
 
     for(int i=0;i<len;i++){
-        putGlyph(font.getGlyph(str[i]), sizeX, sizeY, destination.getX()+(sizeX * i), destination.getY(), vga_color);
+        putGlyph(font.getGlyph(str[i]), Size2D(sizeX, sizeY), Point2D(destination.getX()+(sizeX * i), destination.getY()), vga_color);
     }
 }
 
-void Framebuffer::putString(std::string str, Point destination, int color, Font font){
+void Framebuffer::putString(std::string str, Point destination, COLOR color, Font font){
     putString(str.c_str(), str.length(), destination, color, font);
 }
 
@@ -396,4 +381,42 @@ Vector3f calculateSurfaceNormal(Vector3f *triangle){
     Vector3f V = triangle[2] - triangle[0];
 
     return Vector3f::cross_product(U, V);
+}
+
+/* Rectangles */
+void Framebuffer::draw_rectangle(Point origin, Size2D size, int thickness, COLOR color) {
+    //Draw a rectangle at point Origin of Height*Width area Thickness pixels thick.
+    for(int cur_thickness=0;cur_thickness<thickness;cur_thickness++){
+        Point topLeft       = Point(origin.x + cur_thickness, origin.y + cur_thickness);
+        Point topRight      = Point(origin.x + size.x - cur_thickness, origin.y + cur_thickness);
+        Point bottomLeft    = Point(origin.x + cur_thickness, origin.y + size.y - cur_thickness);
+        Point bottomRight   = Point(origin.x + size.x - cur_thickness, origin.y + size.y - cur_thickness);
+        
+        draw_line(topLeft, topRight, color);
+        draw_line(topLeft, bottomLeft, color);
+        draw_line(bottomLeft, bottomRight, color);
+        draw_line(topRight, bottomRight, color);   
+    }
+}
+
+void Framebuffer::draw_rectangle_filled(Point origin, Size2D size, COLOR color){ 
+    for(int i=0;i<size.y;i++){
+        draw_line(Point(origin.getX(), origin.getY() + i), Point(origin.getX() + size.x, origin.getY() + i), color);
+    }
+}
+
+void Framebuffer::shade_rectangle(Point2D position, Size2D size, COLOR light, COLOR dark) {
+    draw_line(position,
+        Point(position.x+size.x, position.y),
+        light);
+    draw_line(position,
+        Point(position.x, position.y+size.y),
+        light);
+
+    draw_line(Point(position.x+size.x, position.y),
+        Point(position.x+size.x, position.y+size.y),
+        dark);
+    draw_line(Point(position.x, position.y+size.y),
+        Point(position.x+size.x, position.y+size.y),
+        dark);
 }

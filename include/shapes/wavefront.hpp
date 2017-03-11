@@ -143,6 +143,8 @@ void WavefrontObject::process_line(char *line){
 }
 
 bool WavefrontObject::load_file(std::string filename){
+    printf("Loading model file %s\n", filename);
+
     FILE *objectFile;
 
     vertexCount = 1; //vertices start at 1

@@ -21,11 +21,11 @@ Serial::Serial(int _base, SERIAL_SPEED _baudRate){
 }
 
 bool Serial::isTransmitEmpty() {
-    return (inp(LSR) & 0x20);
+    return ((inp(LSR) & 0x20) > 0x00);
 }
 
 bool Serial::ClearToSend(){
-    return (inp(MSR) & 0x10);
+    return ((inp(MSR) & 0x10) > 0x00);
 }
 
 void Serial::sendChar(unsigned char data){

@@ -5,8 +5,8 @@
 #include <cassert>
 #include <algorith>
 #include "defines.hpp"
-#include "wavefront.hpp"
 #include "shapes\triangle.hpp"
+#include "shapes\wavefront.hpp"
 
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 200
@@ -21,17 +21,13 @@ Vector3f center(0,0,0); //the camera is pointed at this point
 Vector3f up(0.0, 1.0, 0.0); //up vector
 Vector3f cameraRotation(0, 0, 0);
 
-void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, int color);
-void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, int color);
+void draw_top_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, COLOR color);
+void draw_bottom_triangle(unsigned char *pixels, float *zbuffer, Triangle triangle, Point *screenPoints, COLOR color);
+void draw_projected_triangle(unsigned char* pixels, float* zbuffer, Triangle triangle, COLOR color);
 
-void draw_projected_triangle(unsigned char* pixels, float* zbuffer, Triangle triangle, int color, bool filled);
-
-inline void setPixel(unsigned char* pixels, int x, int y, int color){
+inline void setPixel(unsigned char* pixels, int x, int y, COLOR color){
     pixels[VGA_Y_OFFSETS[y] + x] = color;
 }
-
-void construct_checkerboard();
-char *checkerboardTexture;
 
 template <typename T>
 T lerp(T x1, T x2, float weight){

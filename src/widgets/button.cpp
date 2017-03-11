@@ -1,5 +1,5 @@
+#include "raster\framebuffer.hpp"
 #include "widgets\button.hpp"
-#include "framebuffer.hpp"
 
 W_Button::W_Button(){};
 
@@ -39,25 +39,10 @@ void W_Button::redraw(Framebuffer *layer, Framebuffer *layer_text){
         //Draw a rectangle at position.
         //layer_text->putString("Drawing up button!  ", strlen("Drawing up button!  "), Point(0, 8), COLOR_WHITE, FONT_4x6);
 
-        layer->draw_rectangle_filled(position, size.getX(), size.getY(), COLOR_LTGRAY);
-        
-        //shading: brighter in the upper and left sides
-        layer->draw_line(position,
-            Point(position.getX()+size.getX(), position.getY()),
-            COLOR_WHITE);
-        layer->draw_line(position,
-            Point(position.getX(), position.getY()+size.getY()),
-            COLOR_WHITE);
+        layer->draw_rectangle_filled(position, size, COLOR_LTGRAY);
+        layer->shade_rectangle(position, size, COLOR_WHITE, COLOR_DKGRAY); //the light/dark contrast on the outline
 
-        //darker in the right and bottom sides
-        layer->draw_line(Point(position.getX()+size.getX(), position.getY()),
-            Point(position.getX()+size.getX(), position.getY()+size.getY()),
-            COLOR_DKGRAY);
-        layer->draw_line(Point(position.getX(), position.getY()+size.getY()),
-            Point(position.getX()+size.getX(), position.getY()+size.getY()),
-            COLOR_DKGRAY);
-
-        //now draw the text
+        //draw string now
         layer_text->putString(text.c_str(), text.length(), Point(position.getX(), position.getY() + ((size.getY() - 6)/2)), COLOR_BLUE, FONT_4x6); 
     } else {
         //Button is down
@@ -65,23 +50,8 @@ void W_Button::redraw(Framebuffer *layer, Framebuffer *layer_text){
         //Draw a rectangle at position.
         //layer_text->putString("Drawing down button!", strlen("Drawing down button!"), Point(0, 8), COLOR_WHITE, FONT_4x6);
 
-        layer->draw_rectangle_filled(position, size.getX(), size.getY(), COLOR_DKGRAY);
-        
-        //shading: darker in the upper and left
-        layer->draw_line(position,
-            Point(position.getX()+size.getX(), position.getY()),
-            COLOR_LTGRAY);
-        layer->draw_line(position,
-            Point(position.getX(), position.getY()+size.getY()),
-            COLOR_LTGRAY);
-
-        //lighter in the lower and right
-        layer->draw_line(Point(position.getX()+size.getX(), position.getY()),
-            Point(position.getX()+size.getX(), position.getY()+size.getY()),
-            COLOR_WHITE);
-        layer->draw_line(Point(position.getX(), position.getY()+size.getY()),
-            Point(position.getX()+size.getX(), position.getY()+size.getY()),
-            COLOR_WHITE);
+        layer->draw_rectangle_filled(position, size, COLOR_DKGRAY);
+        layer->shade_rectangle(position, size, COLOR_LTGRAY, COLOR_WHITE);
 
         //now draw the text
         std::string spaces = "";
@@ -92,7 +62,6 @@ void W_Button::redraw(Framebuffer *layer, Framebuffer *layer_text){
         layer_text->putString(spaces.c_str(), spaces.length(), Point(position.getX(), position.getY() + ((size.getY() - 6)/2)), COLOR_BLUE, FONT_4x6); 
         layer_text->putString(text.c_str(), text.length(), Point(position.getX()+1, position.getY()+1 + ((size.getY() - 6)/2)), COLOR_BLUE, FONT_4x6);
     }
-    
     
 }
 

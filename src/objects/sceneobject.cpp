@@ -1,11 +1,21 @@
 #include "objects\sceneobject.hpp"
 
+void SceneObject::obj_think() {
+    /* Behavior should be defined in derived classes. */
+    assert(false);
+    return;
+}
+
 Vector3f SceneObject::forward_vector(){
     Vector3f forward = Vector3f(0,0,-1);
     forward = forward.rotateAroundYAxis(transformation.rotation.y);
     forward = forward.rotateAroundXAxis(transformation.rotation.x);
     forward = forward.rotateAroundZAxis(transformation.rotation.z);
     return forward;
+}
+
+void SceneObject::apply_velocity_to_translation() {
+    transformation.translation = transformation.translation + movement.velocity;
 }
 
 void SceneObject::update_rotation() {

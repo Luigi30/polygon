@@ -1,17 +1,22 @@
+#pragma once
+
+#define TRUE true
+#define FALSE false
+
 #include <cstdio>
 #include <vector>
 #include <iostream>
 #include <bios.h>
-//#include <debug.h>
 
 #include "dos.h"
 
-//#include "timer.hpp"
 #include "serial.hpp"
-#include "screen.hpp"
-#include "matrix.hpp"
-#include "wavefront.hpp"
-#include "rasterize.hpp"
+#include "objects\scenemgr.hpp"
+#include "objects\dumbship.hpp"
+#include "raster\rasterize.hpp"
+#include "raster\screen.hpp"
+#include "shapes\wavefront.hpp"
+#include "widgets\button.hpp"
 #include "input.hpp"
 #include <cmath>
 #include <time.h>
@@ -31,8 +36,10 @@ volatile unsigned int timer60Hz;
 volatile unsigned int timer24Hz;
 
 bool DoSceneLoop();
+void MainMenu();
+void BeginSimulation();
 
-int dpmi_set_pm_handler(unsigned intnum, void far * isr )
+int dpmi_set_pm_handler(unsigned char intnum, void far * isr )
 {
         union REGS regs;
 

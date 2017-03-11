@@ -72,6 +72,6 @@ void fbPutString(char *framebuffer, const char *str, int len, Point destination,
     }
 }
 
-void fbPutString(char *framebuffer, std::string str, Point destination, int color, Font font){
+void fbPutString(char *framebuffer, std::string str, Point destination, COLOR color, Font font){
     fbPutString(framebuffer, str.c_str(), str.length(), destination, color, font);
 }

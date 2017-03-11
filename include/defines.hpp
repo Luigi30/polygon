@@ -1,7 +1,5 @@
 /* A big mess of defines that need to be reorganized. */
-
-#ifndef GLOBALVARS_HPP
-#define GLOBALVARS_HPP
+#pragma once
 
 #include <conio.h>
 #include <i86.h>
@@ -48,8 +46,7 @@ typedef signed short          Int16;
 typedef signed long           Int32;
 typedef signed long long      Int64;
 
+typedef int                   COLOR;
+
 //Button shape
 enum ButtonShape { BUTTON_SHAPE_RECT, BUTTON_SHAPE_ROUNDRECT };
-
-#endif
-

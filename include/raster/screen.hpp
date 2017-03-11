@@ -5,9 +5,7 @@
 #include "framebuffer.hpp"
 #include "rasterize.hpp"
 #include "widgets\widget.hpp"
-#include "objects\sceneobject.hpp"
-
-#define GAMEOBJECT(X) g_screen.getSceneObjectPtr(X)
+#include "objects\scenemgr.hpp"
 
 struct Button {
     Point position;
@@ -27,7 +25,7 @@ struct Button {
 
 class Screen {
     std::vector<Button> buttons;
-    std::vector<SceneObject> sceneObjects;
+    //std::vector<SceneObject> sceneObjects;
     
     public:
     Framebuffer layer_background;
@@ -46,13 +44,6 @@ class Screen {
 
     std::vector<Widget*> widgetsList;
     void removeWidget(std::string _name);
-
-    void addSceneObject(std::string _name, WavefrontObject _model, Vector3f _translation, Vector3f _rotation, Vector3f _scale);
-    void removeSceneObject(std::string _name);
-    SceneObject *getSceneObjectPtr(std::string _name);
-    
-    void Screen::applyObjectVelocities();
-    void Screen::applyObjectRotations();
 
     void addButton(Button);
     void drawButton(Button);
