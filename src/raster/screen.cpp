@@ -147,7 +147,7 @@ void Screen::draw_polygon_debug_data(){
 void Screen::draw_object_debug_data(SceneObject obj){
     char translationText[80];
     sprintf(translationText, "ORIGIN: (%f, %f, %f)", obj.transformation.translation.x, obj.transformation.translation.y, obj.transformation.translation.z);
-    layer_text.putString(translationText, strlen(translationText), Point(0,16), COLOR_GREEN, FONT_4x6);
+    layer_text.putString(translationText, strlen(translationText), TEXT_XY(0,2), COLOR_GREEN, FONT_4x6);
 
     char rotationText[80];
     sprintf(rotationText, "ROTATE: (%f, %f, %f)", obj.transformation.rotation.x, obj.transformation.rotation.y, obj.transformation.rotation.z);
@@ -156,6 +156,14 @@ void Screen::draw_object_debug_data(SceneObject obj){
     char scaleText[80];
     sprintf(scaleText, "SCALE : (%f, %f, %f)", obj.transformation.scale.x, obj.transformation.scale.y, obj.transformation.scale.z);
     layer_text.putString(scaleText, strlen(scaleText), Point(0,32), COLOR_GREEN, FONT_4x6);
+
+    char targetText[80];
+    sprintf(targetText, "TARGET: 0x%P (%s)", obj.target, obj.target->name.c_str());
+    layer_text.putString(targetText, strlen(targetText), TEXT_XY(0,5), COLOR_GREEN, FONT_4x6);
+
+    char distanceText[80];
+    sprintf(distanceText, "T DIST: %f", obj.distance_to_target());
+    layer_text.putString(distanceText, strlen(distanceText), TEXT_XY(0,6), COLOR_GREEN, FONT_4x6);
     
 }
 

@@ -52,7 +52,6 @@ void updatePlayerPosition(Vector3f _eye, Vector3f _cameraRotation){
     //Player's position and rotation = camera, effectively
     PTR_SCENEOBJECT("player")->transformation.translation = _eye;
     PTR_SCENEOBJECT("player")->transformation.rotation = _cameraRotation;
-
 }
 
 int main(){
@@ -127,12 +126,19 @@ void BeginSimulation(){
     dumbShip->transformation.translation = Vector3f(0,0,0);
     dumbShip->transformation.rotation = Vector3f(0,0,0);
     dumbShip->transformation.scale = Vector3f(1,1,1);  
-    dumbShip->can_think = true;  
+    dumbShip->can_think = true;
     g_SceneManager.addSceneObject(dumbShip);
 
     g_SceneManager.addSceneObject("player", cube, Vector3f(0,0,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
     PTR_SCENEOBJECT("player")->transformation.rotation = Vector3f(0,0,0);
     PTR_SCENEOBJECT("player")->movement.desired_rotation = Vector3f(0,0,0);
+
+    g_SceneManager.addSceneObject("waypoint", cube, Vector3f(-10,0,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
+    PTR_SCENEOBJECT("ship")->target = &*PTR_SCENEOBJECT("waypoint");
+    PTR_SCENEOBJECT("ship")->current_behavior = BEHAVIOR_WAYPOINTS;
+
+    g_SceneManager.addSceneObject("waypt2", cube, Vector3f(-20,0,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
+    PTR_SCENEOBJECT("waypoint")->target = &*PTR_SCENEOBJECT("waypt2");
 
     _setvideomode(_MRES256COLOR); //Change to mode 13h
 
@@ -158,10 +164,6 @@ bool DoSceneLoop(){
 
     //Limit to 35Hz refresh
     wait_for_vsync();
-    
-    //clamp rotation
-    PTR_SCENEOBJECT("ship")->transformation.rotation.x = std::fmod(PTR_SCENEOBJECT("ship")->transformation.rotation.x, 360.0f);
-    PTR_SCENEOBJECT("ship")->transformation.rotation.y = std::fmod(PTR_SCENEOBJECT("ship")->transformation.rotation.y, 360.0f);
 
     //SceneObjects now think.
     g_SceneManager.objectsThink();
@@ -189,7 +191,7 @@ bool DoSceneLoop(){
     cameraRotation.y = controlsState.rotation.y;
 
     //Update global transformation matrix with the player's location and rotation
-    eye = PTR_SCENEOBJECT("player")->transformation.translation;     
+    eye = PTR_SCENEOBJECT("player")->transformation.translation;
     direction = direction.rotateAroundZAxis(-cameraRotation.z);
     direction = direction.rotateAroundXAxis(-cameraRotation.x);
     direction = direction.rotateAroundYAxis(-cameraRotation.y);

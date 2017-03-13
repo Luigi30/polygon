@@ -18,6 +18,7 @@
 #include "shapes\wavefront.hpp"
 #include "widgets\button.hpp"
 #include "input.hpp"
+#include "fixed.hpp"
 #include <cmath>
 #include <time.h>
 

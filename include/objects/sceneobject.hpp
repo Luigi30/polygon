@@ -2,8 +2,16 @@
 /*  SceneObject: The parent class of all objects in a 3D simulation. */
 
 #include <string>
+#include "objects\behavior.hpp"
 #include "objects\movement.hpp"
 #include "shapes\wavefront.hpp"
+
+typedef enum SceneObjectType_t {
+    SO_GENERIC,
+    SO_PLAYER,
+    SO_DUMBSHIP,
+    SO_WAYPOINT
+} SceneObjectType;
 
 struct Transformation {
     Vector3f translation;
@@ -12,6 +20,11 @@ struct Transformation {
 };
 
 class SceneObject {
+    private:
+    static int ID;  //Globally unique ID for each SceneObject
+    int obj_ID;     //this SceneObject's ID
+    SceneObjectType type; //this SceneObject's type
+
     public:
     bool can_think;
 
@@ -20,32 +33,41 @@ class SceneObject {
     MovementInfo movement;          /* The velocity info for this SceneObject. */
     Transformation transformation;  /* The world transformation of this SceneObject. */
 
+    /* AI stuff */
+    Behavior    current_behavior;   /* What behavior is this SceneObject doing? */
+    SceneObject *target;            /* What's the target of this SceneObject's current goal? */
+
+    /* Velocity and acceleration info */
+    float throttle_percentage;
+    Vector3f max_rotational_velocity;   /* Degrees per frame this object will rotate */
+    float max_forward_velocity;         /* Throttle is expressed as a percentage of this value */
+    float forward_acceleration;         /* How much speed does this object gain each frame? */
+    float forward_deceleration;         /* How much speed does this object lose each frame? */
+
 #pragma warning 549 10
     virtual ~SceneObject() {};
     virtual void obj_think();
 #pragma warning 549 9
 
-    SceneObject() {
-        transformation.translation = Vector3f(0,0,0);
-        transformation.rotation = Vector3f(0,0,0);
-        transformation.scale = Vector3f(1,1,1);
-
-        //just set this for development
-        movement = MovementInfo();
-        movement.enableDesiredRotation = false;
-        movement.velocity = Vector3f(0,0,0);
-        movement.maximum_rotation_per_frame = Vector3f(0.5,0.5,0.5);
-        movement.forward_speed = 0.0f;
-        movement.maximum_throttle_speed = 1.0f;
-
-        can_think = false;
+    SceneObject(SceneObjectType _type){
+        init(_type);
     }
 
+    SceneObject() {
+        init(SO_GENERIC);
+    }
+
+    void init(SceneObjectType _type);
+
+    int getID();
+    SceneObjectType getType();
+    void update_throttle_velocity();
     void apply_velocity_to_translation();
     Vector3f forward_vector();
-
-    //Proceed toward desired_rotation.
+    Vector3f up_vector();
+    Vector3f right_vector();
     void update_rotation();
+    float distance_to_target();
 };
 
 typedef std::shared_ptr<SceneObject> SceneObject_ptr;

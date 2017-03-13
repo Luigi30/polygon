@@ -6,6 +6,9 @@
 #include "rasterize.hpp"
 #include "widgets\widget.hpp"
 #include "objects\scenemgr.hpp"
+#include "fixed.hpp"
+
+#define TEXT_XY(COL, ROW) Point2D(COL*7, ROW*8)
 
 struct Button {
     Point position;

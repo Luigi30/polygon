@@ -3,17 +3,14 @@
 
 #include "..\shapes\vector3f.hpp"
 
-class MovementInfo {
-    public:
+struct MovementInfo {
     float forward_speed;
     Vector3f velocity;
     bool alwaysRemainUpright;
     bool enableDesiredRotation;
     int maximum_throttle_speed;
 
-    //desired
     Vector3f desired_rotation;
-    Vector3f maximum_rotation_per_frame; //degrees per frame
 };
 
 #endif

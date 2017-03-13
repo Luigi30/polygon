@@ -39,6 +39,14 @@ ts\watcom\polygon\src\message.cpp .AUTODEPEND
 m\polygon\include" -w4 -we -e25 -zq -od -d2 -fpi -3r -bt=dos -fo=.obj -mf -x&
 s -xr
 
+C:\Users\Luigi\Documents\watcom\polygon\behavior.obj : C:\Users\Luigi\Docume&
+nts\watcom\polygon\src\objects\behavior.cpp .AUTODEPEND
+ @C:
+ cd C:\Users\Luigi\Documents\watcom\polygon
+ *wpp386 src\objects\behavior.cpp -i="C:\WATCOM/h" -i="C:\Users\Luigi\Docume&
+nts\watcom\polygon\include" -w4 -we -e25 -zq -od -d2 -fpi -3r -bt=dos -fo=.o&
+bj -mf -xs -xr
+
 C:\Users\Luigi\Documents\watcom\polygon\dumbship.obj : C:\Users\Luigi\Docume&
 nts\watcom\polygon\src\objects\dumbship.cpp .AUTODEPEND
  @C:
@@ -171,48 +179,51 @@ C:\Users\Luigi\Documents\watcom\polygon\polygon.exe : C:\Users\Luigi\Documen&
 ts\watcom\polygon\font.obj C:\Users\Luigi\Documents\watcom\polygon\font8x8.o&
 bj C:\Users\Luigi\Documents\watcom\polygon\input.obj C:\Users\Luigi\Document&
 s\watcom\polygon\main.obj C:\Users\Luigi\Documents\watcom\polygon\message.ob&
-j C:\Users\Luigi\Documents\watcom\polygon\dumbship.obj C:\Users\Luigi\Docume&
-nts\watcom\polygon\movement.obj C:\Users\Luigi\Documents\watcom\polygon\scen&
-emgr.obj C:\Users\Luigi\Documents\watcom\polygon\sceneobject.obj C:\Users\Lu&
-igi\Documents\watcom\polygon\framebuffer.obj C:\Users\Luigi\Documents\watcom&
-\polygon\rasterize.obj C:\Users\Luigi\Documents\watcom\polygon\screen.obj C:&
-\Users\Luigi\Documents\watcom\polygon\serial.obj C:\Users\Luigi\Documents\wa&
-tcom\polygon\point.obj C:\Users\Luigi\Documents\watcom\polygon\point3d.obj C&
-:\Users\Luigi\Documents\watcom\polygon\shapes.obj C:\Users\Luigi\Documents\w&
-atcom\polygon\triangle.obj C:\Users\Luigi\Documents\watcom\polygon\vector3f.&
-obj C:\Users\Luigi\Documents\watcom\polygon\timer.obj C:\Users\Luigi\Documen&
-ts\watcom\polygon\button.obj C:\Users\Luigi\Documents\watcom\polygon\widget.&
-obj C:\Users\Luigi\Documents\watcom\polygon\include\colors.hpp C:\Users\Luig&
-i\Documents\watcom\polygon\include\defines.hpp C:\Users\Luigi\Documents\watc&
-om\polygon\include\fonts\font.hpp C:\Users\Luigi\Documents\watcom\polygon\in&
-clude\fonts\font4x6.hpp C:\Users\Luigi\Documents\watcom\polygon\include\font&
-s\font5x8.hpp C:\Users\Luigi\Documents\watcom\polygon\include\fonts\font6x8.&
-hpp C:\Users\Luigi\Documents\watcom\polygon\include\fonts\font8x8.hpp C:\Use&
-rs\Luigi\Documents\watcom\polygon\include\input.hpp C:\Users\Luigi\Documents&
-\watcom\polygon\include\main.hpp C:\Users\Luigi\Documents\watcom\polygon\inc&
-lude\matrix.hpp C:\Users\Luigi\Documents\watcom\polygon\include\message.hpp &
-C:\Users\Luigi\Documents\watcom\polygon\include\mouse.hpp C:\Users\Luigi\Doc&
-uments\watcom\polygon\include\objects\dumbship.hpp C:\Users\Luigi\Documents\&
-watcom\polygon\include\objects\movement.hpp C:\Users\Luigi\Documents\watcom\&
-polygon\include\objects\scenemgr.hpp C:\Users\Luigi\Documents\watcom\polygon&
-\include\objects\sceneobject.hpp C:\Users\Luigi\Documents\watcom\polygon\inc&
-lude\raster\framebuffer.hpp C:\Users\Luigi\Documents\watcom\polygon\include\&
-raster\rasterize.hpp C:\Users\Luigi\Documents\watcom\polygon\include\raster\&
-screen.hpp C:\Users\Luigi\Documents\watcom\polygon\include\serial.hpp C:\Use&
-rs\Luigi\Documents\watcom\polygon\include\shapes\point.hpp C:\Users\Luigi\Do&
-cuments\watcom\polygon\include\shapes\point3d.hpp C:\Users\Luigi\Documents\w&
-atcom\polygon\include\shapes\shapes.hpp C:\Users\Luigi\Documents\watcom\poly&
-gon\include\shapes\triangle.hpp C:\Users\Luigi\Documents\watcom\polygon\incl&
-ude\shapes\vector3f.hpp C:\Users\Luigi\Documents\watcom\polygon\include\shap&
-es\wavefront.hpp C:\Users\Luigi\Documents\watcom\polygon\include\timer.hpp C&
-:\Users\Luigi\Documents\watcom\polygon\include\widgets\button.hpp C:\Users\L&
-uigi\Documents\watcom\polygon\include\widgets\widget.hpp .AUTODEPEND
+j C:\Users\Luigi\Documents\watcom\polygon\behavior.obj C:\Users\Luigi\Docume&
+nts\watcom\polygon\dumbship.obj C:\Users\Luigi\Documents\watcom\polygon\move&
+ment.obj C:\Users\Luigi\Documents\watcom\polygon\scenemgr.obj C:\Users\Luigi&
+\Documents\watcom\polygon\sceneobject.obj C:\Users\Luigi\Documents\watcom\po&
+lygon\framebuffer.obj C:\Users\Luigi\Documents\watcom\polygon\rasterize.obj &
+C:\Users\Luigi\Documents\watcom\polygon\screen.obj C:\Users\Luigi\Documents\&
+watcom\polygon\serial.obj C:\Users\Luigi\Documents\watcom\polygon\point.obj &
+C:\Users\Luigi\Documents\watcom\polygon\point3d.obj C:\Users\Luigi\Documents&
+\watcom\polygon\shapes.obj C:\Users\Luigi\Documents\watcom\polygon\triangle.&
+obj C:\Users\Luigi\Documents\watcom\polygon\vector3f.obj C:\Users\Luigi\Docu&
+ments\watcom\polygon\timer.obj C:\Users\Luigi\Documents\watcom\polygon\butto&
+n.obj C:\Users\Luigi\Documents\watcom\polygon\widget.obj C:\Users\Luigi\Docu&
+ments\watcom\polygon\include\colors.hpp C:\Users\Luigi\Documents\watcom\poly&
+gon\include\defines.hpp C:\Users\Luigi\Documents\watcom\polygon\include\fixe&
+d.hpp C:\Users\Luigi\Documents\watcom\polygon\include\fonts\font.hpp C:\User&
+s\Luigi\Documents\watcom\polygon\include\fonts\font4x6.hpp C:\Users\Luigi\Do&
+cuments\watcom\polygon\include\fonts\font5x8.hpp C:\Users\Luigi\Documents\wa&
+tcom\polygon\include\fonts\font6x8.hpp C:\Users\Luigi\Documents\watcom\polyg&
+on\include\fonts\font8x8.hpp C:\Users\Luigi\Documents\watcom\polygon\include&
+\input.hpp C:\Users\Luigi\Documents\watcom\polygon\include\main.hpp C:\Users&
+\Luigi\Documents\watcom\polygon\include\matrix.hpp C:\Users\Luigi\Documents\&
+watcom\polygon\include\message.hpp C:\Users\Luigi\Documents\watcom\polygon\i&
+nclude\mouse.hpp C:\Users\Luigi\Documents\watcom\polygon\include\objects\beh&
+avior.hpp C:\Users\Luigi\Documents\watcom\polygon\include\objects\dumbship.h&
+pp C:\Users\Luigi\Documents\watcom\polygon\include\objects\movement.hpp C:\U&
+sers\Luigi\Documents\watcom\polygon\include\objects\scenemgr.hpp C:\Users\Lu&
+igi\Documents\watcom\polygon\include\objects\sceneobject.hpp C:\Users\Luigi\&
+Documents\watcom\polygon\include\raster\framebuffer.hpp C:\Users\Luigi\Docum&
+ents\watcom\polygon\include\raster\rasterize.hpp C:\Users\Luigi\Documents\wa&
+tcom\polygon\include\raster\screen.hpp C:\Users\Luigi\Documents\watcom\polyg&
+on\include\serial.hpp C:\Users\Luigi\Documents\watcom\polygon\include\shapes&
+\point.hpp C:\Users\Luigi\Documents\watcom\polygon\include\shapes\point3d.hp&
+p C:\Users\Luigi\Documents\watcom\polygon\include\shapes\shapes.hpp C:\Users&
+\Luigi\Documents\watcom\polygon\include\shapes\triangle.hpp C:\Users\Luigi\D&
+ocuments\watcom\polygon\include\shapes\vector3f.hpp C:\Users\Luigi\Documents&
+\watcom\polygon\include\shapes\wavefront.hpp C:\Users\Luigi\Documents\watcom&
+\polygon\include\timer.hpp C:\Users\Luigi\Documents\watcom\polygon\include\w&
+idgets\button.hpp C:\Users\Luigi\Documents\watcom\polygon\include\widgets\wi&
+dget.hpp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
  @%write polygon.lk1 FIL font.obj,font8x8.obj,input.obj,main.obj,message.obj&
-,dumbship.obj,movement.obj,scenemgr.obj,sceneobject.obj,framebuffer.obj,rast&
-erize.obj,screen.obj,serial.obj,point.obj,point3d.obj,shapes.obj,triangle.ob&
-j,vector3f.obj,timer.obj,button.obj,widget.obj
+,behavior.obj,dumbship.obj,movement.obj,scenemgr.obj,sceneobject.obj,framebu&
+ffer.obj,rasterize.obj,screen.obj,serial.obj,point.obj,point3d.obj,shapes.ob&
+j,triangle.obj,vector3f.obj,timer.obj,button.obj,widget.obj
  @%append polygon.lk1 
  *wlink name polygon d all sys dos32x op m op maxe=25 op q op symf @polygon.&
 lk1
