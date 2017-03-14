@@ -156,6 +156,8 @@ bool Framebuffer::draw_face(SceneObject obj, Vector3f eye, Vector3f cameraRotati
         clipCoords[i].z = screenCoords[i].z;
 
         //Perspective divide
+        assert(transformedWorldCoords[i].z != 0);
+
         screenCoords[i].x = transformedWorldCoords[i].x / transformedWorldCoords[i].z;
         screenCoords[i].y = transformedWorldCoords[i].y / transformedWorldCoords[i].z;
         screenCoords[i].z = transformedWorldCoords[i].z;
@@ -252,6 +254,8 @@ void Framebuffer::blit_area(const Pixel *source, Point start, Size2D size, BLIT_
 
 double getSlope(Point start, Point end){
     //m = (startY - endY) / (startX - endX)
+    assert((start.x - end.x) != 0);
+
     return (double)(start.getY() - end.getY()) / (start.getX() - end.getX());
 }
 

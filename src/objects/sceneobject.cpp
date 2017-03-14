@@ -14,8 +14,9 @@ void SceneObject::init(SceneObjectType _type){
     obj_ID = ++ID;
 
     type = _type;
-
     target = NULL;
+    team = TEAM_NONE;
+    is_dead = false;
 
     transformation.translation = Vector3f(0,0,0);
     transformation.rotation = Vector3f(0,0,0);

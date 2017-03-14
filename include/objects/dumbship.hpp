@@ -12,10 +12,22 @@ class DumbShip : public SceneObject {
     void obj_think();
 
     ~DumbShip() {};
-    DumbShip() : SceneObject(SO_DUMBSHIP) {
+    DumbShip(std::string _name, Vector3f _position, Vector3f _rotation) : SceneObject(SO_DUMBSHIP) {
+        name = _name;
+        can_think = true; //this is an active object
+
+        /* Initial transformation */
+        transformation.translation = _position;
+        transformation.rotation = _rotation;
+
+        /* Ship speed settings */
         forward_acceleration = 0.005;
         forward_deceleration = 0.005;
-        max_forward_velocity = 0.04;
+        max_forward_velocity = 0.02;
+        
+        /* Model settings */
+        model = WavefrontObject("testship.3d");
+        transformation.scale = Vector3f(0.5,0.5,0.5);
     }
 };
 

@@ -6,6 +6,13 @@
 #include "objects\movement.hpp"
 #include "shapes\wavefront.hpp"
 
+typedef enum Team_t {
+    TEAM_NONE,
+    TEAM_GOOD,
+    TEAM_BAD,
+    TEAM_NEUTRAL
+} Team;
+
 typedef enum SceneObjectType_t {
     SO_GENERIC,
     SO_PLAYER,
@@ -32,6 +39,9 @@ class SceneObject {
     WavefrontObject model;          /* The 3D model that represents this SceneObject, if applicable. */
     MovementInfo movement;          /* The velocity info for this SceneObject. */
     Transformation transformation;  /* The world transformation of this SceneObject. */
+
+    Team team;
+    bool is_dead;
 
     /* AI stuff */
     Behavior    current_behavior;   /* What behavior is this SceneObject doing? */

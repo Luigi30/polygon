@@ -112,33 +112,18 @@ void BeginSimulation(){
 
     printf("Loading models\n");
     WavefrontObject cube = WavefrontObject("cube.3d");
-    WavefrontObject ship = WavefrontObject("sqrship.3d");
 
-    /*
-    g_SceneManager.addSceneObject("ship", ship, Vector3f(0,0,0), Vector3f(0,0,0), Vector3f(1,1,1));
-    PTR_SCENEOBJECT("ship")->transformation.rotation = Vector3f(0,0,0);
-    PTR_SCENEOBJECT("ship")->movement.desired_rotation = Vector3f(0,0,0);
-    */
-
-    ptr_DumbShip dumbShip(new DumbShip);
-    dumbShip->name = "ship";
-    dumbShip->model = ship;
-    dumbShip->transformation.translation = Vector3f(0,0,0);
-    dumbShip->transformation.rotation = Vector3f(0,0,0);
-    dumbShip->transformation.scale = Vector3f(1,1,1);  
-    dumbShip->can_think = true;
+    ptr_DumbShip dumbShip(new DumbShip("ship", Vector3f(0,0,0), Vector3f(0,0,0)));
     g_SceneManager.addSceneObject(dumbShip);
 
     g_SceneManager.addSceneObject("player", cube, Vector3f(0,0,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
-    PTR_SCENEOBJECT("player")->transformation.rotation = Vector3f(0,0,0);
-    PTR_SCENEOBJECT("player")->movement.desired_rotation = Vector3f(0,0,0);
 
-    g_SceneManager.addSceneObject("waypoint", cube, Vector3f(-10,0,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
+    g_SceneManager.addSceneObject("waypoint", cube, Vector3f(0,5,0), Vector3f(0,0,0), Vector3f(.5,.5,.5));
     PTR_SCENEOBJECT("ship")->target = &*PTR_SCENEOBJECT("waypoint");
     PTR_SCENEOBJECT("ship")->current_behavior = BEHAVIOR_WAYPOINTS;
 
-    g_SceneManager.addSceneObject("waypt2", cube, Vector3f(-20,0,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
-    PTR_SCENEOBJECT("waypoint")->target = &*PTR_SCENEOBJECT("waypt2");
+    //g_SceneManager.addSceneObject("waypt2", cube, Vector3f(-20,10,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
+    //PTR_SCENEOBJECT("waypoint")->target = &*PTR_SCENEOBJECT("waypt2");
 
     _setvideomode(_MRES256COLOR); //Change to mode 13h
 
