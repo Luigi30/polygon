@@ -7,8 +7,8 @@
 
 #include "colors.hpp"
 
-#define R2D(X) (X * 180) / PI;
-#define D2R(X) (X * PI) / 180;
+#define R2D(X) (X * 180) / PI
+#define D2R(X) (X * PI) / 180
 
 double PI = 3.14159265;
 

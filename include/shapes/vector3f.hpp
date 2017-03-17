@@ -9,6 +9,11 @@
 #define M_PI 3.141592653589793238462643383279502884
 #define DEG_TO_RAD(X) ((X * M_PI) / 180.0)
 
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
+
+#define CLAMP(x, upper, lower) (MIN(upper, MAX(x, lower)))
+
 class Vector3f {
     public:
         float x;
@@ -43,6 +48,10 @@ class Vector3f {
         Vector3f operator*(const float scalar){
             return Vector3f(x*scalar, y*scalar, z*scalar);
         }
+
+        Vector3f operator/(const float scalar) {
+		    return Vector3f(x / scalar, y / scalar, z / scalar);
+	    }
 
         float length() {
             return std::sqrt(x*x + y*y + z*z);
@@ -90,6 +99,26 @@ class Vector3f {
             return Vector3f((a.y * b.z) - (a.z * b.y),
                             (a.z * b.x) - (a.x * b.z),
                             (a.x * b.y) - (a.y * b.x));
+        }
+
+        Vector3f lerp(Vector3f v2, float t) {
+            return (*this + (v2 - *this)*t);
+        }
+
+        Vector3f nlerp(Vector3f v2, float t) {
+            return lerp(v2, t).normalize();
+        }
+
+        Vector3f slerp(Vector3f v2, float t) {
+            float dot = dot_product(*this, v2);
+
+            dot = CLAMP(dot, 1, -1);
+
+            float theta = std::acos(dot)*t;
+            Vector3f relative = (v2 - *this * dot);
+            relative = relative.normalize();
+
+            return ((*this*std::cos(theta)) + relative*std::sin(theta));
         }
 
         float carmack(float input){

@@ -113,12 +113,14 @@ void BeginSimulation(){
     printf("Loading models\n");
     WavefrontObject cube = WavefrontObject("cube.3d");
 
-    ptr_DumbShip dumbShip(new DumbShip("ship", Vector3f(0,0,0), Vector3f(0,0,0)));
+    ptr_DumbShip dumbShip(new DumbShip("ship", Vector3f(0,0,0), Vector3f(-45,45,-90)));
     g_SceneManager.addSceneObject(dumbShip);
 
     g_SceneManager.addSceneObject("player", cube, Vector3f(0,0,-5), Vector3f(0,0,0), Vector3f(.5,.5,.5));
 
-    g_SceneManager.addSceneObject("waypoint", cube, Vector3f(0,5,0), Vector3f(0,0,0), Vector3f(.5,.5,.5));
+    g_SceneManager.addSceneObject("waypoint", cube, Vector3f(10,10,0), Vector3f(0,0,0), Vector3f(.5,.5,.5));
+    PTR_SCENEOBJECT("waypoint")->target = NULL;
+
     PTR_SCENEOBJECT("ship")->target = &*PTR_SCENEOBJECT("waypoint");
     PTR_SCENEOBJECT("ship")->current_behavior = BEHAVIOR_WAYPOINTS;
 

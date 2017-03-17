@@ -69,13 +69,15 @@ class SceneObject {
 
     void init(SceneObjectType _type);
 
+    Vector3f forward_vector();
+    Vector3f up_vector();
+    Vector3f right_vector();
+
     int getID();
     SceneObjectType getType();
     void update_throttle_velocity();
     void apply_velocity_to_translation();
-    Vector3f forward_vector();
-    Vector3f up_vector();
-    Vector3f right_vector();
+
     void update_rotation();
     float distance_to_target();
 };

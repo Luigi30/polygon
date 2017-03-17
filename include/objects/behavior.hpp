@@ -2,6 +2,7 @@
 
 #include "defines.hpp"
 #include "shapes\vector3f.hpp"
+#include "shapes\quaternion.hpp"
 
 class SceneObject;
 

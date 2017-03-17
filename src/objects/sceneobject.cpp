@@ -43,25 +43,30 @@ void SceneObject::obj_think() {
 
 Vector3f SceneObject::forward_vector(){
     Vector3f forward = Vector3f(0,0,1);
+    
+    forward = forward.rotateAroundZAxis(transformation.rotation.z);
     forward = forward.rotateAroundYAxis(transformation.rotation.y);
     forward = forward.rotateAroundXAxis(transformation.rotation.x);
-    forward = forward.rotateAroundZAxis(transformation.rotation.z);
+
     return forward;
 }
 
 Vector3f SceneObject::up_vector(){
     Vector3f up = Vector3f(0,1,0);
+
+        up = up.rotateAroundZAxis(transformation.rotation.z);
     up = up.rotateAroundYAxis(transformation.rotation.y);
     up = up.rotateAroundXAxis(transformation.rotation.x);
-    up = up.rotateAroundZAxis(transformation.rotation.z);
     return up;
 }
 
 Vector3f SceneObject::right_vector(){
     Vector3f right = Vector3f(1,0,0);
+
+    right = right.rotateAroundZAxis(transformation.rotation.z);
     right = right.rotateAroundYAxis(transformation.rotation.y);
     right = right.rotateAroundXAxis(transformation.rotation.x);
-    right = right.rotateAroundZAxis(transformation.rotation.z);
+    
     return right;
 }
 

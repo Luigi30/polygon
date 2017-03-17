@@ -211,13 +211,14 @@ ents\watcom\polygon\include\raster\rasterize.hpp C:\Users\Luigi\Documents\wa&
 tcom\polygon\include\raster\screen.hpp C:\Users\Luigi\Documents\watcom\polyg&
 on\include\serial.hpp C:\Users\Luigi\Documents\watcom\polygon\include\shapes&
 \point.hpp C:\Users\Luigi\Documents\watcom\polygon\include\shapes\point3d.hp&
-p C:\Users\Luigi\Documents\watcom\polygon\include\shapes\shapes.hpp C:\Users&
-\Luigi\Documents\watcom\polygon\include\shapes\triangle.hpp C:\Users\Luigi\D&
-ocuments\watcom\polygon\include\shapes\vector3f.hpp C:\Users\Luigi\Documents&
-\watcom\polygon\include\shapes\wavefront.hpp C:\Users\Luigi\Documents\watcom&
-\polygon\include\timer.hpp C:\Users\Luigi\Documents\watcom\polygon\include\w&
-idgets\button.hpp C:\Users\Luigi\Documents\watcom\polygon\include\widgets\wi&
-dget.hpp .AUTODEPEND
+p C:\Users\Luigi\Documents\watcom\polygon\include\shapes\quaternion.hpp C:\U&
+sers\Luigi\Documents\watcom\polygon\include\shapes\shapes.hpp C:\Users\Luigi&
+\Documents\watcom\polygon\include\shapes\triangle.hpp C:\Users\Luigi\Documen&
+ts\watcom\polygon\include\shapes\vector3f.hpp C:\Users\Luigi\Documents\watco&
+m\polygon\include\shapes\wavefront.hpp C:\Users\Luigi\Documents\watcom\polyg&
+on\include\timer.hpp C:\Users\Luigi\Documents\watcom\polygon\include\widgets&
+\button.hpp C:\Users\Luigi\Documents\watcom\polygon\include\widgets\widget.h&
+pp .AUTODEPEND
  @C:
  cd C:\Users\Luigi\Documents\watcom\polygon
  @%write polygon.lk1 FIL font.obj,font8x8.obj,input.obj,main.obj,message.obj&
